@@ -84,9 +84,9 @@ item_table: Dict[str, ItemData] = {
 
     "Corrosion Beam": ItemData(card_off + dizzy_off + R,     "Card", True, character="Dizzy", rarity="Rare"),
     "Mitosis":        ItemData(card_off + dizzy_off + R + 1, "Card", True, character="Dizzy", rarity="Rare"),
-    "Payback":        ItemData(card_off + dizzy_off + R + 1, "Card", True, character="Dizzy", rarity="Rare"),
-    "Shield Gun":     ItemData(card_off + dizzy_off + R + 1, "Card", True, character="Dizzy", rarity="Rare"),
-    "Stun Source":    ItemData(card_off + dizzy_off + R + 1, "Card", True, character="Dizzy", rarity="Rare"),
+    "Payback":        ItemData(card_off + dizzy_off + R + 2, "Card", True, character="Dizzy", rarity="Rare"),
+    "Shield Gun":     ItemData(card_off + dizzy_off + R + 3, "Card", True, character="Dizzy", rarity="Rare"),
+    "Stun Source":    ItemData(card_off + dizzy_off + R + 4, "Card", True, character="Dizzy", rarity="Rare"),
 
     # Riggs
     "Bolt":           ItemData(card_off + riggs_off + C,     "Card", True, character="Riggs", rarity="Common"),
