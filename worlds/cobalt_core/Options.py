@@ -1,5 +1,7 @@
 import typing
-from Options import Option, Choice, OptionSet, DefaultOnToggle, Range
+from dataclasses import dataclass
+
+from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions
 from worlds.ladx.Options import DefaultOffToggle
 
 
@@ -93,15 +95,15 @@ class ImmediateCardRewards(Choice):
     default = 4
 
 
-cobalt_options: typing.Dict[str, type(Option)] = {
-    "starting_ship": StartingShip,
-    "starting_characters": StartingCharacters,
-    "minimum_difficulty": MinimumDifficulty,
-    "win_condition": WinCondition,
-    "memories_required_total": TotalMemoriesRequired,
-    "memories_required_per_character": PerCharacterMemoriesRequired,
-    "additional_character_memories": AddCharacterMemories,
-    "do_future_memory": DoFutureMemory,
-    "randomize_starting_cards": RandomizeStartingCards,
-    "immediate_card_rewards": ImmediateCardRewards
-}
+@dataclass
+class CobaltCoreOptions(PerGameCommonOptions):
+    starting_ship = StartingShip
+    starting_characters = StartingCharacters
+    minimum_difficulty = MinimumDifficulty
+    win_condition = WinCondition
+    memories_required_total = TotalMemoriesRequired
+    memories_required_per_character = PerCharacterMemoriesRequired
+    additional_character_memories = AddCharacterMemories
+    do_future_memory = DoFutureMemory
+    randomize_starting_cards = RandomizeStartingCards
+    immediate_card_rewards = ImmediateCardRewards

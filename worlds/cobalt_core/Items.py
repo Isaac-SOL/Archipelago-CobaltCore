@@ -1,7 +1,8 @@
 import typing
 
-from BaseClasses import Item
-from typing import Dict
+from typing import Dict, Set
+
+from worlds.cobalt_core.Options import StartingShip
 
 
 class ItemData(typing.NamedTuple):
@@ -12,6 +13,13 @@ class ItemData(typing.NamedTuple):
     character: str = ""
     rarity: str = ""
     starter: bool = False
+
+
+def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str]:
+    return set([name for name, data in item_table.items()
+                if (item_type is None or data.type == item_type)
+                and (item_rarity is None or data.rarity == item_rarity)
+                and (item_character is None or data.character == item_character)])
 
 
 ship_off = 100
