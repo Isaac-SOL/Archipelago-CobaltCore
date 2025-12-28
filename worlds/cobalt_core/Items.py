@@ -1,8 +1,7 @@
 import typing
 
 from typing import Dict, Set
-
-from worlds.cobalt_core.Options import StartingShip
+from Constants import *
 
 
 class ItemData(typing.NamedTuple):
@@ -21,25 +20,6 @@ def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str
                 and (item_rarity is None or data.rarity == item_rarity)
                 and (item_character is None or data.character == item_character)])
 
-
-ship_off = 100
-character_off = 200
-memory_off = 300
-card_off = 10000
-artifact_off = 20000
-
-dizzy_off = 1000
-riggs_off = 2000
-peri_off =  3000
-isaac_off = 4000
-drake_off = 5000
-max_off =   6000
-books_off = 7000
-cat_off =   8000
-
-C =  000
-UC = 100
-R =  200
 
 item_table: Dict[str, ItemData] = {
     # Ships
@@ -68,6 +48,8 @@ item_table: Dict[str, ItemData] = {
     "Max Memory":   ItemData(memory_off + 5, "Memory", True, progressive_amount=3, character="Max"),
     "Books Memory": ItemData(memory_off + 6, "Memory", True, progressive_amount=3, character="Books"),
     "CAT Memory":   ItemData(memory_off + 7, "Memory", True, progressive_amount=3, character="CAT"),
+
+    "Victory": ItemData(None, "Future Memory", True, character="Not in pool"),
 
     # CARDS
 

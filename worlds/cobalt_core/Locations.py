@@ -1,6 +1,7 @@
 import typing
 
 from typing import Dict, Set
+from Constants import *
 
 
 class LocationData(typing.NamedTuple):
@@ -16,26 +17,6 @@ def find_locations(loc_type=None, loc_rarity=None, loc_character=None) -> Set[st
                 if (loc_type is None or data.type == loc_type)
                 and (loc_rarity is None or data.rarity == loc_rarity)
                 and (loc_character is None or data.character == loc_character)])
-
-
-ship_off = 100
-character_off = 200
-memory_off = 300
-card_off = 10000
-artifact_off = 20000
-
-dizzy_off = 1000
-riggs_off = 2000
-peri_off =  3000
-isaac_off = 4000
-drake_off = 5000
-max_off =   6000
-books_off = 7000
-cat_off =   8000
-
-C =  000
-UC = 100
-R =  200
 
 
 location_table: Dict[str, LocationData] = {
@@ -54,17 +35,19 @@ location_table: Dict[str, LocationData] = {
     "Win with Isaac":                 LocationData(character_off + 4, "Character"),
     "Win with Drake":                 LocationData(character_off + 5, "Character"),
     "Complete Lazuli Nebula 5 Times": LocationData(character_off + 6, "Character"),
-    "Complete Future Memory":         LocationData(character_off + 7, "Character"),
+    "[CAT FILLER]":                   LocationData(character_off + 7, "Character"),
 
     # Memory Unlocks
-    "Fix Dizzy": LocationData(memory_off, "Memory", amount=3),
-    "Fix Riggs": LocationData(memory_off + 10, "Memory", amount=3),
-    "Fix Peri":  LocationData(memory_off + 20, "Memory", amount=3),
-    "Fix Isaac": LocationData(memory_off + 30, "Memory", amount=3),
-    "Fix Drake": LocationData(memory_off + 40, "Memory", amount=3),
-    "Fix Max":   LocationData(memory_off + 50, "Memory", amount=3),
-    "Fix Books": LocationData(memory_off + 60, "Memory", amount=3),
-    "Fix CAT":   LocationData(memory_off + 70, "Memory", amount=3),
+    "Fix Dizzy": LocationData(memory_off,      "Memory", character="Dizzy", amount=3),
+    "Fix Riggs": LocationData(memory_off + 10, "Memory", character="Riggs", amount=3),
+    "Fix Peri":  LocationData(memory_off + 20, "Memory", character="Peri",  amount=3),
+    "Fix Isaac": LocationData(memory_off + 30, "Memory", character="Isaac", amount=3),
+    "Fix Drake": LocationData(memory_off + 40, "Memory", character="Drake", amount=3),
+    "Fix Max":   LocationData(memory_off + 50, "Memory", character="Max",   amount=3),
+    "Fix Books": LocationData(memory_off + 60, "Memory", character="Books", amount=3),
+    "Fix CAT":   LocationData(memory_off + 70, "Memory", character="CAT",   amount=3),
+
+    "Complete Future Memory": LocationData(None, "Future Memory"),
 
     # Cards
     "Dizzy Common Card":   LocationData(card_off + dizzy_off + C,  "Card", character="Dizzy", rarity="Common",   amount=9),
