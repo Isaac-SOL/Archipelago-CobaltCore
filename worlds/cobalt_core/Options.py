@@ -97,14 +97,14 @@ class ImmediateCardRewards(Choice):
 
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
-    starting_ship = StartingShip
-    starting_characters = StartingCharacters
-    minimum_difficulty = MinimumDifficulty
-    win_condition = WinCondition
-    memories_required_total = TotalMemoriesRequired
-    memories_required_per_character = PerCharacterMemoriesRequired
-    additional_character_memories = AddCharacterMemories
-    shuffle_memories = ShuffleMemories
-    do_future_memory = DoFutureMemory
-    randomize_starting_cards = RandomizeStartingCards
-    immediate_card_rewards = ImmediateCardRewards
+    starting_ship: StartingShip
+    starting_characters: StartingCharacters
+    minimum_difficulty: MinimumDifficulty
+    win_condition: WinCondition
+    memories_required_total: TotalMemoriesRequired
+    memories_required_per_character: PerCharacterMemoriesRequired
+    additional_character_memories: AddCharacterMemories
+    shuffle_memories: ShuffleMemories
+    do_future_memory: DoFutureMemory
+    randomize_starting_cards: RandomizeStartingCards
+    immediate_card_rewards: ImmediateCardRewards

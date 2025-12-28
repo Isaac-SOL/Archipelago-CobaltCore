@@ -1,7 +1,7 @@
 import typing
 
 from typing import Dict, Set
-from Constants import *
+from .Constants import *
 
 
 class LocationData(typing.NamedTuple):
