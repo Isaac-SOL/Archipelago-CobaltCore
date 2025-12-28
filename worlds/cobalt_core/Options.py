@@ -67,7 +67,7 @@ class PerCharacterMemoriesRequired(Range):
     display_name = "Memories Required (Per Character)"
     range_start = 1
     range_end = 3
-    default = 3
+    default = 1
 
 
 class AddCharacterMemories(DefaultOnToggle):
