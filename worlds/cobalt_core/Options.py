@@ -1,8 +1,7 @@
 import typing
 from dataclasses import dataclass
 
-from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions
-from worlds.ladx.Options import DefaultOffToggle
+from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions, Toggle
 
 
 class StartingShip(Choice):
@@ -75,9 +74,10 @@ class AddCharacterMemories(DefaultOnToggle):
     display_name = "Add character memories (for Books and CAT)"
 
 
-class ShuffleMemories(DefaultOffToggle):
+class ShuffleMemories(Toggle):
     """Whether character memories should be shuffled."""
     display_name = "Shuffle Memories"
+    default = False
 
 
 class DoFutureMemory(DefaultOnToggle):
