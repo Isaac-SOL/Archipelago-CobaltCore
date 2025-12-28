@@ -49,6 +49,7 @@ class WinCondition(Choice):
     display_name = "Win Condition"
     option_total_memories = 0
     option_memory_per_character = 1
+    default = 1
 
 
 class TotalMemoriesRequired(Range):
