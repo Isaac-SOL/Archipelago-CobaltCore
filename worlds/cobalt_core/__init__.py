@@ -1,3 +1,4 @@
+import itertools
 from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld, Region, Entrance, CollectionState
 from .Items import item_table, find_items
@@ -120,7 +121,8 @@ class CobaltCoreWorld(World):
 
         # Prevent starting items from being registered
         self.dont_register_items = ["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
-        self.dont_register_locations = ["[ARTEMIS FILLER]"] + list(self.location_name_groups["Character Unlocks"])[:len(self.starting_characters)]
+        # self.dont_register_locations = ["[ARTEMIS FILLER]"] + list(self.location_name_groups["Character Unlocks"])[:len(self.starting_characters)]
+        self.dont_register_locations = []
         if not self.options.shuffle_memories.value:
             self.dont_register_items += self.item_name_groups["Memories"]
 
@@ -201,19 +203,35 @@ class CobaltCoreWorld(World):
 
     def set_rules(self) -> None:
         def character_can_complete_run(state: CollectionState, character: str):
+            if not state.has(character, self.player):
+                return False
             # Soft difficulty logic
             has_cards = state.has_group(f"{character} Cards", self.player, 10)  # Character Cards
             has_artifacts = state.has_group(f"Artifacts", self.player, 10)  # All Artifacts
             return has_cards and has_artifacts
+
+        def player_can_complete_run(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+            if set_characters is None:
+                set_characters = []
+            if forbidden_characters is None:
+                forbidden_characters = []
+            # If the characters given can't complete, then the player can't complete
+            if not all(map(lambda c: character_can_complete_run(state, c), set_characters)):
+                return False
+            # Otherwise we count if we can reach 3 completable characters using the other found characters
+            unset_found_characters = [c for c in CHARACTERS if state.has(c, self.player)
+                                      and c not in set_characters + forbidden_characters]
+            found_win_count = sum(map(lambda c: character_can_complete_run(state, c), unset_found_characters))
+            return found_win_count + len(set_characters) >= 3
 
         for c in CHARACTERS:
             set_rule(self.multiworld.get_entrance(f"Find {c}", self.player),
                      lambda state: state.has(c, self.player))
             for i in range(3):
                 set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
-                         lambda state: character_can_complete_run(state, c))
+                         lambda state: player_can_complete_run(state, [c]))
 
-        def can_win(state: CollectionState) -> bool:
+        def can_complete_goal(state: CollectionState) -> bool:
             if self.options.win_condition == WinCondition.option_total_memories:
                 return state.has_group("Memories", self.player, self.options.memories_required_total.value)
             else:  # option_per_character_memories
@@ -223,11 +241,26 @@ class CobaltCoreWorld(World):
                         return False
                 return True
 
-        set_rule(self.multiworld.get_location("Complete Future Memory", self.player), can_win)
+        set_rule(self.multiworld.get_location("Discover 40 Artifacts", self.player),
+                 lambda state: state.has_group("Artifacts", self.player, 40))
+        set_rule(self.multiworld.get_location("Win on Hard Difficulty", self.player),
+                 lambda state: player_can_complete_run(state))
+        set_rule(self.multiworld.get_location("Win on Normal Difficulty", self.player),
+                 lambda state: player_can_complete_run(state))
+        set_rule(self.multiworld.get_location("Win 10 Games", self.player),
+                 lambda state: player_can_complete_run(state))
+        set_rule(self.multiworld.get_location("Win without starting characters", self.player),
+                 lambda state: player_can_complete_run(state, [], self.starting_characters))
+        set_rule(self.multiworld.get_location("Win with Isaac", self.player),
+                 lambda state: player_can_complete_run(state, ["Isaac"]))
+        set_rule(self.multiworld.get_location("Win with Drake", self.player),
+                 lambda state: player_can_complete_run(state, ["Drake"]))
+
+        set_rule(self.multiworld.get_location("Complete Future Memory", self.player), can_complete_goal)
         if self.options.do_future_memory.value:
             self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
         else:
-            self.multiworld.completion_condition[self.player] = can_win
+            self.multiworld.completion_condition[self.player] = can_complete_goal
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {

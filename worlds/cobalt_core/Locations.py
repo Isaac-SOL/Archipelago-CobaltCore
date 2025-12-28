@@ -31,17 +31,17 @@ def find_locations_max(loc_type=None, loc_rarity=None, loc_character=None) -> Se
 
 location_table: Dict[str, LocationData] = {
     # Ship unlocks
-    "[ARTEMIS FILLER]":                LocationData(ship_off, "Ship"),
+    # "[ARTEMIS FILLER]":                LocationData(ship_off, "Ship"),
     "Win on Hard Difficulty":          LocationData(ship_off + 1, "Ship"),
     "Discover 40 Artifacts":           LocationData(ship_off + 2, "Ship"),
     "Win without starting characters": LocationData(ship_off + 3, "Ship"),
     "Win 10 Games":                    LocationData(ship_off + 4, "Ship"),
 
     # Character unlocks
-    "[DIZZY FILLER]":                 LocationData(character_off,     "Character"),
-    "[RIGGS FILLER]":                 LocationData(character_off + 1, "Character"),
-    "[PERI FILLER]":                  LocationData(character_off + 2, "Character"),
-    "Win on Normal":                  LocationData(character_off + 3, "Character"),
+    # "[DIZZY FILLER]":                 LocationData(character_off,     "Character"),
+    # "[RIGGS FILLER]":                 LocationData(character_off + 1, "Character"),
+    # "[PERI FILLER]":                  LocationData(character_off + 2, "Character"),
+    "Win on Normal Difficulty":       LocationData(character_off + 3, "Character"),
     "Win with Isaac":                 LocationData(character_off + 4, "Character"),
     "Win with Drake":                 LocationData(character_off + 5, "Character"),
     "Complete Lazuli Nebula 5 Times": LocationData(character_off + 6, "Character"),
