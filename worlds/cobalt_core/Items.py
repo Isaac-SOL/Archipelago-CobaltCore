@@ -49,7 +49,7 @@ item_table: Dict[str, ItemData] = {
     "Books Memory": ItemData(memory_off + 6, "Memory", True, progressive_amount=3, character="Books"),
     "CAT Memory":   ItemData(memory_off + 7, "Memory", True, progressive_amount=3, character="CAT"),
 
-    "Victory": ItemData(None, "Future Memory", True, character="Not in pool"),
+    "Victory": ItemData(None, "Future Memory", True),
 
     # CARDS
 

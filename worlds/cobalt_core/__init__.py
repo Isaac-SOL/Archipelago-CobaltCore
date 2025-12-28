@@ -3,10 +3,10 @@ from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld
 from .Items import item_table, find_items
 from ..AutoWorld import WebWorld, World
 from .Options import CobaltCoreOptions, WinCondition, TotalMemoriesRequired
-from .Locations import location_table, find_locations
+from .Locations import location_table, find_locations_max, find_locations_base
 from ..generic.Rules import set_rule
 
-CHARACTERS = ["Dizzy", "Riggs", "Peri", "Isaac", "Drake", "Max", "Cat"]
+CHARACTERS = ["Dizzy", "Riggs", "Peri", "Isaac", "Drake", "Max", "Books", "CAT"]
 CARD_RARITIES = ["Common", "Uncommon", "Rare"]
 ARTIFACT_RARITIES = ["Common", "Boss"]
 SHIPS = ["Artemis", "Ares", "Jupiter", "Gemini", "Tiderunner"]
@@ -38,12 +38,23 @@ class CobaltCoreWorld(World):
     web = CobaltCoreWeb()
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
-    location_name_to_id = {name: data.address for name, data in location_table.items()}
+    location_name_to_id: ClassVar[Dict[str, int]] = {}
+    for name, data in location_table.items():
+        if data.amount == 1:
+            location_name_to_id[name] = data.address
+        else:
+            for i in range(data.amount):
+                location_name_to_id[f"{name} {i + 1}"] = data.address + i
+
+    # These fields must not be initialized here as they will be modified at runtime
+    location_name_to_eff_amount: dict[str, int]
 
     starting_characters: list[str]
     non_starting_characters: list[str]
     starting_ship: str
     non_starting_ships: list[str]
+    starting_cards: list[str]
+
     dont_register_items: list[str]
     dont_register_locations: list[str]
 
@@ -69,25 +80,30 @@ class CobaltCoreWorld(World):
 
     # Fill location groups
     location_name_groups: ClassVar[Dict[str, Set[str]]] = {
-        "Ship Unlocks": find_locations(loc_type="Ship"),
-        "Character Unlocks": find_locations(loc_type="Character"),
-        "Memory Unlocks": find_locations(loc_type="Memory"),
-        "Cards": find_locations(loc_type="Card"),
-        "Artifacts": find_locations(loc_type="Artifact")
+        "Ship Unlocks": find_locations_max(loc_type="Ship"),
+        "Character Unlocks": find_locations_max(loc_type="Character"),
+        "Memory Unlocks": find_locations_max(loc_type="Memory"),
+        "Cards": find_locations_max(loc_type="Card"),
+        "Artifacts": find_locations_max(loc_type="Artifact")
     }
     for r in CARD_RARITIES:
-        item_name_groups[f"{r} Cards"] = find_locations(loc_type="Card", loc_rarity=r)
+        location_name_groups[f"{r} Cards"] = find_locations_max(loc_type="Card", loc_rarity=r)
     for r in ARTIFACT_RARITIES:
-        item_name_groups[f"{r} Artifacts"] = find_locations(loc_type="Artifact", loc_rarity=r)
+        location_name_groups[f"{r} Artifacts"] = find_locations_max(loc_type="Artifact", loc_rarity=r)
     for c in CHARACTERS:
-        item_name_groups[f"{c} Cards"] = find_locations(loc_type="Card", loc_character=c)
-        item_name_groups[f"{c} Artifacts"] = find_locations(loc_type="Artifact", loc_character=c)
+        location_name_groups[f"{c} Cards"] = find_locations_max(loc_type="Card", loc_character=c)
+        location_name_groups[f"{c} Artifacts"] = find_locations_max(loc_type="Artifact", loc_character=c)
         for r in CARD_RARITIES:
-            item_name_groups[f"{c} {r} Cards"] = find_locations(loc_type="Card", loc_character=c, loc_rarity=r)
+            location_name_groups[f"{c} {r} Cards"] = find_locations_max(loc_type="Card", loc_rarity=r, loc_character=c)
         for r in ARTIFACT_RARITIES:
-            item_name_groups[f"{c} {r} Artifacts"] = find_locations(loc_type="Artifact", loc_character=c, loc_rarity=r)
+            location_name_groups[f"{c} {r} Artifacts"] = find_locations_max(loc_type="Artifact", loc_rarity=r,
+                                                                            loc_character=c)
 
     def generate_early(self) -> None:
+        # Save amounts of each location to modify them
+        self.location_name_to_eff_amount = {name: data.amount for name, data in location_table.items()}
+
+        # Select starting ship and characters
         self.starting_characters = list(self.options.starting_characters.value)
         if len(self.starting_characters) < 3:
             self.non_starting_characters = [c for c in CHARACTERS if c not in self.starting_characters]
@@ -96,7 +112,14 @@ class CobaltCoreWorld(World):
         self.starting_ship = SHIPS[self.options.starting_ship.value]
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
 
-        self.dont_register_items = self.starting_characters + [self.starting_ship]
+        # Select starting cards
+        self.starting_cards = [item for item, data in item_table.items() if data.type == "Card" and data.starter]
+        for card in self.starting_cards:
+            data = item_table[card]
+            self.location_name_to_eff_amount[f"{data.character} {data.rarity} Card"] -= 1
+
+        # Prevent starting items from being registered
+        self.dont_register_items = ["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
         self.dont_register_locations = ["[ARTEMIS FILLER]"] + list(self.location_name_groups["Character Unlocks"])[:len(self.starting_characters)]
         if not self.options.shuffle_memories.value:
             self.dont_register_items += self.item_name_groups["Memories"]
@@ -105,15 +128,16 @@ class CobaltCoreWorld(World):
         # Here Regions are abstract and represent characters
         self.multiworld.regions += [
             self.create_region('Menu', None, ['Starting Bonus']),
-            self.create_region('General', find_locations(loc_character="").difference(self.dont_register_locations),
-                               [f"Find {c}" for c in CHARACTERS])
+            self.create_region('General', find_locations_base(loc_character="")
+                               .difference(self.dont_register_locations), [f"Find {c}" for c in CHARACTERS])
         ]
         self.multiworld.regions += [
-            self.create_region(f"{c} Items", find_locations(loc_character=c).difference(self.dont_register_locations),
-                               [])
+            self.create_region(f"{c} Items", find_locations_base(loc_character=c)
+                               .difference(self.dont_register_locations), [])
             for c in CHARACTERS
         ]
-        # link up regions
+
+        # Link up regions
         self.multiworld.get_entrance('Starting Bonus', self.player).connect(
             self.multiworld.get_region('General', self.player))
         for c in CHARACTERS:
@@ -123,7 +147,7 @@ class CobaltCoreWorld(World):
         if not self.options.shuffle_memories.value:
             for c in CHARACTERS:
                 for i in range(3):
-                    (self.multiworld.get_location(f"Fix {c} {i + 1}", self.player)
+                    (self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player)
                      .place_locked_item(self.create_item(f"{c} Memory")))
 
         # Victory Condition
@@ -149,7 +173,8 @@ class CobaltCoreWorld(World):
         # If memories aren't shuffled, they are events
         if self.options is not None and not self.options.shuffle_memories.value and location_data.type == "Memory":
             address = None
-        for i in range(location_data.amount):
+        for i in range(self.location_name_to_eff_amount[name]):
+            # Here we check the actual base amount of cards to make it consistent with location_name_to_id
             loc_name = name if location_data.amount == 1 else f"{name} {i + 1}"
             res.append(CobaltCoreLocation(self.player, loc_name, address, parent))
             if address is not None:
@@ -185,7 +210,7 @@ class CobaltCoreWorld(World):
             set_rule(self.multiworld.get_entrance(f"Find {c}", self.player),
                      lambda state: state.has(c, self.player))
             for i in range(3):
-                set_rule(self.multiworld.get_location(f"Fix {c} {i + 1}", self.player),
+                set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
                          lambda state: character_can_complete_run(state, c))
 
         def can_win(state: CollectionState) -> bool:

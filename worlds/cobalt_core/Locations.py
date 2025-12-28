@@ -12,11 +12,21 @@ class LocationData(typing.NamedTuple):
     amount: int = 1
 
 
-def find_locations(loc_type=None, loc_rarity=None, loc_character=None) -> Set[str]:
+def find_locations_base(loc_type=None, loc_rarity=None, loc_character=None) -> Set[str]:
     return set([name for name, data in location_table.items()
                 if (loc_type is None or data.type == loc_type)
                 and (loc_rarity is None or data.rarity == loc_rarity)
                 and (loc_character is None or data.character == loc_character)])
+
+
+def find_locations_max(loc_type=None, loc_rarity=None, loc_character=None) -> Set[str]:
+    multi_location_set = find_locations_base(loc_type, loc_rarity, loc_character)
+    res_set = []
+    for loc in multi_location_set:
+        data = location_table[loc]
+        for i in range(data.amount):
+            res_set.append(loc if data.amount == 1 else f"{loc} {i + 1}")
+    return set(res_set)
 
 
 location_table: Dict[str, LocationData] = {
@@ -38,14 +48,14 @@ location_table: Dict[str, LocationData] = {
     "[CAT FILLER]":                   LocationData(character_off + 7, "Character"),
 
     # Memory Unlocks
-    "Fix Dizzy": LocationData(memory_off,      "Memory", character="Dizzy", amount=3),
-    "Fix Riggs": LocationData(memory_off + 10, "Memory", character="Riggs", amount=3),
-    "Fix Peri":  LocationData(memory_off + 20, "Memory", character="Peri",  amount=3),
-    "Fix Isaac": LocationData(memory_off + 30, "Memory", character="Isaac", amount=3),
-    "Fix Drake": LocationData(memory_off + 40, "Memory", character="Drake", amount=3),
-    "Fix Max":   LocationData(memory_off + 50, "Memory", character="Max",   amount=3),
-    "Fix Books": LocationData(memory_off + 60, "Memory", character="Books", amount=3),
-    "Fix CAT":   LocationData(memory_off + 70, "Memory", character="CAT",   amount=3),
+    "Fix Dizzy's Timeline": LocationData(memory_off,      "Memory", character="Dizzy", amount=3),
+    "Fix Riggs's Timeline": LocationData(memory_off + 10, "Memory", character="Riggs", amount=3),
+    "Fix Peri's Timeline":  LocationData(memory_off + 20, "Memory", character="Peri",  amount=3),
+    "Fix Isaac's Timeline": LocationData(memory_off + 30, "Memory", character="Isaac", amount=3),
+    "Fix Drake's Timeline": LocationData(memory_off + 40, "Memory", character="Drake", amount=3),
+    "Fix Max's Timeline":   LocationData(memory_off + 50, "Memory", character="Max",   amount=3),
+    "Fix Books's Timeline": LocationData(memory_off + 60, "Memory", character="Books", amount=3),
+    "Fix CAT's Timeline":   LocationData(memory_off + 70, "Memory", character="CAT",   amount=3),
 
     "Complete Future Memory": LocationData(None, "Future Memory"),
 
