@@ -367,9 +367,9 @@ item_table: Dict[str, ItemData] = {
     # Books
     "Grimoire":        ItemData(artifact_off + books_off + C,     "Artifact", True, character="Books", rarity="Common"),
     "Resonance Fork":  ItemData(artifact_off + books_off + C + 1, "Artifact", True, character="Books", rarity="Common"),
-    "Shard Enchanter": ItemData(artifact_off + books_off + C + 1, "Artifact", True, character="Books", rarity="Common"),
-    "Shard Collector": ItemData(artifact_off + books_off + C + 1, "Artifact", True, character="Books", rarity="Common"),
-    "Rock Collection": ItemData(artifact_off + books_off + C + 1, "Artifact", True, character="Books", rarity="Common"),
+    "Shard Enchanter": ItemData(artifact_off + books_off + C + 2, "Artifact", True, character="Books", rarity="Common"),
+    "Shard Collector": ItemData(artifact_off + books_off + C + 3, "Artifact", True, character="Books", rarity="Common"),
+    "Rock Collection": ItemData(artifact_off + books_off + C + 4, "Artifact", True, character="Books", rarity="Common"),
 
     "Zero Doubler": ItemData(artifact_off + books_off + R, "Artifact", True, character="Books", rarity="Boss"),
 
