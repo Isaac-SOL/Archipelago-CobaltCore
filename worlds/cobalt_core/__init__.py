@@ -226,10 +226,10 @@ class CobaltCoreWorld(World):
 
         for c in CHARACTERS:
             set_rule(self.multiworld.get_entrance(f"Find {c}", self.player),
-                     lambda state: state.has(c, self.player))
+                     lambda state, c=c: state.has(c, self.player))
             for i in range(3):
                 set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
-                         lambda state: player_can_complete_run(state, [c]))
+                         lambda state, c=c: player_can_complete_run(state, [c]))
 
         def can_complete_goal(state: CollectionState) -> bool:
             if self.options.win_condition == WinCondition.option_total_memories:
