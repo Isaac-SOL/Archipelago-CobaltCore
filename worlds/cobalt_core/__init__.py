@@ -114,7 +114,14 @@ class CobaltCoreWorld(World):
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
 
         # Select starting cards
-        self.starting_cards = [item for item, data in item_table.items() if data.type == "Card" and data.starter]
+        if self.options.randomize_starting_cards.value:
+            self.starting_cards = []
+            for c in CHARACTERS:
+                possible_cards = list(self.item_name_groups[f"{c} Cards"])
+                self.random.shuffle(possible_cards)
+                self.starting_cards += possible_cards[:2]
+        else:
+            self.starting_cards = [item for item, data in item_table.items() if data.type == "Card" and data.starter]
         for card in self.starting_cards:
             data = item_table[card]
             self.location_name_to_eff_amount[f"{data.character} {data.rarity} Card"] -= 1
@@ -185,9 +192,8 @@ class CobaltCoreWorld(World):
 
     def create_items(self) -> None:
         # Starting items
-        for c in self.starting_characters:
+        for c in self.starting_characters + self.starting_cards + [self.starting_ship]:
             self.multiworld.push_precollected(self.create_item(c))
-        self.multiworld.push_precollected(self.create_item(self.starting_ship))
 
         # Fill out our pool with our items from item_pool, assuming 1 item if not present in item_pool
         pool = []
@@ -264,7 +270,17 @@ class CobaltCoreWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {
-            "starting_characters": self.starting_characters
+            "starting_characters": self.starting_characters,
+            "starting_ship": self.starting_ship,
+            "starting_cards": self.starting_cards,
+            "minimum_difficulty": self.options.minimum_difficulty.value,
+            "win_condition": self.options.win_condition.value,
+            "memories_required_total": self.options.memories_required_total.value,
+            "memories_required_per_character": self.options.memories_required_per_character.value,
+            "add_character_memories": self.options.additional_character_memories.value,
+            "shuffle_memories": self.options.shuffle_memories.value,
+            "do_future_memory": self.options.do_future_memory.value,
+            "immediate_card_rewards": self.options.immediate_card_rewards.value
         }
 
 
