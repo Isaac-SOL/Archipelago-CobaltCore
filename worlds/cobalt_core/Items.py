@@ -321,7 +321,7 @@ item_table: Dict[str, ItemData] = {
     # Isaac
     "Wave Control":    ItemData(artifact_off + isaac_off + C,     "Artifact", True, character="Isaac", rarity="Common"),
     "Bubbler":         ItemData(artifact_off + isaac_off + C + 1, "Artifact", True, character="Isaac", rarity="Common"),
-    "Garvel Recycler": ItemData(artifact_off + isaac_off + C + 2, "Artifact", True, character="Isaac", rarity="Common"),
+    "Gravel Recycler": ItemData(artifact_off + isaac_off + C + 2, "Artifact", True, character="Isaac", rarity="Common"),
     "Drone Piercer":   ItemData(artifact_off + isaac_off + C + 3, "Artifact", True, character="Isaac", rarity="Common"),
 
     "Radio Repeater": ItemData(artifact_off + isaac_off + R,     "Artifact", True, character="Isaac", rarity="Boss"),
