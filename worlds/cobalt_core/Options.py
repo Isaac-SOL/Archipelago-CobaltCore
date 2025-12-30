@@ -32,6 +32,12 @@ class StartingCharacters(OptionSet):
     default = frozenset([])
 
 
+class ShuffleShipParts(DefaultOnToggle):
+    """Whether to shuffle the parts of every ship from the start.
+    The ship parts stay in that order between runs."""
+    display_name = "Shuffle Ship Parts"
+
+
 class MinimumDifficulty(Choice):
     """Determines the minimum difficulty allowed in your game."""
     display_name = "Minimum Difficulty"
@@ -113,6 +119,7 @@ class ImmediateCardRewards(Choice):
 class CobaltCoreOptions(PerGameCommonOptions):
     starting_ship: StartingShip
     starting_characters: StartingCharacters
+    shuffle_ship_parts: ShuffleShipParts
     minimum_difficulty: MinimumDifficulty
     win_condition: WinCondition
     memories_required_total: TotalMemoriesRequired

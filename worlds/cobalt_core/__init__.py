@@ -1,4 +1,5 @@
 import itertools
+import random
 from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld, Region, Entrance, CollectionState
 from .Items import item_table, find_items
@@ -59,6 +60,8 @@ class CobaltCoreWorld(World):
     dont_register_items: list[str]
     dont_register_locations: list[str]
 
+    fixed_client_seed: int
+
     # Fill item groups
     item_name_groups: ClassVar[Dict[str, Set[str]]] = {
         "Ships": find_items(item_type="Ship"),
@@ -101,6 +104,9 @@ class CobaltCoreWorld(World):
                                                                             loc_character=c)
 
     def generate_early(self) -> None:
+        # Save main seed to be used for randomizations client-side
+        self.fixed_client_seed = random.randint(1, 10000000)
+
         # Save amounts of each location to modify them
         self.location_name_to_eff_amount = {name: data.amount for name, data in location_table.items()}
 
@@ -272,6 +278,7 @@ class CobaltCoreWorld(World):
         return {
             "starting_characters": self.starting_characters,
             "starting_ship": self.starting_ship,
+            "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
             "starting_cards": self.starting_cards,
             "minimum_difficulty": self.options.minimum_difficulty.value,
             "win_condition": self.options.win_condition.value,
@@ -280,7 +287,8 @@ class CobaltCoreWorld(World):
             "add_character_memories": self.options.additional_character_memories.value,
             "shuffle_memories": self.options.shuffle_memories.value,
             "do_future_memory": self.options.do_future_memory.value,
-            "immediate_card_rewards": self.options.immediate_card_rewards.value
+            "immediate_card_rewards": self.options.immediate_card_rewards.value,
+            "fixed_client_seed": self.fixed_client_seed
         }
 
 
