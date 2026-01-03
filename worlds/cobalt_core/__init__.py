@@ -260,7 +260,7 @@ class CobaltCoreWorld(World):
         set_rule(self.multiworld.get_location("Win on Normal Difficulty", self.player),
                  lambda state: player_can_complete_run(state))
         set_rule(self.multiworld.get_location("Win 10 Games", self.player),
-                 lambda state: player_can_complete_run(state))
+                 lambda state: player_can_complete_run(state) and state.has_group("Characters", self.player, 5))
         set_rule(self.multiworld.get_location("Win without starting characters", self.player),
                  lambda state: player_can_complete_run(state, [], self.starting_characters))
         set_rule(self.multiworld.get_location("Win with Isaac", self.player),
