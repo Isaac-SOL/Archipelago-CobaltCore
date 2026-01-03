@@ -12,6 +12,7 @@ class ItemData(typing.NamedTuple):
     character: str = ""
     rarity: str = ""
     starter: bool = False
+    offensive_start: bool = False
 
 
 def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str]:
@@ -55,16 +56,16 @@ item_table: Dict[str, ItemData] = {
 
     # Dizzy
     "Big Shield":       ItemData(card_off + dizzy_off + C,     "Card", True, character="Dizzy", rarity="Common"),
-    "Block Shot":       ItemData(card_off + dizzy_off + C + 1, "Card", True, character="Dizzy", rarity="Common", starter=True),
+    "Block Shot":       ItemData(card_off + dizzy_off + C + 1, "Card", True, character="Dizzy", rarity="Common", starter=True, offensive_start=True),
     "Boost Capacitors": ItemData(card_off + dizzy_off + C + 2, "Card", True, character="Dizzy", rarity="Common"),
     "Button Mash":      ItemData(card_off + dizzy_off + C + 3, "Card", True, character="Dizzy", rarity="Common"),
-    "Deflection":       ItemData(card_off + dizzy_off + C + 4, "Card", True, character="Dizzy", rarity="Common"),
+    "Deflection":       ItemData(card_off + dizzy_off + C + 4, "Card", True, character="Dizzy", rarity="Common", offensive_start=True),
     "Momentum":         ItemData(card_off + dizzy_off + C + 5, "Card", True, character="Dizzy", rarity="Common"),
     "Shield Surge":     ItemData(card_off + dizzy_off + C + 6, "Card", True, character="Dizzy", rarity="Common", starter=True),
     "Stun Charge":      ItemData(card_off + dizzy_off + C + 7, "Card", True, character="Dizzy", rarity="Common"),
     "Stun Shot":        ItemData(card_off + dizzy_off + C + 8, "Card", True, character="Dizzy", rarity="Common"),
 
-    "Acid Cannon":      ItemData(card_off + dizzy_off + UC,     "Card", True, character="Dizzy", rarity="Uncommon"),
+    "Acid Cannon":      ItemData(card_off + dizzy_off + UC,     "Card", True, character="Dizzy", rarity="Uncommon", offensive_start=True),
     "Blocker Burnout":  ItemData(card_off + dizzy_off + UC + 1, "Card", True, character="Dizzy", rarity="Uncommon"),
     "Converter":        ItemData(card_off + dizzy_off + UC + 2, "Card", True, character="Dizzy", rarity="Uncommon"),
     "EMP":              ItemData(card_off + dizzy_off + UC + 3, "Card", True, character="Dizzy", rarity="Uncommon"),
@@ -72,7 +73,7 @@ item_table: Dict[str, ItemData] = {
     "Pulse Barrier":    ItemData(card_off + dizzy_off + UC + 5, "Card", True, character="Dizzy", rarity="Uncommon"),
     "Refresh Interval": ItemData(card_off + dizzy_off + UC + 6, "Card", True, character="Dizzy", rarity="Uncommon"),
 
-    "Corrosion Beam": ItemData(card_off + dizzy_off + R,     "Card", True, character="Dizzy", rarity="Rare"),
+    "Corrosion Beam": ItemData(card_off + dizzy_off + R,     "Card", True, character="Dizzy", rarity="Rare", offensive_start=True),
     "Mitosis":        ItemData(card_off + dizzy_off + R + 1, "Card", True, character="Dizzy", rarity="Rare"),
     "Payback":        ItemData(card_off + dizzy_off + R + 2, "Card", True, character="Dizzy", rarity="Rare"),
     "Shield Gun":     ItemData(card_off + dizzy_off + R + 3, "Card", True, character="Dizzy", rarity="Rare"),
@@ -80,16 +81,16 @@ item_table: Dict[str, ItemData] = {
 
     # Riggs
     "Bolt":           ItemData(card_off + riggs_off + C,     "Card", True, character="Riggs", rarity="Common"),
-    "Draw Shot":      ItemData(card_off + riggs_off + C + 1, "Card", True, character="Riggs", rarity="Common", starter=True),
-    "Evasive Shot":   ItemData(card_off + riggs_off + C + 2, "Card", True, character="Riggs", rarity="Common"),
+    "Draw Shot":      ItemData(card_off + riggs_off + C + 1, "Card", True, character="Riggs", rarity="Common", starter=True, offensive_start=True),
+    "Evasive Shot":   ItemData(card_off + riggs_off + C + 2, "Card", True, character="Riggs", rarity="Common", offensive_start=True),
     "Juke":           ItemData(card_off + riggs_off + C + 3, "Card", True, character="Riggs", rarity="Common"),
     "Options":        ItemData(card_off + riggs_off + C + 4, "Card", True, character="Riggs", rarity="Common"),
     "Panic":          ItemData(card_off + riggs_off + C + 5, "Card", True, character="Riggs", rarity="Common"),
     "Quick Thinking": ItemData(card_off + riggs_off + C + 6, "Card", True, character="Riggs", rarity="Common"),
     "Scramble":       ItemData(card_off + riggs_off + C + 7, "Card", True, character="Riggs", rarity="Common", starter=True),
-    "Whiplash":       ItemData(card_off + riggs_off + C + 8, "Card", True, character="Riggs", rarity="Common"),
+    "Whiplash":       ItemData(card_off + riggs_off + C + 8, "Card", True, character="Riggs", rarity="Common", offensive_start=True),
 
-    "Charge Beam":      ItemData(card_off + riggs_off + UC,     "Card", True, character="Riggs", rarity="Uncommon"),
+    "Charge Beam":      ItemData(card_off + riggs_off + UC,     "Card", True, character="Riggs", rarity="Uncommon", offensive_start=True),
     "Echo":             ItemData(card_off + riggs_off + UC + 1, "Card", True, character="Riggs", rarity="Uncommon"),
     "Fleetfoot":        ItemData(card_off + riggs_off + UC + 2, "Card", True, character="Riggs", rarity="Uncommon"),
     "Now Or Never":     ItemData(card_off + riggs_off + UC + 3, "Card", True, character="Riggs", rarity="Uncommon"),
@@ -98,7 +99,7 @@ item_table: Dict[str, ItemData] = {
     "Vamoose":          ItemData(card_off + riggs_off + UC + 6, "Card", True, character="Riggs", rarity="Uncommon"),
 
     "Ace":             ItemData(card_off + riggs_off + R,     "Card", True, character="Riggs", rarity="Rare"),
-    "Hand Cannon":     ItemData(card_off + riggs_off + R + 1, "Card", True, character="Riggs", rarity="Rare"),
+    "Hand Cannon":     ItemData(card_off + riggs_off + R + 1, "Card", True, character="Riggs", rarity="Rare", offensive_start=True),
     "Second Opinions": ItemData(card_off + riggs_off + R + 2, "Card", True, character="Riggs", rarity="Rare"),
     "Strafe":          ItemData(card_off + riggs_off + R + 3, "Card", True, character="Riggs", rarity="Rare"),
     "Think Twice":     ItemData(card_off + riggs_off + R + 4, "Card", True, character="Riggs", rarity="Rare"),
@@ -107,37 +108,37 @@ item_table: Dict[str, ItemData] = {
     "Escalate":      ItemData(card_off + peri_off + C,     "Card", True, character="Peri", rarity="Common"),
     "Extra Battery": ItemData(card_off + peri_off + C + 1, "Card", True, character="Peri", rarity="Common"),
     "Feint":         ItemData(card_off + peri_off + C + 2, "Card", True, character="Peri", rarity="Common"),
-    "Lunge":         ItemData(card_off + peri_off + C + 3, "Card", True, character="Peri", rarity="Common", starter=True),
-    "Multi Blast":   ItemData(card_off + peri_off + C + 4, "Card", True, character="Peri", rarity="Common"),
-    "Multi Shot":    ItemData(card_off + peri_off + C + 5, "Card", True, character="Peri", rarity="Common", starter=True),
+    "Lunge":         ItemData(card_off + peri_off + C + 3, "Card", True, character="Peri", rarity="Common", starter=True, offensive_start=True),
+    "Multi Blast":   ItemData(card_off + peri_off + C + 4, "Card", True, character="Peri", rarity="Common", offensive_start=True),
+    "Multi Shot":    ItemData(card_off + peri_off + C + 5, "Card", True, character="Peri", rarity="Common", starter=True, offensive_start=True),
     "Overpower":     ItemData(card_off + peri_off + C + 6, "Card", True, character="Peri", rarity="Common"),
     "Scoot":         ItemData(card_off + peri_off + C + 7, "Card", True, character="Peri", rarity="Common"),
-    "Wave Charge":   ItemData(card_off + peri_off + C + 8, "Card", True, character="Peri", rarity="Common"),
+    "Wave Charge":   ItemData(card_off + peri_off + C + 8, "Card", True, character="Peri", rarity="Common", offensive_start=True),
 
-    "Barrage":           ItemData(card_off + peri_off + UC,     "Card", True, character="Peri", rarity="Uncommon"),
+    "Barrage":           ItemData(card_off + peri_off + UC,     "Card", True, character="Peri", rarity="Uncommon", offensive_start=True),
     "Battle Repair":     ItemData(card_off + peri_off + UC + 1, "Card", True, character="Peri", rarity="Uncommon"),
     "Flux":              ItemData(card_off + peri_off + UC + 2, "Card", True, character="Peri", rarity="Uncommon"),
-    "Frontloaded Blast": ItemData(card_off + peri_off + UC + 3, "Card", True, character="Peri", rarity="Uncommon"),
+    "Frontloaded Blast": ItemData(card_off + peri_off + UC + 3, "Card", True, character="Peri", rarity="Uncommon", offensive_start=True),
     "Power Play":        ItemData(card_off + peri_off + UC + 4, "Card", True, character="Peri", rarity="Uncommon"),
     "Rev the Engines":   ItemData(card_off + peri_off + UC + 5, "Card", True, character="Peri", rarity="Uncommon"),
     "Sidestep":          ItemData(card_off + peri_off + UC + 6, "Card", True, character="Peri", rarity="Uncommon"),
 
-    "Endless Magazine": ItemData(card_off + peri_off + R,     "Card", True, character="Peri", rarity="Rare"),
+    "Endless Magazine": ItemData(card_off + peri_off + R,     "Card", True, character="Peri", rarity="Rare", offensive_start=True),
     "Inverter":         ItemData(card_off + peri_off + R + 1, "Card", True, character="Peri", rarity="Rare"),
     "Parry":            ItemData(card_off + peri_off + R + 2, "Card", True, character="Peri", rarity="Rare"),
     "Table Flip":       ItemData(card_off + peri_off + R + 3, "Card", True, character="Peri", rarity="Rare"),
     "Weaken Hull":      ItemData(card_off + peri_off + R + 4, "Card", True, character="Peri", rarity="Rare"),
 
     # Isaac
-    "Attack Drone":   ItemData(card_off + isaac_off + C,     "Card", True, character="Isaac", rarity="Common", starter=True),
+    "Attack Drone":   ItemData(card_off + isaac_off + C,     "Card", True, character="Isaac", rarity="Common", starter=True, offensive_start=True),
     "Flex Move":      ItemData(card_off + isaac_off + C + 1, "Card", True, character="Isaac", rarity="Common"),
-    "Missile Shot":   ItemData(card_off + isaac_off + C + 2, "Card", True, character="Isaac", rarity="Common"),
+    "Missile Shot":   ItemData(card_off + isaac_off + C + 2, "Card", True, character="Isaac", rarity="Common", offensive_start=True),
     "Parallel Shift": ItemData(card_off + isaac_off + C + 3, "Card", True, character="Isaac", rarity="Common", starter=True),
     "Shield Drone":   ItemData(card_off + isaac_off + C + 4, "Card", True, character="Isaac", rarity="Common"),
-    "Shift Shot":     ItemData(card_off + isaac_off + C + 5, "Card", True, character="Isaac", rarity="Common"),
+    "Shift Shot":     ItemData(card_off + isaac_off + C + 5, "Card", True, character="Isaac", rarity="Common", offensive_start=True),
     "Small Boulder":  ItemData(card_off + isaac_off + C + 6, "Card", True, character="Isaac", rarity="Common"),
     "Solar Breeze":   ItemData(card_off + isaac_off + C + 7, "Card", True, character="Isaac", rarity="Common"),
-    "Space Mine":     ItemData(card_off + isaac_off + C + 8, "Card", True, character="Isaac", rarity="Common"),
+    "Space Mine":     ItemData(card_off + isaac_off + C + 8, "Card", True, character="Isaac", rarity="Common", offensive_start=True),
 
     "Battalion":        ItemData(card_off + isaac_off + UC,     "Card", True, character="Isaac", rarity="Uncommon"),
     "Boulder Bundle":   ItemData(card_off + isaac_off + UC + 1, "Card", True, character="Isaac", rarity="Uncommon"),
@@ -156,23 +157,23 @@ item_table: Dict[str, ItemData] = {
     # Drake
     "Combustion Engine":  ItemData(card_off + drake_off + C,     "Card", True, character="Drake", rarity="Common"),
     "Desperate Measures": ItemData(card_off + drake_off + C + 1, "Card", True, character="Drake", rarity="Common"),
-    "EMP Slug":           ItemData(card_off + drake_off + C + 2, "Card", True, character="Drake", rarity="Common", starter=True),
+    "EMP Slug":           ItemData(card_off + drake_off + C + 2, "Card", True, character="Drake", rarity="Common", starter=True, offensive_start=True),
     "Exothermic Release": ItemData(card_off + drake_off + C + 3, "Card", True, character="Drake", rarity="Common"),
-    "Explosive Slug":     ItemData(card_off + drake_off + C + 4, "Card", True, character="Drake", rarity="Common"),
+    "Explosive Slug":     ItemData(card_off + drake_off + C + 4, "Card", True, character="Drake", rarity="Common", offensive_start=True),
     "Firewall":           ItemData(card_off + drake_off + C + 5, "Card", True, character="Drake", rarity="Common"),
     "Heatsink":           ItemData(card_off + drake_off + C + 6, "Card", True, character="Drake", rarity="Common", starter=True),
     "Hot Compress":       ItemData(card_off + drake_off + C + 7, "Card", True, character="Drake", rarity="Common"),
     "Hotfoot":            ItemData(card_off + drake_off + C + 8, "Card", True, character="Drake", rarity="Common"),
 
-    "Aggressive Armoring": ItemData(card_off + drake_off + UC,     "Card", True, character="Drake", rarity="Uncommon"),
-    "Flash Point":         ItemData(card_off + drake_off + UC + 1, "Card", True, character="Drake", rarity="Uncommon"),
+    "Aggressive Armoring": ItemData(card_off + drake_off + UC,     "Card", True, character="Drake", rarity="Uncommon", offensive_start=True),
+    "Flash Point":         ItemData(card_off + drake_off + UC + 1, "Card", True, character="Drake", rarity="Uncommon", offensive_start=True),
     "Heatwave":            ItemData(card_off + drake_off + UC + 2, "Card", True, character="Drake", rarity="Uncommon"),
-    "Sear":                ItemData(card_off + drake_off + UC + 3, "Card", True, character="Drake", rarity="Uncommon"),
+    "Sear":                ItemData(card_off + drake_off + UC + 3, "Card", True, character="Drake", rarity="Uncommon", offensive_start=True),
     "Solar Flair":         ItemData(card_off + drake_off + UC + 4, "Card", True, character="Drake", rarity="Uncommon"),
     "Ventilator":          ItemData(card_off + drake_off + UC + 5, "Card", True, character="Drake", rarity="Uncommon"),
-    "Volatile Vapor":      ItemData(card_off + drake_off + UC + 6, "Card", True, character="Drake", rarity="Uncommon"),
+    "Volatile Vapor":      ItemData(card_off + drake_off + UC + 6, "Card", True, character="Drake", rarity="Uncommon", offensive_start=True),
 
-    "Freeze Dry":          ItemData(card_off + drake_off + R,     "Card", True, character="Drake", rarity="Rare"),
+    "Freeze Dry":          ItemData(card_off + drake_off + R,     "Card", True, character="Drake", rarity="Rare", offensive_start=True),
     "From Hell's Heart":   ItemData(card_off + drake_off + R + 1, "Card", True, character="Drake", rarity="Rare"),
     "Pillage and Plunder": ItemData(card_off + drake_off + R + 2, "Card", True, character="Drake", rarity="Rare"),
     "Serenity":            ItemData(card_off + drake_off + R + 3, "Card", True, character="Drake", rarity="Rare"),
@@ -181,19 +182,19 @@ item_table: Dict[str, ItemData] = {
     # Max
     "Admin Deploy":    ItemData(card_off + max_off + C,     "Card", True, character="Max", rarity="Common", starter=True),
     "Cloud Save":      ItemData(card_off + max_off + C + 1, "Card", True, character="Max", rarity="Common"),
-    "Dice Roll":       ItemData(card_off + max_off + C + 2, "Card", True, character="Max", rarity="Common"),
+    "Dice Roll":       ItemData(card_off + max_off + C + 2, "Card", True, character="Max", rarity="Common", offensive_start=True),
     "Math.Max":        ItemData(card_off + max_off + C + 3, "Card", True, character="Max", rarity="Common"),
     "Reroll":          ItemData(card_off + max_off + C + 4, "Card", True, character="Max", rarity="Common", starter=True),
-    "Reroute":         ItemData(card_off + max_off + C + 5, "Card", True, character="Max", rarity="Common"),
-    "Shuffle Shot":    ItemData(card_off + max_off + C + 6, "Card", True, character="Max", rarity="Common"),
+    "Reroute":         ItemData(card_off + max_off + C + 5, "Card", True, character="Max", rarity="Common", offensive_start=True),
+    "Shuffle Shot":    ItemData(card_off + max_off + C + 6, "Card", True, character="Max", rarity="Common", offensive_start=True),
     "System Security": ItemData(card_off + max_off + C + 7, "Card", True, character="Max", rarity="Common"),
     "Worm":            ItemData(card_off + max_off + C + 8, "Card", True, character="Max", rarity="Common"),
 
     "Branch Prediction": ItemData(card_off + max_off + UC,     "Card", True, character="Max", rarity="Uncommon"),
     "Enrage":            ItemData(card_off + max_off + UC + 1, "Card", True, character="Max", rarity="Uncommon"),
     "Escape Artist":     ItemData(card_off + max_off + UC + 2, "Card", True, character="Max", rarity="Uncommon"),
-    "Lazy Barrage":      ItemData(card_off + max_off + UC + 3, "Card", True, character="Max", rarity="Uncommon"),
-    "Memory Leak":       ItemData(card_off + max_off + UC + 4, "Card", True, character="Max", rarity="Uncommon"),
+    "Lazy Barrage":      ItemData(card_off + max_off + UC + 3, "Card", True, character="Max", rarity="Uncommon", offensive_start=True),
+    "Memory Leak":       ItemData(card_off + max_off + UC + 4, "Card", True, character="Max", rarity="Uncommon", offensive_start=True),
     "Root Access":       ItemData(card_off + max_off + UC + 5, "Card", True, character="Max", rarity="Uncommon"),
     "Spacer":            ItemData(card_off + max_off + UC + 6, "Card", True, character="Max", rarity="Uncommon"),
 
@@ -204,11 +205,11 @@ item_table: Dict[str, ItemData] = {
     "Total Cache Wipe": ItemData(card_off + max_off + R + 4, "Card", True, character="Max", rarity="Rare"),
 
     # Books
-    "Glimmer Shot":       ItemData(card_off + books_off + C,     "Card", True, character="Books", rarity="Common"),
-    "Mage Hand":          ItemData(card_off + books_off + C + 1, "Card", True, character="Books", rarity="Common", starter=True),
+    "Glimmer Shot":       ItemData(card_off + books_off + C,     "Card", True, character="Books", rarity="Common", offensive_start=True),
+    "Mage Hand":          ItemData(card_off + books_off + C + 1, "Card", True, character="Books", rarity="Common", starter=True, offensive_start=True),
     "Magi-Battery":       ItemData(card_off + books_off + C + 2, "Card", True, character="Books", rarity="Common"),
     "Meteor":             ItemData(card_off + books_off + C + 3, "Card", True, character="Books", rarity="Common"),
-    "Mining Drill":       ItemData(card_off + books_off + C + 4, "Card", True, character="Books", rarity="Common"),
+    "Mining Drill":       ItemData(card_off + books_off + C + 4, "Card", True, character="Books", rarity="Common", offensive_start=True),
     "Sapphire Shield":    ItemData(card_off + books_off + C + 5, "Card", True, character="Books", rarity="Common"),
     "Swizzle Shift":      ItemData(card_off + books_off + C + 6, "Card", True, character="Books", rarity="Common"),
     "Unpolished Crystal": ItemData(card_off + books_off + C + 7, "Card", True, character="Books", rarity="Common", starter=True),
@@ -216,7 +217,7 @@ item_table: Dict[str, ItemData] = {
 
     "Avid Reader":     ItemData(card_off + books_off + UC,     "Card", True, character="Books", rarity="Uncommon"),
     "Block Evolution": ItemData(card_off + books_off + UC + 1, "Card", True, character="Books", rarity="Uncommon"),
-    "Bloodstone Bolt": ItemData(card_off + books_off + UC + 2, "Card", True, character="Books", rarity="Uncommon"),
+    "Bloodstone Bolt": ItemData(card_off + books_off + UC + 2, "Card", True, character="Books", rarity="Uncommon", offensive_start=True),
     "Catch":           ItemData(card_off + books_off + UC + 3, "Card", True, character="Books", rarity="Uncommon"),
     "Mineral Deposit": ItemData(card_off + books_off + UC + 4, "Card", True, character="Books", rarity="Uncommon"),
     "Ol' Reliable":    ItemData(card_off + books_off + UC + 5, "Card", True, character="Books", rarity="Uncommon"),
@@ -230,12 +231,12 @@ item_table: Dict[str, ItemData] = {
 
     # CAT
     "Defensive Mode": ItemData(card_off + cat_off + C,     "Card", True, character="CAT", rarity="Common"),
-    "Dizzy.EXE":      ItemData(card_off + cat_off + C + 1, "Card", True, character="CAT", rarity="Common", starter=True),
-    "Drake.EXE":      ItemData(card_off + cat_off + C + 2, "Card", True, character="CAT", rarity="Common", starter=True),
-    "Isaac.EXE":      ItemData(card_off + cat_off + C + 3, "Card", True, character="CAT", rarity="Common", starter=True),
-    "Max.EXE":        ItemData(card_off + cat_off + C + 4, "Card", True, character="CAT", rarity="Common", starter=True),
-    "Peri.EXE":       ItemData(card_off + cat_off + C + 5, "Card", True, character="CAT", rarity="Common", starter=True),
-    "Riggs.EXE":      ItemData(card_off + cat_off + C + 6, "Card", True, character="CAT", rarity="Common", starter=True),
+    "Dizzy.EXE":      ItemData(card_off + cat_off + C + 1, "Card", True, character="CAT", rarity="Common"),
+    "Drake.EXE":      ItemData(card_off + cat_off + C + 2, "Card", True, character="CAT", rarity="Common"),
+    "Isaac.EXE":      ItemData(card_off + cat_off + C + 3, "Card", True, character="CAT", rarity="Common"),
+    "Max.EXE":        ItemData(card_off + cat_off + C + 4, "Card", True, character="CAT", rarity="Common"),
+    "Peri.EXE":       ItemData(card_off + cat_off + C + 5, "Card", True, character="CAT", rarity="Common"),
+    "Riggs.EXE":      ItemData(card_off + cat_off + C + 6, "Card", True, character="CAT", rarity="Common"),
 
     "Aegis":              ItemData(card_off + cat_off + UC,     "Card", True, character="CAT", rarity="Uncommon"),
     "Books.EXE":          ItemData(card_off + cat_off + UC + 1, "Card", True, character="CAT", rarity="Uncommon", starter=True),

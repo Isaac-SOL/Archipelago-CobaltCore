@@ -124,8 +124,14 @@ class CobaltCoreWorld(World):
             self.starting_cards = []
             for c in CHARACTERS:
                 possible_cards = list(self.item_name_groups[f"{c} Cards"])
-                self.random.shuffle(possible_cards)
-                self.starting_cards += possible_cards[:2]
+                # Ensure we have at least one easy-to-use offensive card for each character at the start
+                possible_cards_offensive = [c for c in possible_cards if item_table[c].offensive_start]
+                # CAT is an exception to this (his starting cards are weird)
+                if len(possible_cards_offensive) > 0:
+                    oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
+                    possible_cards.remove(oc)
+                    sc = possible_cards[self.random.randint(0, len(possible_cards) - 1)]
+                    self.starting_cards += [oc, sc]
         else:
             self.starting_cards = [item for item, data in item_table.items() if data.type == "Card" and data.starter]
         for card in self.starting_cards:
