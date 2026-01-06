@@ -231,16 +231,9 @@ item_table: Dict[str, ItemData] = {
 
     # CAT
     "Defensive Mode": ItemData(card_off + cat_off + C,     "Card", True, character="CAT", rarity="Common"),
-    "Dizzy.EXE":      ItemData(card_off + cat_off + C + 1, "Card", True, character="CAT", rarity="Common"),
-    "Drake.EXE":      ItemData(card_off + cat_off + C + 2, "Card", True, character="CAT", rarity="Common"),
-    "Isaac.EXE":      ItemData(card_off + cat_off + C + 3, "Card", True, character="CAT", rarity="Common"),
-    "Max.EXE":        ItemData(card_off + cat_off + C + 4, "Card", True, character="CAT", rarity="Common"),
-    "Peri.EXE":       ItemData(card_off + cat_off + C + 5, "Card", True, character="CAT", rarity="Common"),
-    "Riggs.EXE":      ItemData(card_off + cat_off + C + 6, "Card", True, character="CAT", rarity="Common"),
 
     "Aegis":              ItemData(card_off + cat_off + UC,     "Card", True, character="CAT", rarity="Uncommon"),
-    "Books.EXE":          ItemData(card_off + cat_off + UC + 1, "Card", True, character="CAT", rarity="Uncommon", starter=True),
-    "CAT.EXE":            ItemData(card_off + cat_off + UC + 2, "Card", True, character="CAT", rarity="Uncommon", starter=True),
+    "CAT.EXE":            ItemData(card_off + cat_off + UC + 2, "Card", True, character="CAT", rarity="Uncommon"),
     "I Frames":           ItemData(card_off + cat_off + UC + 3, "Card", True, character="CAT", rarity="Uncommon"),
     "Jack of All Trades": ItemData(card_off + cat_off + UC + 4, "Card", True, character="CAT", rarity="Uncommon"),
     "Quick Fix":          ItemData(card_off + cat_off + UC + 5, "Card", True, character="CAT", rarity="Uncommon"),

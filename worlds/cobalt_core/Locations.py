@@ -88,8 +88,8 @@ location_table: Dict[str, LocationData] = {
     "Books Uncommon Card": LocationData(card_off + books_off + UC, "Card", character="Books", rarity="Uncommon", amount=7),
     "Books Rare Card":     LocationData(card_off + books_off + R,  "Card", character="Books", rarity="Rare",     amount=5),
 
-    "CAT Common Card":   LocationData(card_off + cat_off + C,  "Card", character="CAT", rarity="Common",   amount=7),
-    "CAT Uncommon Card": LocationData(card_off + cat_off + UC, "Card", character="CAT", rarity="Uncommon", amount=7),
+    "CAT Common Card":   LocationData(card_off + cat_off + C,  "Card", character="CAT", rarity="Common",   amount=1),
+    "CAT Uncommon Card": LocationData(card_off + cat_off + UC, "Card", character="CAT", rarity="Uncommon", amount=6),
     "CAT Rare Card":     LocationData(card_off + cat_off + R,  "Card", character="CAT", rarity="Rare",     amount=4),
 
     # Artifacts

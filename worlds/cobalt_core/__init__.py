@@ -126,7 +126,7 @@ class CobaltCoreWorld(World):
                 possible_cards = list(self.item_name_groups[f"{c} Cards"])
                 # Ensure we have at least one easy-to-use offensive card for each character at the start
                 possible_cards_offensive = [c for c in possible_cards if item_table[c].offensive_start]
-                # CAT is an exception to this (his starting cards are weird)
+                # CAT is an exception to this (her starting cards are weird)
                 if len(possible_cards_offensive) > 0:
                     oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
                     possible_cards.remove(oc)
