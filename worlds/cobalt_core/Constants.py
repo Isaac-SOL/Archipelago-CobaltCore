@@ -16,3 +16,5 @@ cat_off =   8000
 C =  000
 UC = 100
 R =  200
+
+max_fill_location = 20

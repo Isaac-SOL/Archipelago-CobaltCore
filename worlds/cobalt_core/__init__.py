@@ -4,9 +4,10 @@ from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld, Region, Entrance, CollectionState
 from .Items import item_table, find_items
 from ..AutoWorld import WebWorld, World
-from .Options import CobaltCoreOptions, WinCondition, TotalMemoriesRequired
+from .Options import CobaltCoreOptions, WinCondition, TotalMemoriesRequired, DifficultyLogic
 from .Locations import location_table, find_locations_max, find_locations_base
 from ..generic.Rules import set_rule
+from .Constants import *
 
 CHARACTERS = ["Dizzy", "Riggs", "Peri", "Isaac", "Drake", "Max", "Books", "CAT"]
 CARD_RARITIES = ["Common", "Uncommon", "Rare"]
@@ -104,6 +105,10 @@ class CobaltCoreWorld(World):
                                                                             loc_character=c)
 
     def generate_early(self) -> None:
+        # Ensure validity of options
+        if not self.options.shuffle_cards and not self.options.shuffle_artifacts:
+            raise Exception("You must either set shuffle_cards or shuffle_artifacts to true.")
+
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = random.randint(1, 10000000)
 
@@ -140,21 +145,42 @@ class CobaltCoreWorld(World):
 
         # Prevent starting items from being registered
         self.dont_register_items = ["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
-        # self.dont_register_locations = ["[ARTEMIS FILLER]"] + list(self.location_name_groups["Character Unlocks"])[:len(self.starting_characters)]
-        self.dont_register_locations = []
+        # These locations actually aren't great in an archipelago setting
+        self.dont_register_locations = list(find_locations_base(loc_type="Ship")) + list(find_locations_base(loc_type="Character"))
+        # We replace them with additional cards or artifacts
+        appendable_locations = []
+        if self.options.shuffle_cards.value:
+            appendable_locations += find_locations_base(loc_type="Card")
+        if self.options.shuffle_artifacts.value:
+            appendable_locations += find_locations_base(loc_type="Artifact")
+        additional_items = 0
+        while additional_items < len(self.dont_register_locations):
+            rand_location = random.choice(appendable_locations)
+            if 1 < self.location_name_to_eff_amount[rand_location] < max_fill_location:
+                self.location_name_to_eff_amount[rand_location] += 1
+                additional_items += 1
+
         if not self.options.shuffle_memories.value:
             self.dont_register_items += self.item_name_groups["Memories"]
+        if not self.options.shuffle_cards.value:
+            self.dont_register_items += self.item_name_groups["Cards"]
+            self.dont_register_locations += find_locations_base(loc_type="Card")
+        if not self.options.shuffle_artifacts.value:
+            self.dont_register_items += self.item_name_groups["Artifacts"]
+            self.dont_register_locations += find_locations_base(loc_type="Artifact")
 
     def create_regions(self) -> None:
         # Here Regions are abstract and represent characters
         self.multiworld.regions += [
             self.create_region('Menu', None, ['Starting Bonus']),
-            self.create_region('General', find_locations_base(loc_character="")
-                               .difference(self.dont_register_locations), [f"Find {c}" for c in CHARACTERS])
+            self.create_region('General',
+                               find_locations_base(loc_character="").difference(self.dont_register_locations),
+                               [f"Find {c}" for c in CHARACTERS])
         ]
         self.multiworld.regions += [
-            self.create_region(f"{c} Items", find_locations_base(loc_character=c)
-                               .difference(self.dont_register_locations), [])
+            self.create_region(f"{c} Items",
+                               find_locations_base(loc_character=c).difference(self.dont_register_locations),
+                               [])
             for c in CHARACTERS
         ]
 
@@ -224,8 +250,18 @@ class CobaltCoreWorld(World):
             if not state.has(character, self.player):
                 return False
             # Soft difficulty logic
-            has_cards = state.has_group(f"{character} Cards", self.player, 10)  # Character Cards
-            has_artifacts = state.has_group(f"Artifacts", self.player, 10)  # All Artifacts
+            has_cards = True
+            has_artifacts = True
+            if self.options.difficulty_logic == DifficultyLogic.option_count_all:
+                has_cards = state.has_group(f"{character} Cards", self.player, 10)  # Character Cards
+                has_artifacts = state.has_group(f"Artifacts", self.player, 10)  # All Artifacts
+            elif self.options.difficulty_logic == DifficultyLogic.option_count_rare:
+                has_cards = state.has_group(f"{character} Rare Cards", self.player, 2)  # Character Rare Cards
+                has_artifacts = state.has_group(f"Boss Artifacts", self.player, 3)  # All Boss Artifacts
+            if not self.options.shuffle_cards.value:
+                has_cards = True
+            if not self.options.shuffle_artifacts.value:
+                has_artifacts = True
             return has_cards and has_artifacts
 
         def player_can_complete_run(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
@@ -259,20 +295,20 @@ class CobaltCoreWorld(World):
                         return False
                 return True
 
-        set_rule(self.multiworld.get_location("Discover 40 Artifacts", self.player),
-                 lambda state: state.has_group("Artifacts", self.player, 40))
-        set_rule(self.multiworld.get_location("Win on Hard Difficulty", self.player),
-                 lambda state: player_can_complete_run(state))
-        set_rule(self.multiworld.get_location("Win on Normal Difficulty", self.player),
-                 lambda state: player_can_complete_run(state))
-        set_rule(self.multiworld.get_location("Win 10 Games", self.player),
-                 lambda state: player_can_complete_run(state) and state.has_group("Characters", self.player, 5))
-        set_rule(self.multiworld.get_location("Win without starting characters", self.player),
-                 lambda state: player_can_complete_run(state, [], self.starting_characters))
-        set_rule(self.multiworld.get_location("Win with Isaac", self.player),
-                 lambda state: player_can_complete_run(state, ["Isaac"]))
-        set_rule(self.multiworld.get_location("Win with Drake", self.player),
-                 lambda state: player_can_complete_run(state, ["Drake"]))
+        # set_rule(self.multiworld.get_location("Discover 40 Artifacts", self.player),
+        #          lambda state: state.has_group("Artifacts", self.player, 40))
+        # set_rule(self.multiworld.get_location("Win on Hard Difficulty", self.player),
+        #          lambda state: player_can_complete_run(state))
+        # set_rule(self.multiworld.get_location("Win on Normal Difficulty", self.player),
+        #          lambda state: player_can_complete_run(state))
+        # set_rule(self.multiworld.get_location("Win 10 Games", self.player),
+        #          lambda state: player_can_complete_run(state) and state.has_group("Characters", self.player, 5))
+        # set_rule(self.multiworld.get_location("Win without starting characters", self.player),
+        #          lambda state: player_can_complete_run(state, [], self.starting_characters))
+        # set_rule(self.multiworld.get_location("Win with Isaac", self.player),
+        #          lambda state: player_can_complete_run(state, ["Isaac"]))
+        # set_rule(self.multiworld.get_location("Win with Drake", self.player),
+        #          lambda state: player_can_complete_run(state, ["Drake"]))
 
         set_rule(self.multiworld.get_location("Complete Future Memory", self.player), can_complete_goal)
         if self.options.do_future_memory.value:
