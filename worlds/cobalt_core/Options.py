@@ -197,7 +197,7 @@ class DifficultyLogic(Choice):
     option_count_all = 0
     option_count_rare = 1
     option_dont_count = 2
-    default = 0
+    default = 1
 
 
 @dataclass

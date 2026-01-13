@@ -366,9 +366,18 @@ class CobaltCoreItem(Item):
         # If memories aren't shuffled, they are events
         if options is not None and not options.shuffle_memories.value and item_data.type == "Memory":
             code = None
+        # Adapt classification depending on what is actually being counted for progression
+        progression = item_data.progression
+        if options.difficulty_logic == DifficultyLogic.option_dont_count \
+                and (item_data.type == "Card" or item_data.type == "Artifact"):
+            progression = False
+        if options.difficulty_logic == DifficultyLogic.option_count_rare \
+                and ((item_data.type == "Card" and item_data.rarity != "Rare")
+                     or (item_data.type == "Artifact" and item_data.rarity != "Boss")):
+            progression = False
         super(CobaltCoreItem, self).__init__(
             name,
-            ItemClassification.progression if item_data.progression else ItemClassification.filler,
+            ItemClassification.progression if progression else ItemClassification.useful,
             code,
             player
         )
