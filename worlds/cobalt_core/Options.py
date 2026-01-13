@@ -77,12 +77,13 @@ class PerCharacterMemoriesRequired(Range):
 
 
 class AddCharacterMemories(DefaultOnToggle):
-    """Whether the game should add dummy memories for Books and CAT that will count towards the goal"""
+    """Whether the game should add dummy memories for Books and CAT that will count towards the goal."""
     display_name = "Add character memories (for Books and CAT)"
 
 
 class ShuffleMemories(Toggle):
-    """Whether character memories should be shuffled."""
+    """Whether character memories will be shuffled into the multiworld.
+    This adds 18 checks, or 24 if add_character_memories is set to true."""
     display_name = "Shuffle Memories"
     default = False
 
@@ -175,7 +176,7 @@ class CheckCardDifficulty(Range):
 class RarerChecksLater(DefaultOnToggle):
     """If shuffle_cards is set to true, tweak the rarity of cards that send items to the multiworld
     so that rarer checks tend to appear more in later zones.
-    This incentivizes longer runs rather than restarting on the first map over and over."""
+    This incentivizes longer runs rather than restarting on the first zone over and over."""
     display_name = "Rarer Checks Appear More Later"
 
 

@@ -46,7 +46,7 @@ class CobaltCoreWorld(World):
         if data.amount == 1:
             location_name_to_id[name] = data.address
         else:
-            for i in range(data.amount):
+            for i in range(max(data.amount, max_fill_location)):
                 location_name_to_id[f"{name} {i + 1}"] = data.address + i
 
     # These fields must not be initialized here as they will be modified at runtime
