@@ -335,7 +335,14 @@ class CobaltCoreWorld(World):
             "add_character_memories": self.options.additional_character_memories.value,
             "shuffle_memories": self.options.shuffle_memories.value,
             "do_future_memory": self.options.do_future_memory.value,
+            "shuffle_cards": self.options.shuffle_cards.value,
+            "shuffle_artifacts": self.options.shuffle_artifacts.value,
+            "check_card_difficulty": self.options.check_card_difficulty.value,
+            "rarer_checks_later": self.options.rarer_checks_later.value,
+            "get_more_found_items": self.options.get_more_found_items.value,
             "immediate_card_rewards": self.options.immediate_card_rewards.value,
+            "immediate_card_attributes": self.options.immediate_card_attributes.value,
+            "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,
             "fixed_client_seed": self.fixed_client_seed
         }
 
