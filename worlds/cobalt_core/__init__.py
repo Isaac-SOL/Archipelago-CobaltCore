@@ -160,6 +160,9 @@ class CobaltCoreWorld(World):
                 self.location_name_to_eff_amount[rand_location] += 1
                 additional_items += 1
 
+        if not self.options.additional_character_memories.value:
+            self.dont_register_items += ["Books Memory", "CAT Memory"]
+            self.dont_register_locations += ["Fix Books's Timeline", "Fix CAT's Timeline"]
         if not self.options.shuffle_memories.value:
             self.dont_register_items += self.item_name_groups["Memories"]
         if not self.options.shuffle_cards.value:
@@ -193,9 +196,10 @@ class CobaltCoreWorld(World):
 
         if not self.options.shuffle_memories.value:
             for c in CHARACTERS:
-                for i in range(3):
-                    (self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player)
-                     .place_locked_item(self.create_item(f"{c} Memory")))
+                if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
+                    for i in range(3):
+                        (self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player)
+                         .place_locked_item(self.create_item(f"{c} Memory")))
 
         # Victory Condition
         (self.multiworld.get_location("Complete Future Memory", self.player)
@@ -281,18 +285,20 @@ class CobaltCoreWorld(World):
         for c in CHARACTERS:
             set_rule(self.multiworld.get_entrance(f"Find {c}", self.player),
                      lambda state, c=c: state.has(c, self.player))
-            for i in range(3):
-                set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
-                         lambda state, c=c: player_can_complete_run(state, [c]))
+            if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
+                for i in range(3):
+                    set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
+                             lambda state, c=c: player_can_complete_run(state, [c]))
 
         def can_complete_goal(state: CollectionState) -> bool:
             if self.options.win_condition == WinCondition.option_total_memories:
                 return state.has_group("Memories", self.player, self.options.memories_required_total.value)
             else:  # option_per_character_memories
                 for c in CHARACTERS:
-                    if not state.has(f"{c} Memory", self.player,
-                                     count=self.options.memories_required_per_character.value):
-                        return False
+                    if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
+                        if not state.has(f"{c} Memory", self.player,
+                                         count=self.options.memories_required_per_character.value):
+                            return False
                 return True
 
         # set_rule(self.multiworld.get_location("Discover 40 Artifacts", self.player),

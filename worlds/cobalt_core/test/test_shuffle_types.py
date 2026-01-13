@@ -7,6 +7,19 @@ class TestDontShuffleMemories(CobaltCoreTestBase):
     }
 
 
+class TestNoAdditionalMemories(CobaltCoreTestBase):
+    options = {
+        "additional_character_memories": False
+    }
+
+
+class TestDontShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
+    options = {
+        "shuffle_memories": False,
+        "additional_character_memories": False
+    }
+
+
 class TestDontShuffleCards(CobaltCoreTestBase):
     options = {
         "shuffle_cards": False,
