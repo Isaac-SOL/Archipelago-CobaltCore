@@ -2,9 +2,10 @@ import itertools
 import random
 from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld, Region, Entrance, CollectionState
+from Options import OptionGroup
 from .Items import item_table, find_items
 from ..AutoWorld import WebWorld, World
-from .Options import CobaltCoreOptions, WinCondition, TotalMemoriesRequired, DifficultyLogic
+from .Options import *
 from .Locations import location_table, find_locations_max, find_locations_base
 from ..generic.Rules import set_rule
 from .Constants import *
@@ -16,6 +17,7 @@ SHIPS = ["Artemis", "Ares", "Jupiter", "Gemini", "Tiderunner"]
 
 
 class CobaltCoreWeb(WebWorld):
+    theme = "partyTime"
     tutorials = [Tutorial(
         "Multiworld Setup Guide",
         "A guide to setting up Cobalt Core for Archipelago. "
@@ -25,6 +27,40 @@ class CobaltCoreWeb(WebWorld):
         "cobalt-core/en",
         ["SaltyIsaac"]
     )]
+    option_groups = [
+        OptionGroup("Initial Parameters", [
+            StartingShip,
+            StartingCharacters,
+            ShuffleShipParts,
+            RandomizeStartingCards
+        ]),
+        OptionGroup("Difficulty Management", [
+            MinimumDifficulty,
+            DifficultyLogic,
+            CheckCardDifficulty
+        ]),
+        OptionGroup("Goal", [
+            WinCondition,
+            TotalMemoriesRequired,
+            PerCharacterMemoriesRequired,
+            AddCharacterMemories,
+            ShuffleMemories,
+            DoFutureMemory
+        ]),
+        OptionGroup("Item Pools", [
+            ShuffleCards,
+            ShuffleArtifacts
+        ]),
+        OptionGroup("Immediate Rewards", [
+            ImmediateCardRewards,
+            ImmediateCardAttributes,
+            ImmediateArtifactRewards
+        ]),
+        OptionGroup("Miscellaneous Tweaks", [
+            RarerChecksLater,
+            GetMoreFoundItems
+        ])
+    ]
 
 
 class CobaltCoreWorld(World):

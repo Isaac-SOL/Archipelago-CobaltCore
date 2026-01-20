@@ -201,25 +201,38 @@ class DifficultyLogic(Choice):
     default = 1
 
 
+# Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
+
+    # Initial Parameters
     starting_ship: StartingShip
     starting_characters: StartingCharacters
     shuffle_ship_parts: ShuffleShipParts
+    randomize_starting_cards: RandomizeStartingCards
+
+    # Difficulty Management
     minimum_difficulty: MinimumDifficulty
     difficulty_logic: DifficultyLogic
+    check_card_difficulty: CheckCardDifficulty
+
+    # Goal
     win_condition: WinCondition
     memories_required_total: TotalMemoriesRequired
     memories_required_per_character: PerCharacterMemoriesRequired
     additional_character_memories: AddCharacterMemories
     shuffle_memories: ShuffleMemories
     do_future_memory: DoFutureMemory
+
+    # Item Pools
     shuffle_cards: ShuffleCards
     shuffle_artifacts: ShuffleArtifacts
-    check_card_difficulty: CheckCardDifficulty
-    rarer_checks_later: RarerChecksLater
-    get_more_found_items: GetMoreFoundItems
-    randomize_starting_cards: RandomizeStartingCards
+
+    # Immediate Rewards
     immediate_card_rewards: ImmediateCardRewards
     immediate_card_attributes: ImmediateCardAttributes
     immediate_artifact_rewards: ImmediateArtifactRewards
+
+    # Miscellaneous Tweaks
+    rarer_checks_later: RarerChecksLater
+    get_more_found_items: GetMoreFoundItems
