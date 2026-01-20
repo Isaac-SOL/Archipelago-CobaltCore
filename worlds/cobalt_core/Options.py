@@ -122,7 +122,7 @@ class ImmediateCardAttributes(OptionSet):
     Note that if you choose neither "Temporary" nor "Single Use", these cards will stay in your deck unless removed
     by some other means.
     Valid attributes: Temporary, Single Use, Exhaust, Discount, Recycle, Retain"""
-    display_name = "Starting Characters"
+    display_name = "Received Card's Attributes"
     valid_keys = {
         "Temporary",
         "Single Use",
