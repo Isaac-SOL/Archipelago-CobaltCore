@@ -7,29 +7,43 @@ config file.
 
 ## What does randomization do to this game?
 
-Every non-boss artifact drop, every boss artifact and rare card drop, and every other card draw is replaced with an
-archipelago item.
+On default settings, you will start with three randomly chosen characters and
+a randomly chosen ship. Starting cards for each character are randomized as well.
+Aside from the starting cards, most of the cards and artifacts you will find will
+be unplayable until they are unlocked by you or another player.
+
+The goal is to accumulate a certain amount of memories (1 for each character by
+default), which unlocks the Future Memory sequence. Finishing this sequence
+completes the game.
+
+There are more details in the `.yaml` settings as well as in the in-game
+mod settings (such as Deathlink).
 
 ## What items and locations get shuffled?
 
-10 card packs, 7 artifacts, and 2 boss artifacts and rare card drops are shuffled into the item pool and can be found at any
-location that would normally give you these items, except for card packs, which are found at every other normal enemy
-encounter.
+Usual character and ship unlock conditions are removed.
+In order to unlock ships, characters, cards, artifacts, or items for other
+games, you will find new cards and artifacts which unlock an item when played.
+Which items you find will depend on which characters you have in your run.
+
+The `.yaml` settings allow you to avoid shuffling either cards or artifacts.
 
 ## Which items can be in another player's world?
 
-Any of the items which can be shuffled may also be placed into another player's world. It is possible to choose to limit
-certain items to your own world.
+Specific ships, characters, cards and artifacts will be locked and unusable until you or
+another player finds them. Additionally, it is possible to shuffle the character's
+memories, which turns this randomizer into a "mcguffin hunt".
 
 ## When the player receives an item, what happens?
 
-When the player receives an item, you will see the counter in the top left corner with the Archipelago symbol increment
-by one. By clicking on this icon, it'll open a menu that lists all the items you received, but have not yet accepted.
-You can take any artifacts and card packs sent to you and add them to your current run. It is advised that you do not open
-this menu until you are outside an encounter or event to prevent the game from soft-locking.
+Ships and characters that are found will be selectable the next time you start
+a new run. Cards and artifacts will be usable the next time you find them during
+a run. If you are currently playing, you will immediately receive
+a copy of the cards and artifacts that you received. This behavior can be
+configured in the `.yaml` settings.
 
 ## What happens if a player dies in a run?
 
-When a player dies, they will be taken back to the main menu and will need to reconnect to start the run from
-the beginning, but they will have access to all the items ever sent to them in the Archipelago menu in the top left.
-Any items found in an earlier run will not be sent again if you encounter them in the same location.
+When you die, you will have to restart a run from the beginning like normal.
+If you have deathlink active in the in-game settings, all other
+players with deathlink will die as well.
