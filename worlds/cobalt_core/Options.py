@@ -165,12 +165,12 @@ class CheckCardDifficulty(Range):
     """If shuffle_cards is set to true, determines the base cost of cards that send items in the multiworld.
     This also determines the strength of the A and B upgrades, which cost up to 2 less and 1 less respectively.
     A value of -1 means that the card costs 0 and lets you draw 1, making it effectively free.
-    Please note that getting these cards is very easy and has little impact on your deck since they self-destruct.
-    That is why the cost is set to 3 by default."""
+    Please note that getting these cards is easy and has little impact on your deck since they self-destruct.
+    That is why the cost is set to 2 by default."""
     display_name = "Check Card Difficulty"
     range_start = -1
     range_end = 4
-    default = 3
+    default = 2
 
 
 class RarerChecksLater(DefaultOnToggle):
