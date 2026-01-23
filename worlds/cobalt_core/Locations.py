@@ -93,30 +93,32 @@ location_table: Dict[str, LocationData] = {
     "CAT Rare Card":     LocationData(card_off + cat_off + R,  "Card", character="CAT", rarity="Rare",     amount=4),
 
     # Artifacts
-    "Basic Artifact":      LocationData(artifact_off + C, "Artifact", rarity="Common", amount=25),
-    "Basic Boss Artifact": LocationData(artifact_off + R, "Artifact", rarity="Boss",   amount=11),
+    # NOTE: moved 8 basic artifacts and 3 basic boss artifacts to characters
+    # so that less are "accessible" from the beginning
+    "Basic Artifact":      LocationData(artifact_off + C, "Artifact", rarity="Common", amount=17),
+    "Basic Boss Artifact": LocationData(artifact_off + R, "Artifact", rarity="Boss",   amount=8),
 
-    "Dizzy Artifact":      LocationData(artifact_off + dizzy_off + C, "Artifact", character="Dizzy", rarity="Common", amount=4),
+    "Dizzy Artifact":      LocationData(artifact_off + dizzy_off + C, "Artifact", character="Dizzy", rarity="Common", amount=5),
     "Dizzy Boss Artifact": LocationData(artifact_off + dizzy_off + R, "Artifact", character="Dizzy", rarity="Boss",   amount=2),
 
-    "Riggs Artifact":      LocationData(artifact_off + riggs_off + C, "Artifact", character="Riggs", rarity="Common", amount=3),
+    "Riggs Artifact":      LocationData(artifact_off + riggs_off + C, "Artifact", character="Riggs", rarity="Common", amount=4),
     "Riggs Boss Artifact": LocationData(artifact_off + riggs_off + R, "Artifact", character="Riggs", rarity="Boss",   amount=2),
 
-    "Peri Artifact":      LocationData(artifact_off + peri_off + C, "Artifact", character="Peri", rarity="Common", amount=3),
+    "Peri Artifact":      LocationData(artifact_off + peri_off + C, "Artifact", character="Peri", rarity="Common", amount=4),
     "Peri Boss Artifact": LocationData(artifact_off + peri_off + R, "Artifact", character="Peri", rarity="Boss",   amount=2),
 
-    "Isaac Artifact":      LocationData(artifact_off + isaac_off + C, "Artifact", character="Isaac", rarity="Common", amount=4),
+    "Isaac Artifact":      LocationData(artifact_off + isaac_off + C, "Artifact", character="Isaac", rarity="Common", amount=5),
     "Isaac Boss Artifact": LocationData(artifact_off + isaac_off + R, "Artifact", character="Isaac", rarity="Boss",   amount=2),
 
-    "Drake Artifact":      LocationData(artifact_off + drake_off + C, "Artifact", character="Drake", rarity="Common", amount=5),
-    "Drake Boss Artifact": LocationData(artifact_off + drake_off + R, "Artifact", character="Drake", rarity="Boss",   amount=1),
+    "Drake Artifact":      LocationData(artifact_off + drake_off + C, "Artifact", character="Drake", rarity="Common", amount=6),
+    "Drake Boss Artifact": LocationData(artifact_off + drake_off + R, "Artifact", character="Drake", rarity="Boss",   amount=2),
 
-    "Max Artifact":      LocationData(artifact_off + max_off + C, "Artifact", character="Max", rarity="Common", amount=4),
+    "Max Artifact":      LocationData(artifact_off + max_off + C, "Artifact", character="Max", rarity="Common", amount=5),
     "Max Boss Artifact": LocationData(artifact_off + max_off + R, "Artifact", character="Max", rarity="Boss",   amount=3),
 
-    "Books Artifact":      LocationData(artifact_off + books_off + C, "Artifact", character="Books", rarity="Common", amount=5),
-    "Books Boss Artifact": LocationData(artifact_off + books_off + R, "Artifact", character="Books", rarity="Boss",   amount=1),
+    "Books Artifact":      LocationData(artifact_off + books_off + C, "Artifact", character="Books", rarity="Common", amount=6),
+    "Books Boss Artifact": LocationData(artifact_off + books_off + R, "Artifact", character="Books", rarity="Boss",   amount=2),
 
-    "CAT Artifact":      LocationData(artifact_off + cat_off + C, "Artifact", character="CAT", rarity="Common", amount=3),
-    "CAT Boss Artifact": LocationData(artifact_off + cat_off + R, "Artifact", character="CAT", rarity="Boss",   amount=1),
+    "CAT Artifact":      LocationData(artifact_off + cat_off + C, "Artifact", character="CAT", rarity="Common", amount=4),
+    "CAT Boss Artifact": LocationData(artifact_off + cat_off + R, "Artifact", character="CAT", rarity="Boss",   amount=2),
 }
