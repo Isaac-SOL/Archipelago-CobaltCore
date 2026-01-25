@@ -278,8 +278,9 @@ class CobaltCoreWorld(World):
         for name, data in item_table.items():
             if name in self.dont_register_items:
                 continue
-            item = self.create_item(name)
-            pool.append(item)
+            for i in range(data.progressive_amount):
+                item = self.create_item(name)
+                pool.append(item)
         self.multiworld.itempool += pool
 
     def create_item(self, name: str) -> "CobaltCoreItem":

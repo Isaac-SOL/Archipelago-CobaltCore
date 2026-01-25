@@ -1,9 +1,9 @@
 from .bases import CobaltCoreTestBase
 
 
-class TestDontShuffleMemories(CobaltCoreTestBase):
+class TestShuffleMemories(CobaltCoreTestBase):
     options = {
-        "shuffle_memories": False
+        "shuffle_memories": True
     }
 
 
@@ -13,9 +13,9 @@ class TestNoAdditionalMemories(CobaltCoreTestBase):
     }
 
 
-class TestDontShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
+class TestShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
     options = {
-        "shuffle_memories": False,
+        "shuffle_memories": True,
         "additional_character_memories": False
     }
 
