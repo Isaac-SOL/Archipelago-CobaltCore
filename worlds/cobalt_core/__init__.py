@@ -35,7 +35,6 @@ class CobaltCoreWeb(WebWorld):
             RandomizeStartingCards
         ]),
         OptionGroup("Difficulty Management", [
-            MinimumDifficulty,
             DifficultyLogic,
             CheckCardDifficulty
         ]),
@@ -365,7 +364,6 @@ class CobaltCoreWorld(World):
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
             "starting_cards": self.starting_cards,
-            "minimum_difficulty": self.options.minimum_difficulty.value,
             "win_condition": self.options.win_condition.value,
             "memories_required_total": self.options.memories_required_total.value,
             "memories_required_per_character": self.options.memories_required_per_character.value,

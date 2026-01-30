@@ -38,16 +38,6 @@ class ShuffleShipParts(DefaultOnToggle):
     display_name = "Shuffle Ship Parts"
 
 
-class MinimumDifficulty(Choice):
-    """Determines the minimum difficulty allowed in your game."""
-    display_name = "Minimum Difficulty"
-    option_normal = 0
-    option_hard = 1
-    option_harder = 2
-    option_hardest = 3
-    default = 0
-
-
 class WinCondition(Choice):
     """What the goal is for this player.
     total_memories: The player will have to accumulate a certain amount of memories across all characters.
@@ -212,7 +202,6 @@ class CobaltCoreOptions(PerGameCommonOptions):
     randomize_starting_cards: RandomizeStartingCards
 
     # Difficulty Management
-    minimum_difficulty: MinimumDifficulty
     difficulty_logic: DifficultyLogic
     check_card_difficulty: CheckCardDifficulty
 
