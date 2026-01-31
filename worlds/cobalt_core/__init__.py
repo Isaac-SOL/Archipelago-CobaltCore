@@ -44,6 +44,7 @@ class CobaltCoreWeb(WebWorld):
             PerCharacterMemoriesRequired,
             AddCharacterMemories,
             ShuffleMemories,
+            UnlockMemoryForAllCharacters,
             DoFutureMemory
         ]),
         OptionGroup("Item Pools", [
@@ -369,6 +370,7 @@ class CobaltCoreWorld(World):
             "memories_required_per_character": self.options.memories_required_per_character.value,
             "add_character_memories": self.options.additional_character_memories.value,
             "shuffle_memories": self.options.shuffle_memories.value,
+            "unlock_memory_for_all_characters": self.options.unlock_memory_for_all_characters.value,
             "do_future_memory": self.options.do_future_memory.value,
             "shuffle_cards": self.options.shuffle_cards.value,
             "shuffle_artifacts": self.options.shuffle_artifacts.value,

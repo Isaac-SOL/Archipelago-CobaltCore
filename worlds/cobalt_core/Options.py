@@ -68,7 +68,7 @@ class PerCharacterMemoriesRequired(Range):
 
 class AddCharacterMemories(DefaultOnToggle):
     """Whether the game should add dummy memories for Books and CAT that will count towards the goal."""
-    display_name = "Add character memories (for Books and CAT)"
+    display_name = "Add Character Memories (for Books and CAT)"
 
 
 class ShuffleMemories(Toggle):
@@ -76,6 +76,13 @@ class ShuffleMemories(Toggle):
     This adds 18 checks, or 24 if add_character_memories is set to true."""
     display_name = "Shuffle Memories"
     default = False
+
+
+class UnlockMemoryForAllCharacters(Toggle):
+    """If this option is set, when you complete a run, you will be able to unlock one memory for all of your
+    selected characters at once. This is recommended for synced runs."""
+    display_name = "Unlock Memory For All Characters"
+    default = True
 
 
 class DoFutureMemory(DefaultOnToggle):
@@ -155,7 +162,7 @@ class CheckCardDifficulty(Range):
     """If shuffle_cards is set to true, determines the base cost of cards that send items in the multiworld.
     This also determines the strength of the A and B upgrades, which cost up to 2 less and 1 less respectively.
     A value of -1 means that the card costs 0 and lets you draw 1, making it effectively free.
-    Please note that getting these cards is easy and has little impact on your deck since they self-destruct.
+    Do note that getting these cards is easy and has little impact on your deck since they self-destruct.
     That is why the cost is set to 2 by default."""
     display_name = "Check Card Difficulty"
     range_start = -1
@@ -211,6 +218,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
     memories_required_per_character: PerCharacterMemoriesRequired
     additional_character_memories: AddCharacterMemories
     shuffle_memories: ShuffleMemories
+    unlock_memory_for_all_characters: UnlockMemoryForAllCharacters
     do_future_memory: DoFutureMemory
 
     # Item Pools
