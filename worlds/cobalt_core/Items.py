@@ -12,7 +12,8 @@ class ItemData(typing.NamedTuple):
     character: str = ""
     rarity: str = ""
     starter: bool = False
-    offensive_start: bool = False
+    offensive_start: bool = False,
+    shard_start: bool = False
 
 
 def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str]:
@@ -209,24 +210,24 @@ item_table: Dict[str, ItemData] = {
     "Mage Hand":          ItemData(card_off + books_off + C + 1, "Card", True, character="Books", rarity="Common", starter=True, offensive_start=True),
     "Magi-Battery":       ItemData(card_off + books_off + C + 2, "Card", True, character="Books", rarity="Common"),
     "Meteor":             ItemData(card_off + books_off + C + 3, "Card", True, character="Books", rarity="Common"),
-    "Mining Drill":       ItemData(card_off + books_off + C + 4, "Card", True, character="Books", rarity="Common", offensive_start=True),
-    "Sapphire Shield":    ItemData(card_off + books_off + C + 5, "Card", True, character="Books", rarity="Common"),
+    "Mining Drill":       ItemData(card_off + books_off + C + 4, "Card", True, character="Books", rarity="Common", offensive_start=True, shard_start=True),
+    "Sapphire Shield":    ItemData(card_off + books_off + C + 5, "Card", True, character="Books", rarity="Common", shard_start=True),
     "Swizzle Shift":      ItemData(card_off + books_off + C + 6, "Card", True, character="Books", rarity="Common"),
-    "Unpolished Crystal": ItemData(card_off + books_off + C + 7, "Card", True, character="Books", rarity="Common", starter=True),
+    "Unpolished Crystal": ItemData(card_off + books_off + C + 7, "Card", True, character="Books", rarity="Common", starter=True, shard_start=True),
     "Zircon Zip":         ItemData(card_off + books_off + C + 8, "Card", True, character="Books", rarity="Common"),
 
     "Avid Reader":     ItemData(card_off + books_off + UC,     "Card", True, character="Books", rarity="Uncommon"),
     "Block Evolution": ItemData(card_off + books_off + UC + 1, "Card", True, character="Books", rarity="Uncommon"),
     "Bloodstone Bolt": ItemData(card_off + books_off + UC + 2, "Card", True, character="Books", rarity="Uncommon", offensive_start=True),
     "Catch":           ItemData(card_off + books_off + UC + 3, "Card", True, character="Books", rarity="Uncommon"),
-    "Mineral Deposit": ItemData(card_off + books_off + UC + 4, "Card", True, character="Books", rarity="Uncommon"),
+    "Mineral Deposit": ItemData(card_off + books_off + UC + 4, "Card", True, character="Books", rarity="Uncommon", shard_start=True),
     "Ol' Reliable":    ItemData(card_off + books_off + UC + 5, "Card", True, character="Books", rarity="Uncommon"),
-    "Shardpack":       ItemData(card_off + books_off + UC + 6, "Card", True, character="Books", rarity="Uncommon"),
+    "Shardpack":       ItemData(card_off + books_off + UC + 6, "Card", True, character="Books", rarity="Uncommon", shard_start=True),
 
-    "Medusa Field":      ItemData(card_off + books_off + R,     "Card", True, character="Books", rarity="Rare"),
+    "Medusa Field":      ItemData(card_off + books_off + R,     "Card", True, character="Books", rarity="Rare", shard_start=True),
     "Overflowing Power": ItemData(card_off + books_off + R + 1, "Card", True, character="Books", rarity="Rare"),
-    "Perfect Specimen":  ItemData(card_off + books_off + R + 2, "Card", True, character="Books", rarity="Rare"),
-    "Quantum Quarry":    ItemData(card_off + books_off + R + 3, "Card", True, character="Books", rarity="Rare"),
+    "Perfect Specimen":  ItemData(card_off + books_off + R + 2, "Card", True, character="Books", rarity="Rare", shard_start=True),
+    "Quantum Quarry":    ItemData(card_off + books_off + R + 3, "Card", True, character="Books", rarity="Rare", shard_start=True),
     "Zero Draw":         ItemData(card_off + books_off + R + 4, "Card", True, character="Books", rarity="Rare"),
 
     # CAT
