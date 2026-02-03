@@ -24,7 +24,8 @@ def find_locations_max(loc_type=None, loc_rarity=None, loc_character=None) -> Se
     res_set = []
     for loc in multi_location_set:
         data = location_table[loc]
-        for i in range(data.amount if data.amount == 1 or data.amount > max_fill_location else max_fill_location):
+        for i in range(data.amount if data.amount == 1 or data.amount > max_fill_location or data.type == "Memory"
+                       else max_fill_location):
             res_set.append(loc if data.amount == 1 else f"{loc} {i + 1}")
     return set(res_set)
 

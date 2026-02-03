@@ -83,7 +83,7 @@ class CobaltCoreWorld(World):
         if data.amount == 1:
             location_name_to_id[name] = data.address
         else:
-            for i in range(max(data.amount, max_fill_location)):
+            for i in range(data.amount if data.type == "Memory" else max(data.amount, max_fill_location)):
                 location_name_to_id[f"{name} {i + 1}"] = data.address + i
 
     # These fields must not be initialized here as they will be modified at runtime
@@ -106,7 +106,9 @@ class CobaltCoreWorld(World):
         "Characters": find_items(item_type="Character"),
         "Memories": find_items(item_type="Memory"),
         "Cards": find_items(item_type="Card"),
-        "Artifacts": find_items(item_type="Artifact")
+        "Artifacts": find_items(item_type="Artifact"),
+        "Filler Items": find_items(item_type="Filler"),
+        "Traps": find_items(item_type="Trap")
     }
     for r in CARD_RARITIES:
         item_name_groups[f"{r} Cards"] = find_items(item_type="Card", item_rarity=r)
@@ -185,7 +187,9 @@ class CobaltCoreWorld(World):
             self.location_name_to_eff_amount[f"{data.character} {data.rarity} Card"] -= 1
 
         # Prevent starting items from being registered
-        self.dont_register_items = ["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
+        self.dont_register_items = (["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
+                                    + list(self.item_name_groups["Filler Items"])
+                                    + list(self.item_name_groups["Traps"]))
         # These locations actually aren't great in an archipelago setting
         self.dont_register_locations = list(find_locations_base(loc_type="Ship")) + list(find_locations_base(loc_type="Character"))
         # We replace them with additional cards or artifacts
@@ -310,6 +314,9 @@ class CobaltCoreWorld(World):
 
     def create_item(self, name: str) -> "CobaltCoreItem":
         return CobaltCoreItem(name, self.player, self.options)
+
+    def get_filler_item_name(self) -> str:
+        return self.random.choice(tuple(self.item_name_groups["Filler Items"]))
 
     def set_rules(self) -> None:
         def character_clears_soft_logic(state: CollectionState, character: str,
@@ -464,9 +471,14 @@ class CobaltCoreItem(Item):
                 and ((item_data.type == "Card" and item_data.rarity != "Rare")
                      or (item_data.type == "Artifact" and item_data.rarity != "Boss")):
             progression = False
+        classification = ItemClassification.progression if progression else ItemClassification.useful
+        if item_data.type == "Filler":
+            classification = ItemClassification.filler
+        elif item_data.type == "Trap":
+            classification = ItemClassification.trap
         super(CobaltCoreItem, self).__init__(
             name,
-            ItemClassification.progression if progression else ItemClassification.useful,
+            classification,
             code,
             player
         )

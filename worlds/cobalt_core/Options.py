@@ -1,7 +1,7 @@
 import typing
 from dataclasses import dataclass
 
-from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions, Toggle
+from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions, Toggle, StartInventoryPool
 
 
 class StartingShip(Choice):
@@ -201,6 +201,9 @@ class DifficultyLogic(Choice):
 # Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
+
+    # Generic options
+    start_inventory_from_pool: StartInventoryPool
 
     # Initial Parameters
     starting_ship: StartingShip

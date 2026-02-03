@@ -356,4 +356,10 @@ item_table: Dict[str, ItemData] = {
     "Multi Threading": ItemData(artifact_off + cat_off + C + 2, "Artifact", True, character="CAT", rarity="Common"),
 
     "Summon Control": ItemData(artifact_off + cat_off + R, "Artifact", True, character="CAT", rarity="Boss"),
+
+    # FILLERS & TRAPS
+
+    "1 Energy":      ItemData(filler_off,     "Filler", False),
+    "3 Temp Shield": ItemData(filler_off + 1, "Filler", False),
+    "Missing Trap!": ItemData(filler_off + 2, "Trap",   False)
 }
