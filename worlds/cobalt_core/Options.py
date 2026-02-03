@@ -178,16 +178,16 @@ class RarerChecksLater(DefaultOnToggle):
 
 
 class GetMoreFoundItems(DefaultOnToggle):
-    """If shuffle_cards or shuffle_artifacts are set to true, makes unlocked cards and artifacts appear a bit more
-    often in offerings. Otherwise, It might be very hard to get them at the beginning."""
+    """Makes unlocked cards and artifacts appear more often in offerings.
+    Otherwise, It might be very hard to get them at the beginning."""
     display_name = "Get More Found Items"
 
 
 class DifficultyLogic(Choice):
-    """How the generator determines whether you can complete a run with a given character.
-    count_all: A character needs to have unlocked 10 cards and 10 artifacts (including basic ones).
+    """How the generator determines how far you can get with a given character.
+    count_all: Counts all the character's cards and artifacts (including basic ones).
                This is the safest option, but makes all cards and artifacts progression items.
-    count_rare: A character needs to have unlocked 2 rare cards and 3 boss artifacts (including basic ones).
+    count_rare: Only counts rare cards and boss artifacts (including basic ones).
                 This makes rare cards and boss artifacts progression items.
     dont_count: A character is considered completable as soon as it's unlocked.
                 You might be forced to do some very difficult runs!"""

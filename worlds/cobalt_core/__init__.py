@@ -13,6 +13,7 @@ from .Constants import *
 CHARACTERS = ["Dizzy", "Riggs", "Peri", "Isaac", "Drake", "Max", "Books", "CAT"]
 CARD_RARITIES = ["Common", "Uncommon", "Rare"]
 ARTIFACT_RARITIES = ["Common", "Boss"]
+ALL_RARITIES = set(CARD_RARITIES).union(ARTIFACT_RARITIES)
 SHIPS = ["Artemis", "Ares", "Jupiter", "Gemini", "Tiderunner"]
 
 
@@ -217,22 +218,42 @@ class CobaltCoreWorld(World):
         self.multiworld.regions += [
             self.create_region('Menu', None, ['Starting Bonus']),
             self.create_region('General',
-                               find_locations_base(loc_character="").difference(self.dont_register_locations),
-                               [f"Find {c}" for c in CHARACTERS])
+                               find_locations_base(loc_type="Memory")
+                               .union(find_locations_base(loc_type="Future Memory"))
+                               .difference(self.dont_register_locations),
+                               [f"Find {c}" for c in CHARACTERS] + [f"Find {r} Items" for r in ALL_RARITIES])
+        ]
+        self.multiworld.regions += [
+            self.create_region(f"{r} Items",
+                               find_locations_base(loc_character="", loc_rarity=r).difference(self.dont_register_locations),
+                               [])
+            for r in ALL_RARITIES
         ]
         self.multiworld.regions += [
             self.create_region(f"{c} Items",
-                               find_locations_base(loc_character=c).difference(self.dont_register_locations),
+                               exits=[f"Find {c} {r} Items" for r in ALL_RARITIES])
+            for c in CHARACTERS
+        ]
+        self.multiworld.regions += [
+            self.create_region(f"{c} {r} Items",
+                               find_locations_base(loc_character=c, loc_rarity=r).difference(self.dont_register_locations),
                                [])
             for c in CHARACTERS
+            for r in ALL_RARITIES
         ]
 
         # Link up regions
         self.multiworld.get_entrance('Starting Bonus', self.player).connect(
             self.multiworld.get_region('General', self.player))
+        for r in ALL_RARITIES:
+            self.multiworld.get_entrance(f"Find {r} Items", self.player).connect(
+                self.multiworld.get_region(f"{r} Items", self.player))
         for c in CHARACTERS:
             self.multiworld.get_entrance(f"Find {c}", self.player).connect(
                 self.multiworld.get_region(f"{c} Items", self.player))
+            for r in ALL_RARITIES:
+                self.multiworld.get_entrance(f"Find {c} {r} Items", self.player).connect(
+                    self.multiworld.get_region(f"{c} {r} Items", self.player))
 
         if not self.options.shuffle_memories.value:
             for c in CHARACTERS:
@@ -291,41 +312,83 @@ class CobaltCoreWorld(World):
         return CobaltCoreItem(name, self.player, self.options)
 
     def set_rules(self) -> None:
-        def character_can_complete_run(state: CollectionState, character: str):
+        def character_clears_soft_logic(state: CollectionState, character: str,
+                                             count_all_amount: int, count_rare_amount: int):
             if not state.has(character, self.player):
                 return False
             # Soft difficulty logic
             has_cards = True
             has_artifacts = True
             if self.options.difficulty_logic == DifficultyLogic.option_count_all:
-                has_cards = state.has_group(f"{character} Cards", self.player, 10)  # Character Cards
-                has_artifacts = state.has_group(f"Artifacts", self.player, 10)  # All Artifacts
+                has_cards = state.has_group(f"{character} Cards", self.player, count_all_amount)  # Character Cards
+                has_artifacts = state.has_group(f"Artifacts", self.player, count_all_amount)  # All Artifacts
             elif self.options.difficulty_logic == DifficultyLogic.option_count_rare:
-                has_cards = state.has_group(f"{character} Rare Cards", self.player, 2)  # Character Rare Cards
-                has_artifacts = state.has_group(f"Boss Artifacts", self.player, 3)  # All Boss Artifacts
+                has_cards = state.has_group(f"{character} Rare Cards", self.player, count_rare_amount)  # Character Rare Cards
+                has_artifacts = state.has_group(f"Boss Artifacts", self.player, count_rare_amount)  # All Boss Artifacts
             if not self.options.shuffle_cards.value:
                 has_cards = True
             if not self.options.shuffle_artifacts.value:
                 has_artifacts = True
             return has_cards and has_artifacts
+        
+        def character_can_find_uncommon(state: CollectionState, character: str):
+            return character_clears_soft_logic(state, character, 3, 1)
+        
+        def character_can_find_rare(state: CollectionState, character: str):
+            return character_clears_soft_logic(state, character, 5, 2)
+        
+        def character_can_find_boss(state: CollectionState, character: str):
+            return character_clears_soft_logic(state, character, 8, 3)
+        
+        def character_can_complete_run(state: CollectionState, character: str):
+            return character_clears_soft_logic(state, character, 10, 4)
 
-        def player_can_complete_run(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+        def player_clears_soft_logic(state: CollectionState, character_logic_function,
+                                     set_characters=None, forbidden_characters=None) -> bool:
             if set_characters is None:
                 set_characters = []
             if forbidden_characters is None:
                 forbidden_characters = []
             # If the characters given can't complete, then the player can't complete
-            if not all(map(lambda c: character_can_complete_run(state, c), set_characters)):
+            if not all(map(lambda c: character_logic_function(state, c), set_characters)):
                 return False
             # Otherwise we count if we can reach 3 completable characters using the other found characters
             unset_found_characters = [c for c in CHARACTERS if state.has(c, self.player)
                                       and c not in set_characters + forbidden_characters]
-            found_win_count = sum(map(lambda c: character_can_complete_run(state, c), unset_found_characters))
+            found_win_count = sum(map(lambda c: character_logic_function(state, c), unset_found_characters))
             return found_win_count + len(set_characters) >= 3
 
+        def player_can_find_uncommon(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+            return player_clears_soft_logic(state, character_can_find_uncommon, set_characters, forbidden_characters)
+
+        def player_can_find_rare(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+            return player_clears_soft_logic(state, character_can_find_rare, set_characters, forbidden_characters)
+
+        def player_can_find_boss(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+            return player_clears_soft_logic(state, character_can_find_boss, set_characters, forbidden_characters)
+
+        def player_can_complete_run(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
+            return player_clears_soft_logic(state, character_can_complete_run, set_characters, forbidden_characters)
+
+        def player_can_find_rarity(state: CollectionState, rarity: str,
+                                   set_characters=None, forbidden_characters=None) -> bool:
+            if rarity == "Uncommon":
+                return player_can_find_uncommon(state, set_characters, forbidden_characters)
+            elif rarity == "Rare":
+                return player_can_find_rare(state, set_characters, forbidden_characters)
+            elif rarity == "Boss":
+                return player_can_find_boss(state, set_characters, forbidden_characters)
+            return True
+
+        for r in ALL_RARITIES:
+            set_rule(self.multiworld.get_entrance(f"Find {r} Items", self.player),
+                     lambda state, r=r: player_can_find_rarity(state, r))
         for c in CHARACTERS:
             set_rule(self.multiworld.get_entrance(f"Find {c}", self.player),
                      lambda state, c=c: state.has(c, self.player))
+            for r in ALL_RARITIES:
+                set_rule(self.multiworld.get_entrance(f"Find {c} {r} Items", self.player),
+                         lambda state, c=c, r=r: state.has(c, self.player) and player_can_find_rarity(state, r))
             if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
                 for i in range(3):
                     set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
@@ -341,21 +404,6 @@ class CobaltCoreWorld(World):
                                          count=self.options.memories_required_per_character.value):
                             return False
                 return True
-
-        # set_rule(self.multiworld.get_location("Discover 40 Artifacts", self.player),
-        #          lambda state: state.has_group("Artifacts", self.player, 40))
-        # set_rule(self.multiworld.get_location("Win on Hard Difficulty", self.player),
-        #          lambda state: player_can_complete_run(state))
-        # set_rule(self.multiworld.get_location("Win on Normal Difficulty", self.player),
-        #          lambda state: player_can_complete_run(state))
-        # set_rule(self.multiworld.get_location("Win 10 Games", self.player),
-        #          lambda state: player_can_complete_run(state) and state.has_group("Characters", self.player, 5))
-        # set_rule(self.multiworld.get_location("Win without starting characters", self.player),
-        #          lambda state: player_can_complete_run(state, [], self.starting_characters))
-        # set_rule(self.multiworld.get_location("Win with Isaac", self.player),
-        #          lambda state: player_can_complete_run(state, ["Isaac"]))
-        # set_rule(self.multiworld.get_location("Win with Drake", self.player),
-        #          lambda state: player_can_complete_run(state, ["Drake"]))
 
         set_rule(self.multiworld.get_location("Complete Future Memory", self.player), can_complete_goal)
         if self.options.do_future_memory.value:

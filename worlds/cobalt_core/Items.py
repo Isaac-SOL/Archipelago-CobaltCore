@@ -25,11 +25,11 @@ def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str
 
 item_table: Dict[str, ItemData] = {
     # Ships
-    "Artemis":    ItemData(ship_off,     "Ship", True),
-    "Ares":       ItemData(ship_off + 1, "Ship", True),
-    "Jupiter":    ItemData(ship_off + 2, "Ship", True),
-    "Gemini":     ItemData(ship_off + 3, "Ship", True),
-    "Tiderunner": ItemData(ship_off + 4, "Ship", True),
+    "Artemis":    ItemData(ship_off,     "Ship", False),
+    "Ares":       ItemData(ship_off + 1, "Ship", False),
+    "Jupiter":    ItemData(ship_off + 2, "Ship", False),
+    "Gemini":     ItemData(ship_off + 3, "Ship", False),
+    "Tiderunner": ItemData(ship_off + 4, "Ship", False),
 
     # Characters
     "Dizzy": ItemData(character_off,     "Character", True),
