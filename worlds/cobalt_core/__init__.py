@@ -169,13 +169,13 @@ class CobaltCoreWorld(World):
             for c in CHARACTERS:
                 possible_cards = list(self.item_name_groups[f"{c} Cards"])
                 # Ensure we have at least one easy-to-use offensive card for each character at the start
-                possible_cards_offensive = [c for c in possible_cards if item_table[c].offensive_start]
-                possible_cards_shard = [c for c in possible_cards if item_table[c].shard_start]
+                possible_cards_offensive = [c for c in possible_cards if item_table[c].offensive]
+                possible_cards_gen = [c for c in possible_cards if item_table[c].generator]
                 # CAT is an exception to this (her starting cards are weird)
                 if len(possible_cards_offensive) > 0:
                     oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
-                    # For Books, ensure we have at least one easy-to-use shard generating card
-                    eff_possible_cards = possible_cards_shard if len(possible_cards_shard) > 0 else possible_cards
+                    # For Books/Drake, ensure we have at least one easy-to-use shard/heat generating card
+                    eff_possible_cards = possible_cards_gen if len(possible_cards_gen) > 0 else possible_cards
                     if oc in eff_possible_cards:
                         eff_possible_cards.remove(oc)
                     sc = eff_possible_cards[self.random.randint(0, len(eff_possible_cards) - 1)]
