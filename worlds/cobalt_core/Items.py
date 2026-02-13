@@ -12,7 +12,7 @@ class ItemData(typing.NamedTuple):
     character: str = ""
     rarity: str = ""
     starter: bool = False
-    offensive: bool = False,
+    offensive: bool = False
     generator: bool = False
 
 
