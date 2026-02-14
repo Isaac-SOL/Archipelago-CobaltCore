@@ -1,7 +1,7 @@
 import itertools
 import random
 from typing import ClassVar, Dict, Set, List, Mapping, Any
-from BaseClasses import Tutorial, Item, ItemClassification, Location, MultiWorld, Region, Entrance, CollectionState
+from BaseClasses import Tutorial, Item, ItemClassification, Location, Region, Entrance, CollectionState
 from Options import OptionGroup
 from .Items import item_table, find_items
 from ..AutoWorld import WebWorld, World
@@ -59,7 +59,7 @@ class CobaltCoreWeb(WebWorld):
         ]),
         OptionGroup("Miscellaneous Tweaks", [
             RarerChecksLater,
-            GetMoreFoundItems
+            RewardsTweak
         ])
     ]
 
@@ -435,7 +435,7 @@ class CobaltCoreWorld(World):
             "shuffle_artifacts": self.options.shuffle_artifacts.value,
             "check_card_difficulty": self.options.check_card_difficulty.value,
             "rarer_checks_later": self.options.rarer_checks_later.value,
-            "get_more_found_items": self.options.get_more_found_items.value,
+            "rewards_tweak": self.options.rewards_tweak.value,
             "immediate_card_rewards": self.options.immediate_card_rewards.value,
             "immediate_card_attributes": self.options.immediate_card_attributes.value,
             "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,

@@ -177,10 +177,18 @@ class RarerChecksLater(DefaultOnToggle):
     display_name = "Rarer Checks Appear More Later"
 
 
-class GetMoreFoundItems(DefaultOnToggle):
+class RewardsTweak(Choice):
     """Makes unlocked cards and artifacts appear more often in offerings.
-    Otherwise, It might be very hard to get them at the beginning."""
-    display_name = "Get More Found Items"
+    Otherwise, It might be very hard to get them at the beginning.
+    none: Do not tweak card and artifact rewards.
+    more_unlocked: Get unlocked cards and artifacts a bit more often.
+    all_unlocked: All cards and artifacts found in rewards are unlocked.
+    """
+    display_name = "Rewards Tweak"
+    option_none = 0
+    option_more_unlocked = 1
+    option_all_unlocked = 2
+    default = 1
 
 
 class DifficultyLogic(Choice):
@@ -235,4 +243,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
 
     # Miscellaneous Tweaks
     rarer_checks_later: RarerChecksLater
-    get_more_found_items: GetMoreFoundItems
+    rewards_tweak: RewardsTweak
