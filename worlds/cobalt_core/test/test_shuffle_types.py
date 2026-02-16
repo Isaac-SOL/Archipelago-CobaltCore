@@ -20,8 +20,9 @@ class TestShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
     }
 
 
-class TestDontShuffleCards(CobaltCoreTestBase):
+class TestShuffleArtifactsOnly(CobaltCoreTestBase):
     options = {
+        "shuffle_artifacts": True,
         "shuffle_cards": False,
         "randomize_starting_cards": False
     }
@@ -29,19 +30,21 @@ class TestDontShuffleCards(CobaltCoreTestBase):
 
 class TestDontShuffleCardsButStillStarting(CobaltCoreTestBase):
     options = {
+        "shuffle_artifacts": True,
         "shuffle_cards": False,
         "randomize_starting_cards": True
     }
 
 
-class TestDontShuffleArtifacts(CobaltCoreTestBase):
+class TestShuffleCardsAndArtifacts(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": False
+        "shuffle_artifacts": True
     }
 
 
 class TestDontShuffleCardsOrMemories(CobaltCoreTestBase):
     options = {
+        "shuffle_artifacts": True,
         "shuffle_cards": False,
         "shuffle_memories": False
     }

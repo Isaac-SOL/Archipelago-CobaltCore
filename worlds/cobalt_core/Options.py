@@ -153,7 +153,7 @@ class ShuffleCards(DefaultOnToggle):
     display_name = "Shuffle Cards"
 
 
-class ShuffleArtifacts(DefaultOnToggle):
+class ShuffleArtifacts(Toggle):
     """Chether Artifact unlocks will be shuffled into the multiworld. This adds about 80 checks."""
     display_name = "Shuffle Artifacts"
 
@@ -170,7 +170,7 @@ class CheckCardDifficulty(Range):
     default = 2
 
 
-class RarerChecksLater(DefaultOnToggle):
+class RarerChecksLater(Toggle):
     """If shuffle_cards is set to true, tweak the rarity of cards that send items to the multiworld
     so that rarer checks tend to appear more in later zones.
     This incentivizes longer runs rather than restarting on the first zone over and over."""
