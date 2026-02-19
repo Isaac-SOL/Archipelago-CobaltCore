@@ -214,6 +214,18 @@ class DifficultyLogic(Choice):
     default = 1
 
 
+class AutoReleaseCharacters(Range):
+    """When you complete a character by finishing a run with them a certain amount of times,
+    release all items associated with that character instantly, so you don't need to play them anymore.
+    The value corresponds to the amount of memory unlocks that you need to do for that to happen.
+    A value of 0 deactivates this option.
+    """
+    display_name = "Auto-Release Characters"
+    range_start = 0
+    range_end = 3
+    default = 0
+
+
 # Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
@@ -252,3 +264,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
     # Miscellaneous Tweaks
     rarer_checks_later: RarerChecksLater
     rewards_tweak: RewardsTweak
+    auto_release_characters: AutoReleaseCharacters

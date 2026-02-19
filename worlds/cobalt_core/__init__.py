@@ -59,7 +59,8 @@ class CobaltCoreWeb(WebWorld):
         ]),
         OptionGroup("Miscellaneous Tweaks", [
             RarerChecksLater,
-            RewardsTweak
+            RewardsTweak,
+            AutoReleaseCharacters
         ])
     ]
 
@@ -437,6 +438,7 @@ class CobaltCoreWorld(World):
             "check_card_difficulty": self.options.check_card_difficulty.value,
             "rarer_checks_later": self.options.rarer_checks_later.value,
             "rewards_tweak": self.options.rewards_tweak.value,
+            "auto_release_characters": self.options.auto_release_characters.value,
             "immediate_card_rewards": self.options.immediate_card_rewards.value,
             "immediate_card_attributes": self.options.immediate_card_attributes.value,
             "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,
