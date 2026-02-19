@@ -145,8 +145,8 @@ class CobaltCoreWorld(World):
 
     def generate_early(self) -> None:
         # Ensure validity of options
-        if not self.options.shuffle_cards and not self.options.shuffle_artifacts:
-            raise Exception("You must either set shuffle_cards or shuffle_artifacts to true.")
+        if self.options.shuffle_cards == ShuffleArtifacts.option_off and not self.options.shuffle_artifacts:
+            raise Exception("You must either set shuffle_cards or shuffle_artifacts.")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = random.randint(1, 10000000)
@@ -196,7 +196,7 @@ class CobaltCoreWorld(World):
         appendable_locations = []
         if self.options.shuffle_cards.value:
             appendable_locations += find_locations_base(loc_type="Card")
-        if self.options.shuffle_artifacts.value:
+        if self.options.shuffle_artifacts.value != ShuffleArtifacts.option_off:
             appendable_locations += find_locations_base(loc_type="Artifact")
         additional_items = 0
         while additional_items < len(self.dont_register_locations):
@@ -213,7 +213,7 @@ class CobaltCoreWorld(World):
         if not self.options.shuffle_cards.value:
             self.dont_register_items += self.item_name_groups["Cards"]
             self.dont_register_locations += find_locations_base(loc_type="Card")
-        if not self.options.shuffle_artifacts.value:
+        if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
             self.dont_register_items += self.item_name_groups["Artifacts"]
             self.dont_register_locations += find_locations_base(loc_type="Artifact")
 
@@ -334,7 +334,7 @@ class CobaltCoreWorld(World):
                 has_artifacts = state.has_group(f"Boss Artifacts", self.player, count_rare_amount)  # All Boss Artifacts
             if not self.options.shuffle_cards.value:
                 has_cards = True
-            if not self.options.shuffle_artifacts.value:
+            if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
                 has_artifacts = True
             return has_cards and has_artifacts
         
@@ -420,6 +420,7 @@ class CobaltCoreWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {
+            "version_tag": "1.1.5",
             "starting_characters": self.starting_characters,
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,

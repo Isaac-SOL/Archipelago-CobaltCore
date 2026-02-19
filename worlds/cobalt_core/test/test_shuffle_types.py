@@ -1,4 +1,5 @@
 from .bases import CobaltCoreTestBase
+from .. import ShuffleArtifacts
 
 
 class TestShuffleMemories(CobaltCoreTestBase):
@@ -22,7 +23,7 @@ class TestShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
 
 class TestShuffleArtifactsOnly(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": True,
+        "shuffle_artifacts": ShuffleArtifacts.option_simple,
         "shuffle_cards": False,
         "randomize_starting_cards": False
     }
@@ -30,7 +31,7 @@ class TestShuffleArtifactsOnly(CobaltCoreTestBase):
 
 class TestDontShuffleCardsButStillStarting(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": True,
+        "shuffle_artifacts": ShuffleArtifacts.option_simple,
         "shuffle_cards": False,
         "randomize_starting_cards": True
     }
@@ -38,13 +39,13 @@ class TestDontShuffleCardsButStillStarting(CobaltCoreTestBase):
 
 class TestShuffleCardsAndArtifacts(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": True
+        "shuffle_artifacts": ShuffleArtifacts.option_simple
     }
 
 
 class TestDontShuffleCardsOrMemories(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": True,
+        "shuffle_artifacts": ShuffleArtifacts.option_simple,
         "shuffle_cards": False,
         "shuffle_memories": False
     }
@@ -52,6 +53,6 @@ class TestDontShuffleCardsOrMemories(CobaltCoreTestBase):
 
 class TestDontShuffleArtifactsOrMemories(CobaltCoreTestBase):
     options = {
-        "shuffle_artifacts": False,
+        "shuffle_artifacts": ShuffleArtifacts.option_off,
         "shuffle_memories": False
     }

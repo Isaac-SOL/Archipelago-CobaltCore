@@ -153,9 +153,17 @@ class ShuffleCards(DefaultOnToggle):
     display_name = "Shuffle Cards"
 
 
-class ShuffleArtifacts(Toggle):
-    """Chether Artifact unlocks will be shuffled into the multiworld. This adds about 80 checks."""
+class ShuffleArtifacts(Choice):
+    """How Artifact unlocks will be shuffled into the multiworld. This adds about 80 checks.
+    off: Artifacts will not be shuffled into the multiworld.
+    simple: Archipelago artifacts will give one archipelago item.
+    double: Most Archipelago artifacts will give two items (there will be about half as many to find)
+            This is the default because there are relatively few artifact offerings compared to the amount of checks."""
     display_name = "Shuffle Artifacts"
+    option_off = 0
+    option_simple = 1
+    option_double = 2
+    default = 2
 
 
 class CheckCardDifficulty(Range):
