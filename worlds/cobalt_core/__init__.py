@@ -61,7 +61,8 @@ class CobaltCoreWeb(WebWorld):
         OptionGroup("Miscellaneous Tweaks", [
             RewardsTweak,
             AutoReleaseCharacters,
-            SwapCharacterNode
+            SwapCharacterNode,
+            PickMissedItemsFromEveryRun
         ])
     ]
 
@@ -440,6 +441,7 @@ class CobaltCoreWorld(World):
             "rewards_tweak": self.options.rewards_tweak.value,
             "auto_release_characters": self.options.auto_release_characters.value,
             "swap_character_node": self.options.swap_character_node.value,
+            "pick_missed_items_from_every_run": self.options.pick_missed_items_from_every_run.value,
             "immediate_card_rewards": self.options.immediate_card_rewards.value,
             "immediate_card_attributes": self.options.immediate_card_attributes.value,
             "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,

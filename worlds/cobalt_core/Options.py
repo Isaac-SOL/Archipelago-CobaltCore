@@ -249,6 +249,13 @@ class ImmediateRewardsBlacklist(ItemSet):
     default = frozenset([])
 
 
+class PickMissedItemsFromEveryRun(DefaultOnToggle):
+    """In this mod, there is an option at Cleo's shop to get any AP item that you missed when picking rewards.
+    If this option is off, you can only pick from AP items that you missed this run.
+    If it's on, you can pick from all the AP items that you've missed throughout the game."""
+    display_name = "Pick Missed Items from Every Run"
+
+
 # Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
@@ -289,3 +296,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
     rewards_tweak: RewardsTweak
     auto_release_characters: AutoReleaseCharacters
     swap_character_node: SwapCharacterNode
+    pick_missed_items_from_every_run: PickMissedItemsFromEveryRun
