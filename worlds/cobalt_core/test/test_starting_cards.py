@@ -1,5 +1,6 @@
 from .bases import CobaltCoreTestBase
 from .. import CHARACTERS, item_table
+from ..Options import RandomizeStartingCards
 
 
 def test_starting_cards_good_standalone(self: CobaltCoreTestBase):
@@ -26,7 +27,7 @@ def test_starting_cards_good_standalone(self: CobaltCoreTestBase):
 
 class TestStartingCardsRandomized(CobaltCoreTestBase):
     options = {
-        "randomize_starting_cards": True
+        "randomize_starting_cards": RandomizeStartingCards.option_at_start
     }
 
     def test_starting_cards_good(self):
@@ -36,7 +37,7 @@ class TestStartingCardsRandomized(CobaltCoreTestBase):
 
 class TestStartingCardsStandard(CobaltCoreTestBase):
     options = {
-        "randomize_starting_cards": False
+        "randomize_starting_cards": RandomizeStartingCards.option_off
     }
 
     def test_starting_cards_good(self):

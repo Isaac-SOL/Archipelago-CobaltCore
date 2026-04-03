@@ -32,10 +32,16 @@ class StartingCharacters(OptionSet):
     default = frozenset([])
 
 
-class ShuffleShipParts(DefaultOnToggle):
+class ShuffleShipParts(OptionSet):
     """Whether to shuffle the parts of every ship from the start.
-    The ship parts stay in that order between runs."""
+    off: The ship parts are not shuffled.
+    at_start: The ship parts are shuffled at the start and stay in that order between runs.
+    every_run: The ship parts are shuffled in a new order every run."""
     display_name = "Shuffle Ship Parts"
+    option_off = 0
+    option_at_start = 1
+    option_every_run = 2
+    default = 1
 
 
 class WinCondition(Choice):
@@ -92,8 +98,15 @@ class DoFutureMemory(DefaultOnToggle):
 
 
 class RandomizeStartingCards(DefaultOnToggle):
-    """Whether to randomize which cards each character starts a run with."""
+    """Whether to randomize which cards each character starts a run with.
+    off: The starting cards are not randomized.
+    at_start: The starting cards are randomized and stay the same between runs.
+    every_run: The starting cards are randomized every run, from the pool of unlocked cards."""
     display_name = "Randomize Starting Cards"
+    option_off = 0
+    option_at_start = 1
+    option_every_run = 2
+    default = 1
 
 
 class ImmediateCardRewards(Choice):

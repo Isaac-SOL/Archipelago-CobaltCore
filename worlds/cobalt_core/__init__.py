@@ -165,7 +165,7 @@ class CobaltCoreWorld(World):
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
 
         # Select starting cards
-        if self.options.randomize_starting_cards.value:
+        if self.options.randomize_starting_cards.value != RandomizeStartingCards.option_off:
             self.starting_cards = []
             for c in CHARACTERS:
                 possible_cards = list(self.item_name_groups[f"{c} Cards"])
