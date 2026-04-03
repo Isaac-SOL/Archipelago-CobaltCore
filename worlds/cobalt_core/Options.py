@@ -239,6 +239,12 @@ class AutoReleaseCharacters(Range):
     default = 0
 
 
+class SwapCharacterNode(DefaultOnToggle):
+    """Adds a node to every map that allows you to swap one of your characters with any unlocked character.
+    This makes it easier to get specific items you want without commiting an entire run to it."""
+    display_name = "Add Node to Swap Characters"
+
+
 # Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
@@ -278,3 +284,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
     rarer_checks_later: RarerChecksLater
     rewards_tweak: RewardsTweak
     auto_release_characters: AutoReleaseCharacters
+    swap_character_node: SwapCharacterNode
