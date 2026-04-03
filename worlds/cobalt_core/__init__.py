@@ -55,7 +55,8 @@ class CobaltCoreWeb(WebWorld):
         OptionGroup("Immediate Rewards", [
             ImmediateCardRewards,
             ImmediateCardAttributes,
-            ImmediateArtifactRewards
+            ImmediateArtifactRewards,
+            ImmediateRewardsBlacklist
         ]),
         OptionGroup("Miscellaneous Tweaks", [
             RarerChecksLater,
@@ -444,6 +445,7 @@ class CobaltCoreWorld(World):
             "immediate_card_rewards": self.options.immediate_card_rewards.value,
             "immediate_card_attributes": self.options.immediate_card_attributes.value,
             "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,
+            "immediate_rewards_blacklist": self.options.immediate_rewards_blacklist.value,
             "fixed_client_seed": self.fixed_client_seed
         }
 

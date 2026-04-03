@@ -1,7 +1,8 @@
 import typing
 from dataclasses import dataclass
 
-from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions, Toggle, StartInventoryPool
+from Options import Option, Choice, OptionSet, DefaultOnToggle, Range, PerGameCommonOptions, Toggle, StartInventoryPool, \
+    ItemSet
 
 
 class StartingShip(Choice):
@@ -231,8 +232,7 @@ class AutoReleaseCharacters(Range):
     """When you complete a character by finishing a run with them a certain amount of times,
     release all items associated with that character instantly, so you don't need to play them anymore.
     The value corresponds to the amount of memory unlocks that you need to do for that to happen.
-    A value of 0 deactivates this option.
-    """
+    A value of 0 deactivates this option."""
     display_name = "Auto-Release Characters"
     range_start = 0
     range_end = 3
@@ -243,6 +243,14 @@ class SwapCharacterNode(DefaultOnToggle):
     """Adds a node to every map that allows you to swap one of your characters with any unlocked character.
     This makes it easier to get specific items you want without commiting an entire run to it."""
     display_name = "Add Node to Swap Characters"
+
+
+class ImmediateRewardsBlacklist(ItemSet):
+    """No matter what the settings for immediate_card_rewards and immediate_artifact_rewards are,
+    the items in this list will be excluded.
+    You can also use item name groups (explained below)."""
+    display_name = "Immediate Rewards Blacklist",
+    default = frozenset([])
 
 
 # Actual option groups are specified in the WebWorld in __init__.py
@@ -279,6 +287,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
     immediate_card_rewards: ImmediateCardRewards
     immediate_card_attributes: ImmediateCardAttributes
     immediate_artifact_rewards: ImmediateArtifactRewards
+    immediate_rewards_blacklist: ImmediateRewardsBlacklist
 
     # Miscellaneous Tweaks
     rarer_checks_later: RarerChecksLater
