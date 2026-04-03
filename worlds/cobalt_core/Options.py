@@ -132,6 +132,8 @@ class ImmediateCardAttributes(OptionSet):
     will have. You can choose multiple attributes.
     Note that if you choose neither "Temporary" nor "Single Use", these cards will stay in your deck unless removed
     by some other means.
+    Also note that infinite cards such as Dice Roll will not disappear even if they're Single Use.
+    (you may want to take a look at immediate_rewards_blacklist)
     Valid attributes: Temporary, Single Use, Exhaust, Discount, Recycle, Retain"""
     display_name = "Received Card's Attributes"
     valid_keys = {
@@ -148,6 +150,7 @@ class ImmediateCardAttributes(OptionSet):
 class ImmediateArtifactRewards(Choice):
     """Determines under which conditions the game will immediately add an artifact to your current run
     when it is found in the multiworld (provided you have started a run).
+    Remember that some artifacts are not strictly positive! (you may want to take a look at immediate_rewards_blacklist)
     never: Do not automatically add found artifacts.
     if_has_deck: Only add the artifact if you have the corresponding character.
     if_local: Only add the artifact if you found it yourself.
