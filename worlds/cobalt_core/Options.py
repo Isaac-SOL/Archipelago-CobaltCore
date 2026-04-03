@@ -192,13 +192,6 @@ class CheckCardDifficulty(Range):
     default = 2
 
 
-class RarerChecksLater(Toggle):
-    """If shuffle_cards is set to true, tweak the rarity of cards that send items to the multiworld
-    so that rarer checks tend to appear more in later zones.
-    This incentivizes longer runs rather than restarting on the first zone over and over."""
-    display_name = "Rarer Checks Appear More Later"
-
-
 class RewardsTweak(Choice):
     """Makes unlocked cards and artifacts appear more often in offerings.
     Otherwise, It might be very hard to get them at the beginning.
@@ -290,7 +283,6 @@ class CobaltCoreOptions(PerGameCommonOptions):
     immediate_rewards_blacklist: ImmediateRewardsBlacklist
 
     # Miscellaneous Tweaks
-    rarer_checks_later: RarerChecksLater
     rewards_tweak: RewardsTweak
     auto_release_characters: AutoReleaseCharacters
     swap_character_node: SwapCharacterNode

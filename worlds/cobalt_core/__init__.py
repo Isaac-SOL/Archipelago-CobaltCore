@@ -59,7 +59,6 @@ class CobaltCoreWeb(WebWorld):
             ImmediateRewardsBlacklist
         ]),
         OptionGroup("Miscellaneous Tweaks", [
-            RarerChecksLater,
             RewardsTweak,
             AutoReleaseCharacters,
             SwapCharacterNode
@@ -438,7 +437,6 @@ class CobaltCoreWorld(World):
             "shuffle_cards": self.options.shuffle_cards.value,
             "shuffle_artifacts": self.options.shuffle_artifacts.value,
             "check_card_difficulty": self.options.check_card_difficulty.value,
-            "rarer_checks_later": self.options.rarer_checks_later.value,
             "rewards_tweak": self.options.rewards_tweak.value,
             "auto_release_characters": self.options.auto_release_characters.value,
             "swap_character_node": self.options.swap_character_node.value,
