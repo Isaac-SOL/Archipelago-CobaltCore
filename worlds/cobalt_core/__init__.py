@@ -31,6 +31,7 @@ class CobaltCoreWeb(WebWorld):
     option_groups = [
         OptionGroup("Initial Parameters", [
             StartingShip,
+            StartingCharactersAmount,
             StartingCharacters,
             ShuffleShipParts,
             RandomizeStartingCards
@@ -98,8 +99,10 @@ class CobaltCoreWorld(World):
     non_starting_ships: list[str]
     starting_cards: list[str]
 
-    dont_register_items: list[str]
+    dont_pool_items: list[str]
     dont_register_locations: list[str]
+
+    additional_fillers: int
 
     fixed_client_seed: int
 
@@ -110,6 +113,8 @@ class CobaltCoreWorld(World):
         "Memories": find_items(item_type="Memory"),
         "Cards": find_items(item_type="Card"),
         "Artifacts": find_items(item_type="Artifact"),
+        "Basic Artifacts": find_items(item_type="Artifact", item_character=""),
+        "Basic Boss Artifacts": find_items(item_type="Artifact", item_rarity="Boss", item_character=""),
         "Filler Items": find_items(item_type="Filler"),
         "Traps": find_items(item_type="Trap")
     }
@@ -131,7 +136,9 @@ class CobaltCoreWorld(World):
         "Character Unlocks": find_locations_max(loc_type="Character"),
         "Memory Unlocks": find_locations_max(loc_type="Memory"),
         "Cards": find_locations_max(loc_type="Card"),
-        "Artifacts": find_locations_max(loc_type="Artifact")
+        "Artifacts": find_locations_max(loc_type="Artifact"),
+        "Basic Artifacts": find_locations_max(loc_type="Artifact", loc_character=""),
+        "Basic Boss Artifacts": find_locations_max(loc_type="Artifact", loc_rarity="Boss", loc_character="")
     }
     for r in CARD_RARITIES:
         location_name_groups[f"{r} Cards"] = find_locations_max(loc_type="Card", loc_rarity=r)
@@ -146,10 +153,35 @@ class CobaltCoreWorld(World):
             location_name_groups[f"{c} {r} Artifacts"] = find_locations_max(loc_type="Artifact", loc_rarity=r,
                                                                             loc_character=c)
 
+    def get_base_loc_eff_amount(self, loc: str) -> int:
+        if loc in self.dont_register_locations:
+            return 0
+        return self.location_name_to_eff_amount[loc]
+
+    def get_current_location_amount(self) -> int:
+        total = 0
+        total += self.get_base_loc_eff_amount(f"Basic Artifact")
+        total += self.get_base_loc_eff_amount(f"Basic Boss Artifact")
+        for c in CHARACTERS:
+            if self.options.shuffle_memories.value:
+                total += self.get_base_loc_eff_amount(f"Fix {c}'s Timeline")
+            total += self.get_base_loc_eff_amount(f"{c} Artifact")
+            total += self.get_base_loc_eff_amount(f"{c} Boss Artifact")
+            for r in CARD_RARITIES:
+                total += self.get_base_loc_eff_amount(f"{c} {r} Card")
+        return total
+
+    def get_current_item_amount(self) -> int:
+        total = 0
+        for name, data in item_table.items():
+            if name not in self.dont_pool_items:
+                total += data.progressive_amount
+        return total
+
     def generate_early(self) -> None:
         # Ensure validity of options
         if self.options.shuffle_cards == ShuffleArtifacts.option_off and not self.options.shuffle_artifacts:
-            raise Exception("You must either set shuffle_cards or shuffle_artifacts.")
+            raise Exception("You must either set shuffle_cards or shuffle_artifacts, or both.")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = random.randint(1, 10000000)
@@ -158,11 +190,12 @@ class CobaltCoreWorld(World):
         self.location_name_to_eff_amount = {name: data.amount for name, data in location_table.items()}
 
         # Select starting ship and characters
+        starting_characters_amount = self.options.starting_characters_amount.value
         self.starting_characters = list(self.options.starting_characters.value)
-        if len(self.starting_characters) < 3:
+        if len(self.starting_characters) < starting_characters_amount:
             self.non_starting_characters = [c for c in CHARACTERS if c not in self.starting_characters]
             self.random.shuffle(self.non_starting_characters)
-            self.starting_characters += self.non_starting_characters[:3 - len(self.starting_characters)]
+            self.starting_characters += self.non_starting_characters[:starting_characters_amount - len(self.starting_characters)]
         self.starting_ship = SHIPS[self.options.starting_ship.value]
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
 
@@ -190,35 +223,35 @@ class CobaltCoreWorld(World):
             self.location_name_to_eff_amount[f"{data.character} {data.rarity} Card"] -= 1
 
         # Prevent starting items from being registered
-        self.dont_register_items = (["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
-                                    + list(self.item_name_groups["Filler Items"])
-                                    + list(self.item_name_groups["Traps"]))
+        self.dont_pool_items = (["Victory", self.starting_ship] + self.starting_characters + self.starting_cards
+                                + list(self.item_name_groups["Filler Items"])
+                                + list(self.item_name_groups["Traps"]))
         # These locations actually aren't great in an archipelago setting
         self.dont_register_locations = list(find_locations_base(loc_type="Ship")) + list(find_locations_base(loc_type="Character"))
-        # We replace them with additional cards or artifacts
+
+        if not self.options.additional_character_memories.value:
+            self.dont_pool_items += ["Books Memory", "CAT Memory"]
+            self.dont_register_locations += ["Fix Books's Timeline", "Fix CAT's Timeline"]
+        if not self.options.shuffle_memories.value:
+            self.dont_pool_items += self.item_name_groups["Memories"]
+        if not self.options.shuffle_cards.value:
+            self.dont_pool_items += self.item_name_groups["Cards"]
+            self.dont_register_locations += find_locations_base(loc_type="Card")
+        if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
+            self.dont_pool_items += self.item_name_groups["Artifacts"]
+            self.dont_register_locations += find_locations_base(loc_type="Artifact")
+
+        # Even out items and locations
         appendable_locations = []
         if self.options.shuffle_cards.value:
             appendable_locations += find_locations_base(loc_type="Card")
         if self.options.shuffle_artifacts.value != ShuffleArtifacts.option_off:
             appendable_locations += find_locations_base(loc_type="Artifact")
-        additional_items = 0
-        while additional_items < len(self.dont_register_locations):
+        while self.get_current_location_amount() < self.get_current_item_amount():
             rand_location = random.choice(appendable_locations)
             if 1 < self.location_name_to_eff_amount[rand_location] < max_fill_location:
                 self.location_name_to_eff_amount[rand_location] += 1
-                additional_items += 1
-
-        if not self.options.additional_character_memories.value:
-            self.dont_register_items += ["Books Memory", "CAT Memory"]
-            self.dont_register_locations += ["Fix Books's Timeline", "Fix CAT's Timeline"]
-        if not self.options.shuffle_memories.value:
-            self.dont_register_items += self.item_name_groups["Memories"]
-        if not self.options.shuffle_cards.value:
-            self.dont_register_items += self.item_name_groups["Cards"]
-            self.dont_register_locations += find_locations_base(loc_type="Card")
-        if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
-            self.dont_register_items += self.item_name_groups["Artifacts"]
-            self.dont_register_locations += find_locations_base(loc_type="Artifact")
+        self.additional_fillers = max(self.get_current_location_amount() - self.get_current_item_amount(), 0)
 
     def create_regions(self) -> None:
         # Here Regions are abstract and represent characters
@@ -308,11 +341,14 @@ class CobaltCoreWorld(World):
         # Fill out our pool with our items from item_pool, assuming 1 item if not present in item_pool
         pool = []
         for name, data in item_table.items():
-            if name in self.dont_register_items:
+            if name in self.dont_pool_items:
                 continue
             for i in range(data.progressive_amount):
                 item = self.create_item(name)
                 pool.append(item)
+        for i in range(self.additional_fillers):
+            item = self.create_filler()
+            pool.append(item)
         self.multiworld.itempool += pool
 
     def create_item(self, name: str) -> "CobaltCoreItem":
@@ -331,10 +367,14 @@ class CobaltCoreWorld(World):
             has_artifacts = True
             if self.options.difficulty_logic == DifficultyLogic.option_count_all:
                 has_cards = state.has_group(f"{character} Cards", self.player, count_all_amount)  # Character Cards
-                has_artifacts = state.has_group(f"Artifacts", self.player, count_all_amount)  # All Artifacts
+                basic_artifacts = state.count_group(f"Basic Artifacts", self.player)
+                char_artifacts = state.count_group(f"{character} Artifacts", self.player)
+                has_artifacts = basic_artifacts + char_artifacts >= count_all_amount  # All Artifacts
             elif self.options.difficulty_logic == DifficultyLogic.option_count_rare:
                 has_cards = state.has_group(f"{character} Rare Cards", self.player, count_rare_amount)  # Character Rare Cards
-                has_artifacts = state.has_group(f"Boss Artifacts", self.player, count_rare_amount)  # All Boss Artifacts
+                basic_artifacts = state.count_group(f"Basic Boss Artifacts", self.player)
+                char_artifacts = state.count_group(f"{character} Boss Artifacts", self.player)
+                has_artifacts = basic_artifacts + char_artifacts >= count_all_amount  # All Boss Artifacts
             if not self.options.shuffle_cards.value:
                 has_cards = True
             if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
@@ -354,25 +394,29 @@ class CobaltCoreWorld(World):
             return character_clears_soft_logic(state, character, 10, 4)
 
         def player_clears_soft_logic(state: CollectionState, character_logic_function,
-                                     set_characters=None, forbidden_characters=None) -> bool:
+                                     set_characters=None, forbidden_characters=None, any_char=False) -> bool:
             if set_characters is None:
                 set_characters = []
             if forbidden_characters is None:
                 forbidden_characters = []
             # If the characters given can't complete, then the player can't complete
-            if not all(map(lambda c: character_logic_function(state, c), set_characters)):
+            aggregate_func = any if any_char else all
+            if (len(set_characters) > 0
+                    and not aggregate_func(map(lambda c: character_logic_function(state, c), set_characters))):
                 return False
-            # Otherwise we count if we can reach 3 completable characters using the other found characters
+            # Otherwise we count if we can reach enough completable characters using the other found characters
             unset_found_characters = [c for c in CHARACTERS if state.has(c, self.player)
                                       and c not in set_characters + forbidden_characters]
             found_win_count = sum(map(lambda c: character_logic_function(state, c), unset_found_characters))
-            return found_win_count + len(set_characters) >= 3
+            return found_win_count + len(set_characters) >= (1 if any_char else 3)
 
         def player_can_find_uncommon(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
-            return player_clears_soft_logic(state, character_can_find_uncommon, set_characters, forbidden_characters)
+            return player_clears_soft_logic(state, character_can_find_uncommon, set_characters, forbidden_characters,
+                                            any_char=True)
 
         def player_can_find_rare(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
-            return player_clears_soft_logic(state, character_can_find_rare, set_characters, forbidden_characters)
+            return player_clears_soft_logic(state, character_can_find_rare, set_characters, forbidden_characters,
+                                            any_char=True)
 
         def player_can_find_boss(state: CollectionState, set_characters=None, forbidden_characters=None) -> bool:
             return player_clears_soft_logic(state, character_can_find_boss, set_characters, forbidden_characters)

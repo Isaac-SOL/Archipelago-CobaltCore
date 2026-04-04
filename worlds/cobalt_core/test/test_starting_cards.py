@@ -6,7 +6,6 @@ from ..Options import RandomizeStartingCards
 def test_starting_cards_good_standalone(self: CobaltCoreTestBase):
     """Test that starting cards follow the rules for a good start"""
     mw = self.multiworld
-    state = mw.state
     starting_items = mw.precollected_items[self.player]
     starting_item_names = [item.name for item in starting_items]
     print("Starting items:", starting_item_names)

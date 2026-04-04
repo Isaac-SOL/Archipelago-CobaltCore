@@ -15,9 +15,18 @@ class StartingShip(Choice):
     option_Tiderunner = 4
 
 
+class StartingCharactersAmount(Range):
+    """Determines how many characters you will start the game with.
+    Thanks to Custom Run Options, you can start with 2, 1, or even 0 characters."""
+    display_name = "Starting Characters Amount"
+    range_start = 0
+    range_end = 8
+    default = 3
+
+
 class StartingCharacters(OptionSet):
     """Determine which characters you will start the game with.
-    If there are less than 3 characters, more will be added at random.
+    If there are less than the amount specified in starting_characters_amount, more will be added at random.
     Valid names: Dizzy, Riggs, Peri, Isaac, Drake, Max, Books, CAT"""
     display_name = "Starting Characters"
     valid_keys = {
@@ -265,6 +274,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
 
     # Initial Parameters
     starting_ship: StartingShip
+    starting_characters_amount: StartingCharactersAmount
     starting_characters: StartingCharacters
     shuffle_ship_parts: ShuffleShipParts
     randomize_starting_cards: RandomizeStartingCards
