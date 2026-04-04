@@ -368,9 +368,9 @@ class CobaltCoreWorld(World):
         return CobaltCoreItem(name, self.player, self.options)
 
     def get_filler_item_name(self) -> str:
-        fillers = set(self.item_name_groups["Filler Items"])
+        fillers = list(self.item_name_groups["Filler Items"])
         if self.options.fillers_can_be_traps.value:
-            fillers += self.item_name_groups["Traps"]
+            fillers += list(self.item_name_groups["Traps"])
         return self.random.choice(tuple(fillers))
 
     def set_rules(self) -> None:
@@ -483,7 +483,7 @@ class CobaltCoreWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {
-            "version_tag": "1.1.5",
+            "version_tag": "1.2.0",
             "starting_characters": self.starting_characters,
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
