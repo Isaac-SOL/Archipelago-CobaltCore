@@ -17,7 +17,9 @@ class StartingShip(Choice):
 
 class StartingCharactersAmount(Range):
     """Determines how many characters you will start the game with.
-    Thanks to Custom Run Options, you can start with 2, 1, or even 0 characters."""
+    Thanks to Custom Run Options, you can start with 2, 1, or even 0 characters.
+    Set to 3 by default to mimic the vanilla game. However, with this setting, many items will be available
+    from the start (big sphere 0). If this is an issue for you, lower this number."""
     display_name = "Starting Characters Amount"
     range_start = 0
     range_end = 8
@@ -253,7 +255,7 @@ class SwapCharacterNode(DefaultOnToggle):
 class ImmediateRewardsBlacklist(ItemSet):
     """No matter what the settings for immediate_card_rewards and immediate_artifact_rewards are,
     the items in this list will be excluded.
-    You can also use item name groups (explained below)."""
+    You can also use item name groups."""
     display_name = "Immediate Rewards Blacklist",
     default = frozenset([])
 
@@ -263,6 +265,12 @@ class PickMissedItemsFromEveryRun(DefaultOnToggle):
     If this option is off, you can only pick from AP items that you missed this run.
     If it's on, you can pick from all the AP items that you've missed throughout the game."""
     display_name = "Pick Missed Items from Every Run"
+
+
+class FillersCanBeTraps(DefaultOnToggle):
+    """With this setting, filler items can be traps.
+    At the moment, filler items only happen in very specific scenarios (mostly, if you use start_inventory_from_pool)"""
+    display_name = "Filler Items can be Traps"
 
 
 # Actual option groups are specified in the WebWorld in __init__.py
@@ -306,4 +314,5 @@ class CobaltCoreOptions(PerGameCommonOptions):
     rewards_tweak: RewardsTweak
     auto_release_characters: AutoReleaseCharacters
     swap_character_node: SwapCharacterNode
+    fillers_can_be_traps: FillersCanBeTraps
     pick_missed_items_from_every_run: PickMissedItemsFromEveryRun

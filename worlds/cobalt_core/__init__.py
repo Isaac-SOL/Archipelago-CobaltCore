@@ -63,6 +63,7 @@ class CobaltCoreWeb(WebWorld):
             RewardsTweak,
             AutoReleaseCharacters,
             SwapCharacterNode,
+            FillersCanBeTraps,
             PickMissedItemsFromEveryRun
         ])
     ]
@@ -355,7 +356,10 @@ class CobaltCoreWorld(World):
         return CobaltCoreItem(name, self.player, self.options)
 
     def get_filler_item_name(self) -> str:
-        return self.random.choice(tuple(self.item_name_groups["Filler Items"]))
+        fillers = set(self.item_name_groups["Filler Items"])
+        if self.options.fillers_can_be_traps.value:
+            fillers += self.item_name_groups["Traps"]
+        return self.random.choice(tuple(fillers))
 
     def set_rules(self) -> None:
         def character_clears_soft_logic(state: CollectionState, character: str,
