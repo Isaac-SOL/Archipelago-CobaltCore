@@ -248,13 +248,14 @@ class AutoReleaseCharacters(Range):
 
 class SwapCharacterNode(DefaultOnToggle):
     """Adds a node to every map that allows you to swap one of your characters with any unlocked character.
-    This makes it easier to get specific items you want without commiting an entire run to it."""
+    This makes it easier to get specific items you want without commiting an entire run to it.
+    Particularly useful if you're starting with less than three characters."""
     display_name = "Add Node to Swap Characters"
 
 
 class ImmediateRewardsBlacklist(ItemSet):
-    """No matter what the settings for immediate_card_rewards and immediate_artifact_rewards are,
-    the items in this list will be excluded.
+    """For immediate_card_rewards, immediate_artifact_rewards and modifiers_mode,
+    the items in this list will never be given immediately.
     You can also use item name groups."""
     display_name = "Immediate Rewards Blacklist",
     default = frozenset([])
@@ -271,6 +272,28 @@ class FillersCanBeTraps(DefaultOnToggle):
     """With this setting, filler items can be traps.
     At the moment, filler items only happen in very specific scenarios (mostly, if you use start_inventory_from_pool)"""
     display_name = "Filler Items can be Traps"
+
+
+class ModifiersMode(Choice):
+    """How daily modifiers will apply to your game.
+    off: There will be no daily modifiers in your game.
+    immediate: Modifiers will be items in the pool. When found, the modifier is applied until the end of the run.
+               (some modifiers are excluded)
+    unlockable: Modifiers will be items in the pool. Once found, new runs can randomly have this modifier.
+    immediate_and_unlockable: Combines both effects.
+    all_at_start: All modifiers can randomly apply to your new runs from the start."""
+    display_name = "Modifiers Mode"
+    option_off = 0
+    option_immediate = 1
+    option_unlockable = 2
+    option_immediate_and_unlockable = 3
+    option_all_at_start = 4
+    default = 1
+
+
+class ModifiersBlacklist(ItemSet):
+    """Modifiers in this list will never be applied to your runs, neither randomly nor immediately."""
+    default = frozenset([])
 
 
 # Actual option groups are specified in the WebWorld in __init__.py
@@ -303,6 +326,8 @@ class CobaltCoreOptions(PerGameCommonOptions):
     # Item Pools
     shuffle_cards: ShuffleCards
     shuffle_artifacts: ShuffleArtifacts
+    modifiers_mode: ModifiersMode
+    modifiers_blacklist: ModifiersBlacklist
 
     # Immediate Rewards
     immediate_card_rewards: ImmediateCardRewards

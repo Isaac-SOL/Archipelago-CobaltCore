@@ -14,6 +14,7 @@ class ItemData(typing.NamedTuple):
     starter: bool = False
     offensive: bool = False
     generator: bool = False
+    mod_start: bool = False
 
 
 def find_items(item_type=None, item_rarity=None, item_character=None) -> Set[str]:
@@ -356,6 +357,32 @@ item_table: Dict[str, ItemData] = {
     "Multi Threading": ItemData(artifact_off + cat_off + C + 2, "Artifact", True, character="CAT", rarity="Common"),
 
     "Summon Control": ItemData(artifact_off + cat_off + R, "Artifact", True, character="CAT", rarity="Boss"),
+
+    # MODIFIERS
+
+    # General
+    "Binary Bosses":   ItemData(modifiers_off,     "Modifier", False),
+    "Boss Advantage":  ItemData(modifiers_off + 1, "Modifier", False, mod_start=True),
+    "Core Corruption": ItemData(modifiers_off + 2, "Modifier", False),
+    "Enemy Shuffler":  ItemData(modifiers_off + 3, "Modifier", False),
+    "Jupiter Toys":    ItemData(modifiers_off + 4, "Modifier", False),
+    "No Skips":        ItemData(modifiers_off + 5, "Modifier", False),
+    "Scaffolds":       ItemData(modifiers_off + 6, "Modifier", False),
+    "Shuffler":        ItemData(modifiers_off + 7, "Modifier", False),
+
+    # Hull
+    "One Hit Wonder":   ItemData(modifiers_off + 8,  "Modifier", False, mod_start=True),
+    "Supernova":        ItemData(modifiers_off + 9,  "Modifier", False),
+    "Sword And Shield": ItemData(modifiers_off + 10, "Modifier", False),
+
+    # Starter Decks
+    "Adjusted Mindset": ItemData(modifiers_off + 11, "Modifier", False, mod_start=True),
+    "Draft Mode":       ItemData(modifiers_off + 12, "Modifier", False, mod_start=True),
+    "Thin Deck":        ItemData(modifiers_off + 13, "Modifier", False, mod_start=True),
+
+    # Upgrades
+    "Only A Upgrades": ItemData(modifiers_off + 14, "Modifier", False, mod_start=True),
+    "Only B Upgrades": ItemData(modifiers_off + 15, "Modifier", False, mod_start=True),
 
     # FILLERS & TRAPS
 

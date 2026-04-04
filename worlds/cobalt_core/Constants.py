@@ -3,7 +3,8 @@ character_off = 200
 memory_off = 300
 card_off = 10000
 artifact_off = 20000
-filler_off = 30000
+modifiers_off = 30000
+filler_off = 40000
 
 dizzy_off = 1000
 riggs_off = 2000

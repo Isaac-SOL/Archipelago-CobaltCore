@@ -1,5 +1,5 @@
 from .bases import CobaltCoreTestBase
-from .. import ShuffleArtifacts
+from .. import ShuffleArtifacts, ModifiersMode
 
 
 class TestShuffleMemories(CobaltCoreTestBase):
@@ -55,4 +55,16 @@ class TestDontShuffleArtifactsOrMemories(CobaltCoreTestBase):
     options = {
         "shuffle_artifacts": ShuffleArtifacts.option_off,
         "shuffle_memories": False
+    }
+
+
+class TestModifiersUnlockable(CobaltCoreTestBase):
+    options = {
+        "modifiers_mode": ModifiersMode.option_unlockable
+    }
+
+
+class TestNoModifiers(CobaltCoreTestBase):
+    options = {
+        "modifiers_mode": ModifiersMode.option_off
     }

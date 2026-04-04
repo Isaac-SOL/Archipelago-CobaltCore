@@ -51,7 +51,9 @@ class CobaltCoreWeb(WebWorld):
         ]),
         OptionGroup("Item Pools", [
             ShuffleCards,
-            ShuffleArtifacts
+            ShuffleArtifacts,
+            ModifiersMode,
+            ModifiersBlacklist
         ]),
         OptionGroup("Immediate Rewards", [
             ImmediateCardRewards,
@@ -116,6 +118,7 @@ class CobaltCoreWorld(World):
         "Artifacts": find_items(item_type="Artifact"),
         "Basic Artifacts": find_items(item_type="Artifact", item_character=""),
         "Basic Boss Artifacts": find_items(item_type="Artifact", item_rarity="Boss", item_character=""),
+        "Modifiers": find_items(item_type="Modifier"),
         "Filler Items": find_items(item_type="Filler"),
         "Traps": find_items(item_type="Trap")
     }
@@ -230,17 +233,26 @@ class CobaltCoreWorld(World):
         # These locations actually aren't great in an archipelago setting
         self.dont_register_locations = list(find_locations_base(loc_type="Ship")) + list(find_locations_base(loc_type="Character"))
 
+        # Exclude memories if needed
         if not self.options.additional_character_memories.value:
             self.dont_pool_items += ["Books Memory", "CAT Memory"]
             self.dont_register_locations += ["Fix Books's Timeline", "Fix CAT's Timeline"]
+        # If we don't shuffle memories, the items aren't added to the pool but the locations are still created
+        # as events with locked event items
         if not self.options.shuffle_memories.value:
             self.dont_pool_items += self.item_name_groups["Memories"]
+        # Don't shuffle cards and artifacts if needed
         if not self.options.shuffle_cards.value:
             self.dont_pool_items += self.item_name_groups["Cards"]
             self.dont_register_locations += find_locations_base(loc_type="Card")
         if self.options.shuffle_artifacts.value == ShuffleArtifacts.option_off:
             self.dont_pool_items += self.item_name_groups["Artifacts"]
             self.dont_register_locations += find_locations_base(loc_type="Artifact")
+        # Don't shuffle modifiers if needed
+        if self.options.modifiers_mode.value in [ModifiersMode.option_off, ModifiersMode.option_all_at_start]:
+            self.dont_pool_items += self.item_name_groups["Modifiers"]
+        elif self.options.modifiers_mode.value == ModifiersMode.option_immediate:
+            self.dont_pool_items += [item for item in self.item_name_groups["Modifiers"] if item_table[item].mod_start]
 
         # Even out items and locations
         appendable_locations = []
@@ -485,6 +497,8 @@ class CobaltCoreWorld(World):
             "do_future_memory": self.options.do_future_memory.value,
             "shuffle_cards": self.options.shuffle_cards.value,
             "shuffle_artifacts": self.options.shuffle_artifacts.value,
+            "modifiers_mode": self.options.modifiers_mode.value,
+            "modifers_blacklist": self.options.modifiers_blacklist.value,
             "check_card_difficulty": self.options.check_card_difficulty.value,
             "rewards_tweak": self.options.rewards_tweak.value,
             "auto_release_characters": self.options.auto_release_characters.value,
