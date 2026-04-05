@@ -44,7 +44,7 @@ class StartingCharacters(OptionSet):
     default = frozenset([])
 
 
-class ShuffleShipParts(OptionSet):
+class ShuffleShipParts(Choice):
     """Whether to shuffle the parts of every ship from the start.
     off: The ship parts are not shuffled.
     at_start: The ship parts are shuffled at the start and stay in that order between runs.
