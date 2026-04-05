@@ -487,6 +487,7 @@ class CobaltCoreWorld(World):
             "starting_characters": self.starting_characters,
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
+            "randomize_starting_cards": self.options.randomize_starting_cards.value,
             "starting_cards": self.starting_cards,
             "win_condition": self.options.win_condition.value,
             "memories_required_total": self.options.memories_required_total.value,
