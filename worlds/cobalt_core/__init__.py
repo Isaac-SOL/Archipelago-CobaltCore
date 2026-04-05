@@ -499,7 +499,7 @@ class CobaltCoreWorld(World):
             "shuffle_cards": self.options.shuffle_cards.value,
             "shuffle_artifacts": self.options.shuffle_artifacts.value,
             "modifiers_mode": self.options.modifiers_mode.value,
-            "modifers_blacklist": self.options.modifiers_blacklist.value,
+            "modifiers_blacklist": self.options.modifiers_blacklist.value,
             "check_card_difficulty": self.options.check_card_difficulty.value,
             "rewards_tweak": self.options.rewards_tweak.value,
             "auto_release_characters": self.options.auto_release_characters.value,
