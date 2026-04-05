@@ -257,7 +257,7 @@ class ImmediateRewardsBlacklist(ItemSet):
     """For immediate_card_rewards, immediate_artifact_rewards and modifiers_mode,
     the items in this list will never be given immediately.
     You can also use item name groups."""
-    display_name = "Immediate Rewards Blacklist",
+    display_name = "Immediate Rewards Blacklist"
     default = frozenset([])
 
 
@@ -293,6 +293,7 @@ class ModifiersMode(Choice):
 
 class ModifiersBlacklist(ItemSet):
     """Modifiers in this list will never be applied to your runs, neither randomly nor immediately."""
+    display_name = "Modifiers Blacklist"
     default = frozenset([])
 
 
