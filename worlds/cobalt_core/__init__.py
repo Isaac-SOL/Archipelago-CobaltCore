@@ -215,7 +215,9 @@ class CobaltCoreWorld(World):
                 if len(possible_cards_offensive) > 0:
                     oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
                     # For Books/Drake, ensure we have at least one easy-to-use shard/heat generating card
-                    eff_possible_cards = possible_cards_gen if len(possible_cards_gen) > 0 else possible_cards
+                    eff_possible_cards = possible_cards_gen \
+                        if len(possible_cards_gen) > 0 and oc not in possible_cards_gen \
+                        else possible_cards
                     if oc in eff_possible_cards:
                         eff_possible_cards.remove(oc)
                     sc = eff_possible_cards[self.random.randint(0, len(eff_possible_cards) - 1)]
