@@ -390,5 +390,6 @@ item_table: Dict[str, ItemData] = {
     "3 Temp Shield": ItemData(filler_off + 1, "Filler", False),
     "Missing Trap!": ItemData(filler_off + 2, "Trap",   False),
     "Shuffle Trap":  ItemData(filler_off + 3, "Trap",   False),
-    "Canister Trap": ItemData(filler_off + 4, "Trap",   False)
+    "Canister Trap": ItemData(filler_off + 4, "Trap",   False),
+    "Scaffold Trap": ItemData(filler_off + 5, "Trap",   False)
 }
