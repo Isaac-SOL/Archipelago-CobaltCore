@@ -373,7 +373,7 @@ item_table: Dict[str, ItemData] = {
     # Hull
     "One Hit Wonder":   ItemData(modifiers_off + 8,  "Modifier", False, mod_start=True),
     "Supernova":        ItemData(modifiers_off + 9,  "Modifier", False),
-    "Sword And Shield": ItemData(modifiers_off + 10, "Modifier", False),
+    "Sword and Shield": ItemData(modifiers_off + 10, "Modifier", False),
 
     # Starter Decks
     "Adjusted Mindset": ItemData(modifiers_off + 11, "Modifier", False, mod_start=True),
