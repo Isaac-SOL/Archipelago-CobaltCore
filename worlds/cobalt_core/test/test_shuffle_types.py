@@ -68,3 +68,17 @@ class TestNoModifiers(CobaltCoreTestBase):
     options = {
         "modifiers_mode": ModifiersMode.option_off
     }
+
+
+class TestBlacklistModifiers(CobaltCoreTestBase):
+    options = {
+        "modifiers_mode": ModifiersMode.option_unlockable,
+        "modifiers_blacklist": ["Jupiter Toys", "Binary Bosses"]
+    }
+
+
+class TestBlacklistModifiersAtStart(CobaltCoreTestBase):
+    options = {
+        "modifiers_mode": ModifiersMode.option_all_at_start,
+        "modifiers_blacklist": ["Jupiter Toys", "Binary Bosses"]
+    }
