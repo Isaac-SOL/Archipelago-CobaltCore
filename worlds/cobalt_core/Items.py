@@ -376,7 +376,6 @@ item_table: Dict[str, ItemData] = {
     "Sword and Shield": ItemData(modifiers_off + 10, "Modifier", False),
 
     # Starter Decks
-    "Adjusted Mindset": ItemData(modifiers_off + 11, "Modifier", False, mod_start=True),
     "Draft Mode":       ItemData(modifiers_off + 12, "Modifier", False, mod_start=True),
     "Thin Deck":        ItemData(modifiers_off + 13, "Modifier", False, mod_start=True),
 
