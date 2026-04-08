@@ -101,6 +101,7 @@ class CobaltCoreWorld(World):
     starting_ship: str
     non_starting_ships: list[str]
     starting_cards: list[str]
+    starting_modifiers: list[str]
 
     dont_pool_items: list[str]
     dont_register_locations: list[str]
@@ -193,7 +194,7 @@ class CobaltCoreWorld(World):
         # Save amounts of each location to modify them
         self.location_name_to_eff_amount = {name: data.amount for name, data in location_table.items()}
 
-        # Select starting ship and characters
+        # Select starting items
         starting_characters_amount = self.options.starting_characters_amount.value
         self.starting_characters = list(self.options.starting_characters.value)
         if len(self.starting_characters) < starting_characters_amount:
@@ -202,6 +203,11 @@ class CobaltCoreWorld(World):
             self.starting_characters += self.non_starting_characters[:starting_characters_amount - len(self.starting_characters)]
         self.starting_ship = SHIPS[self.options.starting_ship.value]
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
+        if self.options.modifiers_mode == ModifiersMode.option_all_at_start:
+            self.starting_modifiers = [m for m in self.item_name_groups["Modifiers"]
+                                       if m not in self.options.modifiers_blacklist.value]
+        else:
+            self.starting_modifiers = []
 
         # Select starting cards
         if self.options.randomize_starting_cards.value != RandomizeStartingCards.option_off:
@@ -255,6 +261,8 @@ class CobaltCoreWorld(World):
             self.dont_pool_items += self.item_name_groups["Modifiers"]
         elif self.options.modifiers_mode.value == ModifiersMode.option_immediate:
             self.dont_pool_items += [item for item in self.item_name_groups["Modifiers"] if item_table[item].mod_start]
+        # Blacklists
+        self.dont_pool_items += list(self.options.modifiers_blacklist.value)
 
         # Even out items and locations
         appendable_locations = []
@@ -350,7 +358,7 @@ class CobaltCoreWorld(World):
 
     def create_items(self) -> None:
         # Starting items
-        for c in self.starting_characters + self.starting_cards + [self.starting_ship]:
+        for c in self.starting_characters + self.starting_cards + [self.starting_ship] + self.starting_modifiers:
             self.multiworld.push_precollected(self.create_item(c))
 
         # Fill out our pool with our items from item_pool, assuming 1 item if not present in item_pool
