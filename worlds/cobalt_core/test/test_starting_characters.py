@@ -11,9 +11,3 @@ class TestStartWithOneCharacter(CobaltCoreTestBase):
     options = {
         "starting_characters_amount": 1
     }
-
-
-class TestStartUnmanned(CobaltCoreTestBase):
-    options = {
-        "starting_characters_amount": 0
-    }
