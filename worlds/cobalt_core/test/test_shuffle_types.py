@@ -1,5 +1,5 @@
 from .bases import CobaltCoreTestBase
-from .. import ShuffleArtifacts, ModifiersMode
+from .. import ShuffleArtifacts, ModifiersMode, RandomizeStartingCards
 
 
 class TestShuffleMemories(CobaltCoreTestBase):
@@ -25,7 +25,7 @@ class TestShuffleArtifactsOnly(CobaltCoreTestBase):
     options = {
         "shuffle_artifacts": ShuffleArtifacts.option_simple,
         "shuffle_cards": False,
-        "randomize_starting_cards": False
+        "randomize_starting_cards": RandomizeStartingCards.option_off
     }
 
 
@@ -33,7 +33,7 @@ class TestDontShuffleCardsButStillStarting(CobaltCoreTestBase):
     options = {
         "shuffle_artifacts": ShuffleArtifacts.option_simple,
         "shuffle_cards": False,
-        "randomize_starting_cards": True
+        "randomize_starting_cards": RandomizeStartingCards.option_at_start
     }
 
 

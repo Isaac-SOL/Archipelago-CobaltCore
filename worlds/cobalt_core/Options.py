@@ -109,7 +109,7 @@ class DoFutureMemory(DefaultOnToggle):
     display_name = "Do Future Memory to Complete the Game"
 
 
-class RandomizeStartingCards(DefaultOnToggle):
+class RandomizeStartingCards(Choice):
     """Whether to randomize which cards each character starts a run with.
     off: The starting cards are not randomized.
     at_start: The starting cards are randomized and stay the same between runs.
