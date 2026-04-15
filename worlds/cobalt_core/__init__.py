@@ -189,7 +189,7 @@ class CobaltCoreWorld(World):
             raise Exception("You must either set shuffle_cards or shuffle_artifacts, or both.")
 
         # Save main seed to be used for randomizations client-side
-        self.fixed_client_seed = random.randint(1, 10000000)
+        self.fixed_client_seed = self.random.randint(1, 10000000)
 
         # Save amounts of each location to modify them
         self.location_name_to_eff_amount = {name: data.amount for name, data in location_table.items()}
@@ -271,7 +271,7 @@ class CobaltCoreWorld(World):
         if self.options.shuffle_artifacts.value != ShuffleArtifacts.option_off:
             appendable_locations += find_locations_base(loc_type="Artifact")
         while self.get_current_location_amount() < self.get_current_item_amount():
-            rand_location = random.choice(appendable_locations)
+            rand_location = self.random.choice(appendable_locations)
             if 1 < self.location_name_to_eff_amount[rand_location] < max_fill_location:
                 self.location_name_to_eff_amount[rand_location] += 1
         self.additional_fillers = max(self.get_current_location_amount() - self.get_current_item_amount(), 0)
