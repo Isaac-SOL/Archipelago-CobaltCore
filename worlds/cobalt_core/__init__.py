@@ -2,7 +2,7 @@ import itertools
 import random
 from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, Region, Entrance, CollectionState
-from Options import OptionGroup
+from Options import OptionGroup, OptionError
 from .Items import item_table, find_items
 from ..AutoWorld import WebWorld, World
 from .Options import *
@@ -186,7 +186,7 @@ class CobaltCoreWorld(World):
     def generate_early(self) -> None:
         # Ensure validity of options
         if self.options.shuffle_cards == ShuffleArtifacts.option_off and not self.options.shuffle_artifacts:
-            raise Exception("You must either set shuffle_cards or shuffle_artifacts, or both.")
+            raise OptionError("You must either set shuffle_cards or shuffle_artifacts, or both.")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = self.random.randint(1, 10000000)
