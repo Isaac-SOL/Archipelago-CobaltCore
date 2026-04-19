@@ -18,15 +18,21 @@ class StartingShip(Choice):
 class StartingCharactersAmount(Range):
     """Determines how many characters you will start the game with.
 
-    If Custom Run Options is installed, you can start with less than 3 characters.
-    IF IT IS NOT INSTALLED AND YOU START WITH LESS THAN 3 CHARACTERS, YOU WILL NOT BE ABLE TO START A RUN.
+    If you want to start with less than 3 characters:
+    You need to install the mod "Custom Run Options" and set cro_is_installed to true.
 
-    Set to 3 by default to mimic the vanilla game. However, because of this, many items will be available
+    It's set to 3 by default to mimic the vanilla game. However, because of this, many items will be available
     from the start (big sphere 0). If this is an issue for you, lower this number."""
     display_name = "Starting Characters Amount"
     range_start = 1
     range_end = 8
     default = 3
+
+
+class CROIsInstalled(Toggle):
+    """Only set this on if you have installed the mod "Custom Run Options" (can be found on NexusMods).
+    This will allow you to set starting_characters_amount below 3."""
+    display_name = "Custom Run Options is installed"
 
 
 class StartingCharacters(OptionSet):
@@ -310,6 +316,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
     # Initial Parameters
     starting_ship: StartingShip
     starting_characters_amount: StartingCharactersAmount
+    cro_is_installed: CROIsInstalled
     starting_characters: StartingCharacters
     shuffle_ship_parts: ShuffleShipParts
     randomize_starting_cards: RandomizeStartingCards

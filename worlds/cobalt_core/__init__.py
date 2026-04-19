@@ -32,6 +32,7 @@ class CobaltCoreWeb(WebWorld):
         OptionGroup("Initial Parameters", [
             StartingShip,
             StartingCharactersAmount,
+            CROIsInstalled,
             StartingCharacters,
             ShuffleShipParts,
             RandomizeStartingCards
@@ -187,6 +188,9 @@ class CobaltCoreWorld(World):
         # Ensure validity of options
         if self.options.shuffle_cards == ShuffleArtifacts.option_off and not self.options.shuffle_artifacts:
             raise OptionError("You must either set shuffle_cards or shuffle_artifacts, or both.")
+        if self.options.starting_characters_amount < 3 and not self.options.cro_is_installed.value:
+            raise OptionError("If you want to start with less than 3 characters,"
+                              "\nyou must install the 'Custom Run options' mod and set cro_is_installed to true.")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = self.random.randint(1, 10000000)
@@ -495,6 +499,7 @@ class CobaltCoreWorld(World):
         return {
             "version_tag": "1.2.0",
             "starting_characters": self.starting_characters,
+            "cro_is_installed": self.options.cro_is_installed.value,
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
             "randomize_starting_cards": self.options.randomize_starting_cards.value,
