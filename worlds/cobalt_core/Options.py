@@ -17,7 +17,10 @@ class StartingShip(Choice):
 
 class StartingCharactersAmount(Range):
     """Determines how many characters you will start the game with.
-    Thanks to Custom Run Options, you can start with less than 3 characters.
+
+    If Custom Run Options is installed, you can start with less than 3 characters.
+    IF IT IS NOT INSTALLED AND YOU START WITH LESS THAN 3 CHARACTERS, YOU WILL NOT BE ABLE TO START A RUN.
+
     Set to 3 by default to mimic the vanilla game. However, because of this, many items will be available
     from the start (big sphere 0). If this is an issue for you, lower this number."""
     display_name = "Starting Characters Amount"
