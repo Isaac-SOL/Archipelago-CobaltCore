@@ -1,5 +1,3 @@
-import itertools
-import random
 from typing import ClassVar, Dict, Set, List, Mapping, Any
 from BaseClasses import Tutorial, Item, ItemClassification, Location, Region, Entrance, CollectionState
 from Options import OptionGroup, OptionError
@@ -218,6 +216,7 @@ class CobaltCoreWorld(World):
             self.starting_cards = []
             for c in CHARACTERS:
                 possible_cards = list(self.item_name_groups[f"{c} Cards"])
+                possible_cards.sort()
                 # Ensure we have at least one easy-to-use offensive card for each character at the start
                 possible_cards_offensive = [card for card in possible_cards if item_table[card].offensive]
                 possible_cards_gen = [card for card in possible_cards if item_table[card].generator]
@@ -385,6 +384,7 @@ class CobaltCoreWorld(World):
         fillers = list(self.item_name_groups["Filler Items"])
         if self.options.fillers_can_be_traps.value:
             fillers += list(self.item_name_groups["Traps"])
+        fillers.sort()
         return self.random.choice(tuple(fillers))
 
     def set_rules(self) -> None:
