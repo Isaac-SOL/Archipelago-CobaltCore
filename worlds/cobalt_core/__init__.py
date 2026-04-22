@@ -189,6 +189,11 @@ class CobaltCoreWorld(World):
         if self.options.starting_characters_amount < 3 and not self.options.cro_is_installed.value:
             raise OptionError("If you want to start with less than 3 characters,"
                               "\nyou must install the 'Custom Run options' mod and set cro_is_installed to true.")
+        if not self.options.additional_character_memories \
+                and self.options.win_condition == WinCondition.option_total_memories \
+                and self.options.memories_required_total > 18:
+            raise OptionError("If win_condition is total_memories and additional_character_memories is false,"
+                              "\nmemories_required_total can't be set above 18 (6 characters * 3 memories)")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = self.random.randint(1, 10000000)
