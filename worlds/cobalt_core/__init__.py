@@ -11,7 +11,7 @@ from .Constants import *
 CHARACTERS = ["Dizzy", "Riggs", "Peri", "Isaac", "Drake", "Max", "Books", "CAT"]
 CARD_RARITIES = ["Common", "Uncommon", "Rare"]
 ARTIFACT_RARITIES = ["Common", "Boss"]
-ALL_RARITIES = set(CARD_RARITIES).union(ARTIFACT_RARITIES)
+ALL_RARITIES = ["Common", "Uncommon", "Rare", "Boss"]
 SHIPS = ["Artemis", "Ares", "Jupiter", "Gemini", "Tiderunner"]
 
 
@@ -189,7 +189,7 @@ class CobaltCoreWorld(World):
         if self.options.starting_characters_amount < 3 and not self.options.cro_is_installed.value:
             raise OptionError("If you want to start with less than 3 characters,"
                               "\nyou must install the 'Custom Run options' mod and set cro_is_installed to true.")
-        if not self.options.additional_character_memories \
+        if not self.options.additional_character_memories.value \
                 and self.options.win_condition == WinCondition.option_total_memories \
                 and self.options.memories_required_total > 18:
             raise OptionError("If win_condition is total_memories and additional_character_memories is false,"
@@ -204,6 +204,7 @@ class CobaltCoreWorld(World):
         # Select starting items
         starting_characters_amount = self.options.starting_characters_amount.value
         self.starting_characters = list(self.options.starting_characters.value)
+        self.starting_characters.sort()
         if len(self.starting_characters) < starting_characters_amount:
             self.non_starting_characters = [c for c in CHARACTERS if c not in self.starting_characters]
             self.random.shuffle(self.non_starting_characters)
@@ -213,6 +214,7 @@ class CobaltCoreWorld(World):
         if self.options.modifiers_mode == ModifiersMode.option_all_at_start:
             self.starting_modifiers = [m for m in self.item_name_groups["Modifiers"]
                                        if m not in self.options.modifiers_blacklist.value]
+            self.starting_modifiers.sort()
         else:
             self.starting_modifiers = []
 
@@ -278,6 +280,7 @@ class CobaltCoreWorld(World):
             appendable_locations += find_locations_base(loc_type="Card")
         if self.options.shuffle_artifacts.value != ShuffleArtifacts.option_off:
             appendable_locations += find_locations_base(loc_type="Artifact")
+        appendable_locations.sort()
         while self.get_current_location_amount() < self.get_current_item_amount():
             rand_location = self.random.choice(appendable_locations)
             if 1 < self.location_name_to_eff_amount[rand_location] < max_fill_location:
@@ -340,6 +343,8 @@ class CobaltCoreWorld(World):
     def create_region(self, name: str, locations=None, exits=None) -> Region:
         ret = Region(name, self.player, self.multiworld)
         if locations:
+            locations = list(locations)
+            locations.sort()
             for location in locations:
                 sub_locations = self.create_multi_location(location, parent=ret)
                 ret.locations += sub_locations
