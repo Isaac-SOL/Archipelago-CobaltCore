@@ -40,10 +40,9 @@ class CobaltCoreWeb(WebWorld):
             CheckCardDifficulty
         ]),
         OptionGroup("Goal", [
-            WinCondition,
             TotalMemoriesRequired,
             PerCharacterMemoriesRequired,
-            AddCharacterMemories,
+            CharactersRequired,
             ShuffleMemories,
             UnlockMemoryForAllCharacters,
             DoFutureMemory
@@ -195,11 +194,6 @@ class CobaltCoreWorld(World):
         if self.options.starting_characters_amount < 3 and not self.options.cro_is_installed.value:
             raise OptionError("If you want to start with less than 3 characters,"
                               "\nyou must install the 'Custom Run options' mod and set cro_is_installed to true.")
-        if not self.options.additional_character_memories.value \
-                and self.options.win_condition == WinCondition.option_total_memories \
-                and self.options.memories_required_total > 18:
-            raise OptionError("If win_condition is total_memories and additional_character_memories is false,"
-                              "\nmemories_required_total can't be set above 18 (6 characters * 3 memories)")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = self.random.randint(1, 10000000)
@@ -258,10 +252,6 @@ class CobaltCoreWorld(World):
         # These locations actually aren't great in an archipelago setting
         self.dont_register_locations = list(find_locations_base(loc_type="Ship")) + list(find_locations_base(loc_type="Character"))
 
-        # Exclude memories if needed
-        if not self.options.additional_character_memories.value:
-            self.dont_pool_items += ["Books Memory", "CAT Memory"]
-            self.dont_register_locations += ["Fix Books's Timeline", "Fix CAT's Timeline"]
         # If we don't shuffle memories, the items aren't added to the pool but the locations are still created
         # as events with locked event items
         if not self.options.shuffle_memories.value:
@@ -339,10 +329,9 @@ class CobaltCoreWorld(World):
 
         if not self.options.shuffle_memories.value:
             for c in CHARACTERS:
-                if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
-                    for i in range(3):
-                        (self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player)
-                         .place_locked_item(self.create_item(f"{c} Memory")))
+                for i in range(3):
+                    (self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player)
+                     .place_locked_item(self.create_item(f"{c} Memory")))
 
         # Victory Condition
         (self.multiworld.get_location("Complete Future Memory", self.player)
@@ -499,21 +488,18 @@ class CobaltCoreWorld(World):
             for r in ALL_RARITIES:
                 set_rule(self.multiworld.get_entrance(f"Find {c} {r} Items", self.player),
                          lambda state, c=c, r=r: state.has(c, self.player) and player_can_find_rarity(state, r))
-            if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
-                for i in range(3):
-                    set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
-                             lambda state, c=c: player_can_complete_run(state, [c]))
+            for i in range(3):
+                set_rule(self.multiworld.get_location(f"Fix {c}'s Timeline {i + 1}", self.player),
+                         lambda state, c=c: player_can_complete_run(state, [c]))
 
         def can_complete_goal(state: CollectionState) -> bool:
-            if self.options.win_condition == WinCondition.option_total_memories:
-                return state.has_group("Memories", self.player, self.options.memories_required_total.value)
-            else:  # option_per_character_memories
-                for c in CHARACTERS:
-                    if self.options.additional_character_memories.value or c not in ["Books", "CAT"]:
-                        if not state.has(f"{c} Memory", self.player,
-                                         count=self.options.memories_required_per_character.value):
-                            return False
-                return True
+            count_valid = state.has_group("Memories", self.player, self.options.memories_required_total.value)
+            characters_valid = 0
+            for c in CHARACTERS:
+                if state.has(f"{c} Memory", self.player,
+                                 count=self.options.memories_required_per_character.value):
+                    characters_valid += 1
+            return count_valid and characters_valid >= self.options.characters_required
 
         set_rule(self.multiworld.get_location("Complete Future Memory", self.player), can_complete_goal)
         if self.options.do_future_memory.value:
@@ -530,10 +516,9 @@ class CobaltCoreWorld(World):
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
             "randomize_starting_cards": self.options.randomize_starting_cards.value,
             "starting_cards": self.starting_cards,
-            "win_condition": self.options.win_condition.value,
             "memories_required_total": self.options.memories_required_total.value,
             "memories_required_per_character": self.options.memories_required_per_character.value,
-            "add_character_memories": self.options.additional_character_memories.value,
+            "characters_required": self.options.characters_required.value,
             "shuffle_memories": self.options.shuffle_memories.value,
             "unlock_memory_for_all_characters": self.options.unlock_memory_for_all_characters.value,
             "do_future_memory": self.options.do_future_memory.value,

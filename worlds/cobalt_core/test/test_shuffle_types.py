@@ -8,19 +8,6 @@ class TestShuffleMemories(CobaltCoreTestBase):
     }
 
 
-class TestNoAdditionalMemories(CobaltCoreTestBase):
-    options = {
-        "additional_character_memories": False
-    }
-
-
-class TestShuffleAndNoAdditionalMemories(CobaltCoreTestBase):
-    options = {
-        "shuffle_memories": True,
-        "additional_character_memories": False
-    }
-
-
 class TestShuffleArtifactsOnly(CobaltCoreTestBase):
     options = {
         "shuffle_artifacts": ShuffleArtifacts.option_simple,
