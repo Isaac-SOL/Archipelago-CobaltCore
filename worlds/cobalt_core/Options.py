@@ -341,6 +341,11 @@ class ModifiersBlacklist(ItemSet):
     default = frozenset([])
 
 
+class SuperSecretSpecialCards(DefaultOnToggle):
+    """Intended for syncs."""
+    display_name = "Super Secret Special Cards"
+
+
 # Actual option groups are specified in the WebWorld in __init__.py
 @dataclass
 class CobaltCoreOptions(PerGameCommonOptions):
@@ -390,3 +395,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
     unlocked_card_boot_option: UnlockedCardBootOption
     unlocked_artifact_boot_option: UnlockedArtifactBootOption
     seen_items_at_shop: SeenItemsAtShop
+    super_secret_special_cards: SuperSecretSpecialCards

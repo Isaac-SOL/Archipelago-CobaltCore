@@ -68,7 +68,8 @@ class CobaltCoreWeb(WebWorld):
             AdditionalTraps,
             UnlockedCardBootOption,
             UnlockedArtifactBootOption,
-            SeenItemsAtShop
+            SeenItemsAtShop,
+            SuperSecretSpecialCards
         ])
     ]
 
@@ -552,6 +553,7 @@ class CobaltCoreWorld(World):
             "immediate_card_attributes": self.options.immediate_card_attributes.value,
             "immediate_artifact_rewards": self.options.immediate_artifact_rewards.value,
             "immediate_rewards_blacklist": self.options.immediate_rewards_blacklist.value,
+            "super_secret_special_cards": self.options.super_secret_special_cards.value,
             "fixed_client_seed": self.fixed_client_seed
         }
 
