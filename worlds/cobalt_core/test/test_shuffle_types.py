@@ -1,5 +1,5 @@
 from .bases import CobaltCoreTestBase
-from .. import ShuffleArtifacts, ModifiersMode, RandomizeStartingCards
+from .. import ShuffleArtifacts, ModifiersMode, RandomizeStartingCards, AdditionalTraps
 
 
 class TestShuffleMemories(CobaltCoreTestBase):
@@ -81,4 +81,30 @@ class TestBlacklistModifiersAtStart(CobaltCoreTestBase):
     options = {
         "modifiers_mode": ModifiersMode.option_all_at_start,
         "modifiers_blacklist": ["Jupiter Toys", "Binary Bosses"]
+    }
+
+
+class TestNoTraps(CobaltCoreTestBase):
+    options = {
+        "additional_traps": 0
+    }
+
+
+class TestMaxTraps(CobaltCoreTestBase):
+    options = {
+        "additional_traps": AdditionalTraps.range_end
+    }
+
+
+class TestMaxTrapsCardsOnly(CobaltCoreTestBase):
+    options = {
+        "shuffle_artifacts": ShuffleArtifacts.option_off,
+        "additional_traps": AdditionalTraps.range_end
+    }
+
+
+class TestMaxTrapsArtifactsOnly(CobaltCoreTestBase):
+    options = {
+        "shuffle_cards": False,
+        "additional_traps": AdditionalTraps.range_end
     }

@@ -65,6 +65,7 @@ class CobaltCoreWeb(WebWorld):
             AutoReleaseCharacters,
             SwapCharacterNode,
             FillersCanBeTraps,
+            AdditionalTraps,
             PickMissedItemsFromEveryRun
         ])
     ]
@@ -180,6 +181,8 @@ class CobaltCoreWorld(World):
         for name, data in item_table.items():
             if name not in self.dont_pool_items:
                 total += data.progressive_amount
+        total += self.options.additional_traps
+        total += self.additional_fillers
         return total
 
     def generate_early(self) -> None:
@@ -275,6 +278,7 @@ class CobaltCoreWorld(World):
         self.dont_pool_items += list(self.options.modifiers_blacklist.value)
 
         # Even out items and locations
+        self.additional_fillers = 0
         appendable_locations = []
         if self.options.shuffle_cards.value:
             appendable_locations += find_locations_base(loc_type="Card")
@@ -382,6 +386,9 @@ class CobaltCoreWorld(World):
             for i in range(data.progressive_amount):
                 item = self.create_item(name)
                 pool.append(item)
+        for i in range(self.options.additional_traps):
+            item = self.create_item(self.get_trap_item_name())
+            pool.append(item)
         for i in range(self.additional_fillers):
             item = self.create_filler()
             pool.append(item)
@@ -396,6 +403,11 @@ class CobaltCoreWorld(World):
             fillers += list(self.item_name_groups["Traps"])
         fillers.sort()
         return self.random.choice(tuple(fillers))
+
+    def get_trap_item_name(self) -> str:
+        traps = list(self.item_name_groups["Traps"])
+        traps.sort()
+        return self.random.choice(tuple(traps))
 
     def set_rules(self) -> None:
         def character_clears_soft_logic(state: CollectionState, character: str,

@@ -283,6 +283,15 @@ class FillersCanBeTraps(DefaultOnToggle):
     display_name = "Filler Items can be Traps"
 
 
+class AdditionalTraps(Range):
+    """Adds traps to the item pool. This also adds as many checks, which will be randomly distributed
+    as AP cards or artifacts."""
+    display_name = "Additonal Traps"
+    range_start = 0
+    range_end = 96
+    default = 8
+
+
 class ModifiersMode(Choice):
     """How daily modifiers will apply to your game.
     off: There will be no daily modifiers in your game.
@@ -351,4 +360,5 @@ class CobaltCoreOptions(PerGameCommonOptions):
     auto_release_characters: AutoReleaseCharacters
     swap_character_node: SwapCharacterNode
     fillers_can_be_traps: FillersCanBeTraps
+    additional_traps: AdditionalTraps
     pick_missed_items_from_every_run: PickMissedItemsFromEveryRun
