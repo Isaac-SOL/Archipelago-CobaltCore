@@ -270,6 +270,23 @@ class ImmediateRewardsBlacklist(ItemSet):
     default = frozenset([])
 
 
+class UnlockedCardBootOption(DefaultOnToggle):
+    """Adds a boot option for every run that allows you to add an unlocked card to your deck."""
+    display_name = "Unlocked Card Boot Option"
+
+
+class UnlockedArtifactBootOption(Choice):
+    """Adds a boot option for every run that allows you to add an unlocked artifact to your deck.
+    off: Does not add this option.
+    limited: Choose among up to 8 randomly-selected unlocked artifacts.
+    all: Choose among all unlocked artifacts. (This will quickly become the best choice.)"""
+    display_name = "Unlocked Artifact Boot Option"
+    option_off = 0
+    option_limited = 1
+    option_all = 2
+    default = 1
+
+
 class PickMissedItemsFromEveryRun(DefaultOnToggle):
     """In this mod, there is an option at Cleo's shop to get any AP item that you missed when picking rewards.
     If this option is off, you can only pick from AP items that you missed this run.
@@ -361,4 +378,6 @@ class CobaltCoreOptions(PerGameCommonOptions):
     swap_character_node: SwapCharacterNode
     fillers_can_be_traps: FillersCanBeTraps
     additional_traps: AdditionalTraps
+    unlocked_card_boot_option: UnlockedCardBootOption
+    unlocked_artifact_boot_option: UnlockedArtifactBootOption
     pick_missed_items_from_every_run: PickMissedItemsFromEveryRun

@@ -66,6 +66,8 @@ class CobaltCoreWeb(WebWorld):
             SwapCharacterNode,
             FillersCanBeTraps,
             AdditionalTraps,
+            UnlockedCardBootOption,
+            UnlockedArtifactBootOption,
             PickMissedItemsFromEveryRun
         ])
     ]
