@@ -68,7 +68,7 @@ class CobaltCoreWeb(WebWorld):
             AdditionalTraps,
             UnlockedCardBootOption,
             UnlockedArtifactBootOption,
-            PickMissedItemsFromEveryRun
+            SeenItemsAtShop
         ])
     ]
 

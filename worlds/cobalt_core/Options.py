@@ -287,11 +287,20 @@ class UnlockedArtifactBootOption(Choice):
     default = 1
 
 
-class PickMissedItemsFromEveryRun(DefaultOnToggle):
-    """In this mod, there is an option at Cleo's shop to get any AP item that you missed when picking rewards.
-    If this option is off, you can only pick from AP items that you missed this run.
-    If it's on, you can pick from all the AP items that you've missed throughout the game."""
-    display_name = "Pick Missed Items from Every Run"
+class SeenItemsAtShop(Choice):
+    """Adds an option at Cleo's shop to get any AP item that you've seen at least once when picking rewards.
+    This is recommended as part of larger system that avoids being stuck because of randomness.
+    off: Does not add this option.
+    this_run: You can only get AP items that you've seen in this run.
+    my_characters: You can get AP items that you've seen in any run,
+                   but only those that are tied to your current characters.
+    all: You can get any AP item that you've seen in any run."""
+    display_name = "Seen Items at Shop"
+    option_off = 0
+    option_this_run = 1
+    option_my_characters = 2
+    option_all = 3
+    default = 2
 
 
 class FillersCanBeTraps(DefaultOnToggle):
@@ -380,4 +389,4 @@ class CobaltCoreOptions(PerGameCommonOptions):
     additional_traps: AdditionalTraps
     unlocked_card_boot_option: UnlockedCardBootOption
     unlocked_artifact_boot_option: UnlockedArtifactBootOption
-    pick_missed_items_from_every_run: PickMissedItemsFromEveryRun
+    seen_items_at_shop: SeenItemsAtShop
