@@ -312,7 +312,7 @@ class FillersCanBeTraps(DefaultOnToggle):
 class AdditionalTraps(Range):
     """Adds traps to the item pool. This also adds as many checks, which will be randomly distributed
     as AP cards or artifacts."""
-    display_name = "Additonal Traps"
+    display_name = "Additional Traps"
     range_start = 0
     range_end = 96
     default = 8
