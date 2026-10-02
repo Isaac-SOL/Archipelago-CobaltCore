@@ -216,6 +216,7 @@ class CobaltCoreWorld(World):
             self.starting_characters += self.non_starting_characters[:starting_characters_amount - len(self.starting_characters)]
         self.starting_ship = SHIPS[self.options.starting_ship.value]
         self.non_starting_ships = [s for s in SHIPS if s != self.starting_ship]
+        self.multiworld.early_items[self.player][self.random.choice(self.non_starting_ships)] = 1
         if self.options.modifiers_mode == ModifiersMode.option_all_at_start:
             self.starting_modifiers = [m for m in self.item_name_groups["Modifiers"]
                                        if m not in self.options.modifiers_blacklist.value]
