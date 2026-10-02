@@ -196,3 +196,9 @@ _speedups.html
 .LSOverride
 Thumbs.db
 [Dd]esktop.ini
+
+# cobalt core fuzzer
+/fuzz_output/
+/hooks/
+/fuzz.py
+/worlds/cobalt_core/test/test_determinism.py
