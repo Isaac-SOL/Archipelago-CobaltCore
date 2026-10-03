@@ -337,7 +337,23 @@ class ModifiersMode(Choice):
 
 
 class ModifiersBlacklist(ItemSet):
-    """Modifiers in this list will never be applied to your runs, neither randomly nor immediately."""
+    """Modifiers in this list will never be applied to your runs, neither randomly nor immediately.
+    The modifiers are:
+    - Binary Bosses: all bosses happen in a binary system
+    - Boss Advantage: Start with a boss artifact
+    - Core Corruption: Start with 2 corrupted cores
+    - Enemy Shuffler: Enemies are shuffled at the start of the battle
+    - Jupiter Toys: All battles have 2 jupiter drones, with one turned towards us
+    - No Skips: Can't skip rewards
+    - Scaffolds: Start with 2 scaffolds in the middle of the ship
+    - Shuffler: Start shuffled (doesn't matter much if the setting is already set for AP)
+    - One Hit Wonder: Start with 1 hull, cannot overheat
+    - Supernova: Start with more HP, Most battles have a hot star
+    - Sword and Shield: Start with more HP, enemies have 1 powerdrive
+    - Draft Mode: Start by drafting 15 cards instead of the usual starter decks
+    - Thin Deck: Start without colorless cards and a corrupted core
+    - Only A upgrades: You can only do A upgrades
+    - Only B upgrades: You can only do B upgrades"""
     display_name = "Modifiers Blacklist"
     default = frozenset([])
 
