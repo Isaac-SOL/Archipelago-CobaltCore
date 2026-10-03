@@ -509,7 +509,7 @@ class CobaltCoreWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {
-            "version_tag": "1.2.0",
+            "version_tag": "1.2.2",
             "starting_characters": self.starting_characters,
             "cro_is_installed": self.options.cro_is_installed.value,
             "starting_ship": self.starting_ship,
