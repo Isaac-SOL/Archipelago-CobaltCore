@@ -187,6 +187,11 @@ class CobaltCoreWorld(World):
         total += self.additional_fillers
         return total
 
+    def starting_items_in_group(self, group_name: str) -> list[str]:
+        def is_in_group_and_positive(s: str) -> bool:
+            return s in self.item_name_groups[group_name] and self.options.start_inventory[s] > 0
+        return list(filter(is_in_group_and_positive, self.options.start_inventory.keys()))
+
     def generate_early(self) -> None:
         # Ensure validity of options
         if self.options.shuffle_cards == ShuffleArtifacts.option_off and not self.options.shuffle_artifacts:
