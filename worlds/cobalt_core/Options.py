@@ -17,12 +17,14 @@ class StartingShip(Choice):
 
 class StartingCharactersAmount(Range):
     """Determines how many characters you will start the game with.
+    If you want to specify characters to start with, use forced_starting_characters.
+    Then, more characters will be added at random until the specified amount is reached.
 
     If you want to start with less than 3 characters:
     You need to install the mod "Custom Run Options" and set cro_is_installed to true.
 
     It's set to 3 by default to mimic the vanilla game. However, because of this, many items will be available
-    from the start (big sphere 0). If this is an issue for you, lower this number."""
+    from the start (big sphere 1). If this is an issue for you, lower this number."""
     display_name = "Starting Characters Amount"
     range_start = 1
     range_end = 8
@@ -35,9 +37,8 @@ class CROIsInstalled(Toggle):
     display_name = "Custom Run Options is installed"
 
 
-class StartingCharacters(OptionSet):
-    """Determine which characters you will start the game with.
-    If there are less than the amount specified in starting_characters_amount, more will be added at random.
+class ForcedStartingCharacters(OptionSet):
+    """Forces these characters to be unlocked at the start of the game.
     Valid names: Dizzy, Riggs, Peri, Isaac, Drake, Max, Books, CAT"""
     display_name = "Starting Characters"
     valid_keys = {
@@ -374,7 +375,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
     starting_ship: StartingShip
     starting_characters_amount: StartingCharactersAmount
     cro_is_installed: CROIsInstalled
-    starting_characters: StartingCharacters
+    forced_starting_characters: ForcedStartingCharacters
     shuffle_ship_parts: ShuffleShipParts
     randomize_starting_cards: RandomizeStartingCards
 

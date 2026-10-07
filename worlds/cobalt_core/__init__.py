@@ -31,7 +31,7 @@ class CobaltCoreWeb(WebWorld):
             StartingShip,
             StartingCharactersAmount,
             CROIsInstalled,
-            StartingCharacters,
+            ForcedStartingCharacters,
             ShuffleShipParts,
             RandomizeStartingCards
         ]),
@@ -208,7 +208,7 @@ class CobaltCoreWorld(World):
 
         # Select starting items
         starting_characters_amount = self.options.starting_characters_amount.value
-        self.starting_characters = list(self.options.starting_characters.value)
+        self.starting_characters = list(self.options.forced_starting_characters.value)
         self.starting_characters.sort()
         if len(self.starting_characters) < starting_characters_amount:
             self.non_starting_characters = [c for c in CHARACTERS if c not in self.starting_characters]
