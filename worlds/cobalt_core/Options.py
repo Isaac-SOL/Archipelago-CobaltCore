@@ -78,9 +78,9 @@ class PerCharacterMemoriesRequired(Range):
     """The minimum amount of memories required per character to complete the goal.
     Works in tandem with characters_required to set the amount of characters that need to clear that condition.
     For example, if your goal should be 'At least 6 charaters need at least 2 memories unlocked',
-            you should set total_memories_required = 1, per_character_memories_required = 2, characters_required = 6.
+            you should set memories_required_total = 1, memories_required_per_character = 2, characters_required = 6.
     You can also have, for example: 'At least 16 memories unlocked in total, with at least one on each character',
-            which would be total_memories_required = 16, per_character_memories_required = 1, characters_required = 8."""
+            which would be memories_required_total = 16, memories_required_per_character = 1, characters_required = 8."""
     display_name = "Memories Required (Per Character)"
     range_start = 1
     range_end = 3
@@ -88,11 +88,11 @@ class PerCharacterMemoriesRequired(Range):
 
 
 class CharactersRequired(Range):
-    """This is how many characters need to have the specified amount of memories in per_character_memories_required
+    """This is how many characters need to have the specified amount of memories in memories_required_per_character
     to complete the goal (see above for more details).
     Note that for the purposes of Archipelago, empty memories have been added for CAT and Books,
     which is why you can require up to 8 characters.
-    If you set this to 1, then only total_required_memories matters."""
+    If you set this to 1, then only memories_required_total matters."""
     display_name = "Characters Required"
     range_start = 1
     range_end = 8
