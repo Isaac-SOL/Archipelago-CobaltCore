@@ -432,6 +432,8 @@ class CobaltCoreWorld(World):
             return has_cards and has_artifacts
         
         def character_can_find_uncommon(state: CollectionState, character: str):
+            if character == "CAT":
+                return True  # CAT only has one common card, so we ease up her soft logic to avoid a restrictive start
             return character_clears_soft_logic(state, character, 3, 1)
         
         def character_can_find_rare(state: CollectionState, character: str):
