@@ -121,15 +121,33 @@ class DoFutureMemory(DefaultOnToggle):
 
 
 class RandomizeStartingCards(Choice):
-    """Whether to randomize which cards each character starts a run with.
+    """Whether to randomize which two cards each character starts a run with.
     off: The starting cards are not randomized.
     at_start: The starting cards are randomized and stay the same between runs.
-    every_run: The starting cards are randomized every run, from the pool of unlocked cards."""
+    every_run: The starting cards are randomized every run, from the pool of unlocked cards.
+               If forced_starting_cards are set (see below), they are only applied during generation.
+    every_run_forced: The starting cards are randomized every run, from the pool of unlocked cards.
+                      If forced_starting_cards are set (see below), they are applied every run."""
     display_name = "Randomize Starting Cards"
     option_off = 0
     option_at_start = 1
     option_every_run = 2
+    option_every_run_forced = 3
     default = 1
+
+
+class ForcedStartingCards(ItemSet):
+    """Only active if randomize_starting_cards is set to at_start or every_run.
+    Forces these cards to be among the starting cards.
+    Only set up to 2 per character. If there are less, the rest are randomized.
+    You cannot force starting cards for CAT, they use the vanilla behavior (random summons).
+
+    Example: ['Evasive Shot', 'Hand Cannon', 'Shuffle Shot'] will:
+    - Force the 2 starting cards for Riggs,
+    - Force one starting card for Max and randomize the other,
+    - And all starting cards for the other characters will be randomized."""
+    display_name = "Starting Cards"
+    default = frozenset([])
 
 
 class ImmediateCardRewards(Choice):
@@ -378,6 +396,7 @@ class CobaltCoreOptions(PerGameCommonOptions):
     forced_starting_characters: ForcedStartingCharacters
     shuffle_ship_parts: ShuffleShipParts
     randomize_starting_cards: RandomizeStartingCards
+    forced_starting_cards: ForcedStartingCards
 
     # Difficulty Management
     difficulty_logic: DifficultyLogic

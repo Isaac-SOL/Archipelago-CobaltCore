@@ -33,7 +33,8 @@ class CobaltCoreWeb(WebWorld):
             CROIsInstalled,
             ForcedStartingCharacters,
             ShuffleShipParts,
-            RandomizeStartingCards
+            RandomizeStartingCards,
+            ForcedStartingCards
         ]),
         OptionGroup("Difficulty Management", [
             DifficultyLogic,
@@ -187,6 +188,22 @@ class CobaltCoreWorld(World):
         total += self.additional_fillers
         return total
 
+    def validate_forced_starting_cards(self) -> bool:
+        char_count = {}
+        for c in self.options.forced_starting_cards.value:
+            if c not in self.item_name_groups["Cards"]:
+                return False
+            character = item_table[c].character
+            if character == "CAT":
+                return False
+            if character not in char_count:
+                char_count[character] = 1
+            else:
+                char_count[character] += 1
+            if char_count[character] > 2:
+                return False
+        return True
+
     def starting_items_in_group(self, group_name: str) -> list[str]:
         def is_in_group_and_positive(s: str) -> bool:
             return s in self.item_name_groups[group_name] and self.options.start_inventory[s] > 0
@@ -199,6 +216,9 @@ class CobaltCoreWorld(World):
         if self.options.starting_characters_amount < 3 and not self.options.cro_is_installed.value:
             raise OptionError("If you want to start with less than 3 characters,"
                               "\nyou must install the 'Custom Run options' mod and set cro_is_installed to true.")
+        if not self.validate_forced_starting_cards():
+            raise OptionError("forced_starting_cards must only contain card names,"
+                              "\nand have a maximum of 2 cards per character. CAT cannot be included.")
 
         # Save main seed to be used for randomizations client-side
         self.fixed_client_seed = self.random.randint(1, 10000000)
@@ -233,16 +253,34 @@ class CobaltCoreWorld(World):
                 # Ensure we have at least one easy-to-use offensive card for each character at the start
                 possible_cards_offensive = [card for card in possible_cards if item_table[card].offensive]
                 possible_cards_gen = [card for card in possible_cards if item_table[card].generator]
+                # Find forced cards (they override this behavior)
+                forced_cards = [card for card in self.options.forced_starting_cards.value if c in possible_cards]
                 # CAT is an exception to this (her starting cards are weird)
                 if len(possible_cards_offensive) > 0:
-                    oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
-                    # For Books/Drake, ensure we have at least one easy-to-use shard/heat generating card
-                    eff_possible_cards = possible_cards_gen \
-                        if len(possible_cards_gen) > 0 and oc not in possible_cards_gen \
-                        else possible_cards
-                    if oc in eff_possible_cards:
-                        eff_possible_cards.remove(oc)
-                    sc = eff_possible_cards[self.random.randint(0, len(eff_possible_cards) - 1)]
+                    if len(forced_cards) == 2:
+                        # Both cards are forced: put them as-is
+                        oc, sc = forced_cards[0], forced_cards[1]
+                    elif len(forced_cards) == 1:
+                        # One card is forced: find its attributes, then find a card that fills in the missing ones
+                        oc = forced_cards[0]
+                        eff_possible_cards = possible_cards \
+                            if oc in possible_cards_offensive \
+                            else possible_cards_offensive
+                        if len(possible_cards_gen) > 0 and oc not in possible_cards_gen:
+                            eff_possible_cards = [card for card in eff_possible_cards if card in possible_cards_gen]
+                        if oc in eff_possible_cards:
+                            eff_possible_cards.remove(oc)
+                        sc = eff_possible_cards[self.random.randint(0, len(eff_possible_cards) - 1)]
+                    else:
+                        # No forced cards: we find an offensive card and potentially a generating card
+                        oc = possible_cards_offensive[self.random.randint(0, len(possible_cards_offensive) - 1)]
+                        # For Books/Drake, ensure we have at least one easy-to-use shard/heat generating card
+                        eff_possible_cards = possible_cards_gen \
+                            if len(possible_cards_gen) > 0 and oc not in possible_cards_gen \
+                            else possible_cards
+                        if oc in eff_possible_cards:
+                            eff_possible_cards.remove(oc)
+                        sc = eff_possible_cards[self.random.randint(0, len(eff_possible_cards) - 1)]
                     self.starting_cards += [oc, sc]
         else:
             self.starting_cards = [item for item, data in item_table.items() if data.type == "Card" and data.starter]
@@ -522,6 +560,7 @@ class CobaltCoreWorld(World):
             "starting_ship": self.starting_ship,
             "shuffle_ship_parts": self.options.shuffle_ship_parts.value,
             "randomize_starting_cards": self.options.randomize_starting_cards.value,
+            "forced_starting_cards": self.options.forced_starting_cards.value,
             "starting_cards": self.starting_cards,
             "memories_required_total": self.options.memories_required_total.value,
             "memories_required_per_character": self.options.memories_required_per_character.value,
