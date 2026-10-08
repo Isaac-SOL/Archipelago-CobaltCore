@@ -254,7 +254,7 @@ class CobaltCoreWorld(World):
                 possible_cards_offensive = [card for card in possible_cards if item_table[card].offensive]
                 possible_cards_gen = [card for card in possible_cards if item_table[card].generator]
                 # Find forced cards (they override this behavior)
-                forced_cards = [card for card in self.options.forced_starting_cards.value if c in possible_cards]
+                forced_cards = [card for card in self.options.forced_starting_cards.value if card in possible_cards]
                 # CAT is an exception to this (her starting cards are weird)
                 if len(possible_cards_offensive) > 0:
                     if len(forced_cards) == 2:

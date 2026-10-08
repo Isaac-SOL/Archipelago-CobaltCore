@@ -32,6 +32,12 @@ class CobaltCoreTestStartingCards(CobaltCoreTestBase):
                 has_off_card = len(offensive_cards.intersection(starting_item_names)) > 0
                 self.assertTrue(has_off_card, f"{c} must have at least one offensive card at the start")
 
+    def test_has_forced_cards(self):
+        """Test that the forced cards are indeed included in the starting cards"""
+        if "forced_starting_cards" in self.options:
+            for forced_card in self.options["forced_starting_cards"]:
+                self.assertTrue(any(item.name == forced_card for item in self.multiworld.precollected_items[self.player]))
+
 
 class TestStartingCardsStandard(CobaltCoreTestStartingCards):
     options = {
