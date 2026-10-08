@@ -40,7 +40,7 @@ class CROIsInstalled(Toggle):
 class ForcedStartingCharacters(OptionSet):
     """Forces these characters to be unlocked at the start of the game.
     Valid names: Dizzy, Riggs, Peri, Isaac, Drake, Max, Books, CAT"""
-    display_name = "Starting Characters"
+    display_name = "Forced Starting Characters"
     valid_keys = {
         "Dizzy",
         "Riggs",
@@ -146,7 +146,7 @@ class ForcedStartingCards(ItemSet):
     - Force the 2 starting cards for Riggs,
     - Force one starting card for Max and randomize the other,
     - And all starting cards for the other characters will be randomized."""
-    display_name = "Starting Cards"
+    display_name = "Forced Starting Cards"
     default = frozenset([])
 
 
