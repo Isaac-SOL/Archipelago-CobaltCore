@@ -137,7 +137,7 @@ class RandomizeStartingCards(Choice):
 
 
 class ForcedStartingCards(ItemSet):
-    """Only active if randomize_starting_cards is set to at_start or every_run.
+    """Only active if randomize_starting_cards is set to at_start, every_run or every_run_forced.
     Forces these cards to be among the starting cards.
     Only set up to 2 per character. If there are less, the rest are randomized.
     You cannot force starting cards for CAT, they use the vanilla behavior (random summons).
